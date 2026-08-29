@@ -1,0 +1,204 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shondell Slaughter | Curls and Colors</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Jost', sans-serif;
+            background-color: #0a0a0a; /* Deepest black for a premium backdrop */
+            color: #f8f8f8;
+            /* Creates a subtle background pattern for large screens */
+            background-image: radial-gradient(circle at 50% 0%, #2a2a2a 0%, transparent 50%);
+        }
+        
+        .font-serif { 
+            font-family: 'Cormorant Garamond', serif; 
+        }
+
+        /* --- Page Load Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .stagger-1 { animation: fadeIn 0.7s ease-out 0.1s forwards; opacity: 0; }
+        .stagger-2 { animation: fadeIn 0.7s ease-out 0.25s forwards; opacity: 0; }
+        .stagger-3 { animation: fadeIn 0.7s ease-out 0.4s forwards; opacity: 0; }
+        .stagger-4 { animation: fadeIn 0.7s ease-out 0.55s forwards; opacity: 0; }
+
+        /* --- Tactile Button Effects --- */
+        .link-button {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight on mobile */
+        }
+        
+        .link-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transition: all 0.5s ease;
+        }
+
+        /* Hover works on PC, Active works on Mobile taps */
+        @media (hover: hover) {
+            .link-button:hover::before { left: 100%; }
+            .link-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+                border-color: #d4a373; 
+            }
+        }
+        
+        .link-button:active {
+            transform: scale(0.97); /* Nice physical press effect on mobile */
+            transition: transform 0.1s;
+        }
+
+        /* Image interaction effect */
+        .gallery-img {
+            transition: transform 0.6s ease, filter 0.4s ease;
+            filter: brightness(0.9);
+        }
+        .gallery-container:active .gallery-img, 
+        .gallery-container:hover .gallery-img {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col items-center justify-start">
+
+    <!-- 
+      Strict Mobile Container 
+      The max-w-[480px] ensures it NEVER stretches too wide on a PC or tablet.
+      It will look exactly like a mobile phone screen floating in the center.
+    -->
+    <div class="w-full max-w-[480px] px-6 pt-12 pb-16 flex flex-col items-center relative z-10">
+        
+        <!-- ============================== -->
+        <!-- HEADER (Centered Logo)         -->
+        <!-- ============================== -->
+        <header class="text-center w-full mb-8 stagger-1 flex flex-col items-center">
+            <!-- Profile Image / Logo -->
+            <div class="relative w-28 h-28 mb-5">
+                <!-- Subtle pulsing ring behind the logo -->
+                <div class="absolute inset-0 rounded-full border-2 border-[#d4a373] opacity-50 animate-pulse" style="animation-duration: 3s;"></div>
+                
+                <!-- REPLACE SRC with Shondell's actual logo -->
+                <img 
+                    src="https://images.unsplash.com/photo-1615802873767-fbd7c251d14e?q=80&w=300&h=300&fit=crop" 
+                    alt="Shondell Slaughter Logo" 
+                    class="w-full h-full rounded-full object-cover border-4 border-[#111] shadow-xl relative z-10"
+                >
+            </div>
+            
+            <h1 class="text-3xl font-serif font-semibold tracking-wider text-white mb-1">Shondell Slaughter</h1>
+            <p class="text-xs tracking-[0.25em] uppercase text-[#d4a373]">Curls and Colors</p>
+        </header>
+
+        <!-- ============================== -->
+        <!-- ABOUT ME                       -->
+        <!-- ============================== -->
+        <div class="w-full text-center mb-10 stagger-2">
+            <div class="w-8 h-[1px] bg-[#d4a373] mx-auto mb-4 opacity-50"></div>
+            <p class="text-[15px] leading-relaxed text-gray-300 font-light px-2">
+                Specializing in bringing your hair dreams to life through custom colors and flawless curls. Dedicated to healthy hair and creating your perfect, radiant look. 
+            </p>
+            <div class="w-8 h-[1px] bg-[#d4a373] mx-auto mt-4 opacity-50"></div>
+        </div>
+
+        <!-- ============================== -->
+        <!-- LINK BUTTONS                   -->
+        <!-- ============================== -->
+        <div class="w-full space-y-4 mb-12 stagger-3">
+            
+            <!-- PHONE BUTTON (Primary Call to Action) -->
+            <!-- REPLACE tel: inside the href with her actual number -->
+            <a href="tel:+18175265696" class="link-button flex items-center justify-center gap-3 w-full bg-[#d4a373] text-[#111] font-medium py-4 px-6 rounded-xl shadow-lg border border-transparent">
+                <i data-lucide="phone" class="w-5 h-5"></i> 
+                <span>Call to Book Appointment</span>
+            </a>
+
+            <!-- LOCATION BUTTON (Joshua, TX preset) -->
+            <a href="https://maps.google.com/?q=101+N+Main+St,+Suite+C,+Joshua,+TX+76058" target="_blank" rel="noopener noreferrer" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
+                <i data-lucide="map-pin" class="w-5 h-5 text-[#d4a373]"></i> 
+                <span>Get Directions to Salon</span>
+            </a>
+
+            <!-- SOCIAL LINKS -->
+            <a href="#" target="_blank" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
+                <i data-lucide="instagram" class="w-5 h-5 text-[#d4a373]"></i> 
+                <span>Follow my Portfolio</span>
+            </a>
+            
+            <!-- EMAIL BUTTON -->
+            <a href="mailto:shondell@example.com" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
+                <i data-lucide="mail" class="w-5 h-5 text-[#d4a373]"></i> 
+                <span>Send an Inquiry</span>
+            </a>
+        </div>
+
+        <!-- ============================== -->
+        <!-- TRANSFORMATIONS GALLERY        -->
+        <!-- ============================== -->
+        <div class="w-full mb-10 stagger-4">
+            <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-6">Recent Transformations</h2>
+            
+            <!-- 2-Column Grid exactly for mobile width -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Replace src with client photos -->
+                <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1605980776566-0486c3ac7617?q=80&w=400&h=500&fit=crop" alt="Client Curls" class="w-full h-full object-cover gallery-img">
+                </div>
+                
+                <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?q=80&w=400&h=500&fit=crop" alt="Color Artistry" class="w-full h-full object-cover gallery-img">
+                </div>
+                
+                <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1595476108010-b4d1f10d5e72?q=80&w=400&h=500&fit=crop" alt="Hair Styling" class="w-full h-full object-cover gallery-img">
+                </div>
+                
+                <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=400&h=500&fit=crop" alt="Finished Style" class="w-full h-full object-cover gallery-img">
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================== -->
+        <!-- FOOTER                         -->
+        <!-- ============================== -->
+        <footer class="w-full text-center mt-6 stagger-4">
+            <p class="text-xs text-gray-600 uppercase tracking-widest">
+                © 2024 Shondell Slaughter
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- Initialize Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+```
