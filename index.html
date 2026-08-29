@@ -19,9 +19,8 @@
     <style>
         body {
             font-family: 'Jost', sans-serif;
-            background-color: #0a0a0a; /* Deepest black for a premium backdrop */
+            background-color: #0a0a0a;
             color: #f8f8f8;
-            /* Creates a subtle background pattern for large screens */
             background-image: radial-gradient(circle at 50% 0%, #2a2a2a 0%, transparent 50%);
         }
         
@@ -45,7 +44,7 @@
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             overflow: hidden;
-            -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight on mobile */
+            -webkit-tap-highlight-color: transparent;
         }
         
         .link-button::before {
@@ -57,7 +56,6 @@
             transition: all 0.5s ease;
         }
 
-        /* Hover works on PC, Active works on Mobile taps */
         @media (hover: hover) {
             .link-button:hover::before { left: 100%; }
             .link-button:hover {
@@ -68,7 +66,7 @@
         }
         
         .link-button:active {
-            transform: scale(0.97); /* Nice physical press effect on mobile */
+            transform: scale(0.97);
             transition: transform 0.1s;
         }
 
@@ -86,25 +84,16 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col items-center justify-start">
 
-    <!-- 
-      Strict Mobile Container 
-      The max-w-[480px] ensures it NEVER stretches too wide on a PC or tablet.
-      It will look exactly like a mobile phone screen floating in the center.
-    -->
     <div class="w-full max-w-[480px] px-6 pt-12 pb-16 flex flex-col items-center relative z-10">
         
-        <!-- ============================== -->
-        <!-- HEADER (Centered Logo)         -->
-        <!-- ============================== -->
+        <!-- HEADER -->
         <header class="text-center w-full mb-8 stagger-1 flex flex-col items-center">
-            <!-- Profile Image / Logo -->
             <div class="relative w-28 h-28 mb-5">
-                <!-- Subtle pulsing ring behind the logo -->
                 <div class="absolute inset-0 rounded-full border-2 border-[#d4a373] opacity-50 animate-pulse" style="animation-duration: 3s;"></div>
                 
-                <!-- REPLACE SRC with Shondell's actual logo -->
+                <!-- LOGO IMAGE: Ensure your uploaded file is exactly named logo.jpg -->
                 <img 
-                    src="https://images.unsplash.com/photo-1615802873767-fbd7c251d14e?q=80&w=300&h=300&fit=crop" 
+                    src="logo.jpg" 
                     alt="Shondell Slaughter Logo" 
                     class="w-full h-full rounded-full object-cover border-4 border-[#111] shadow-xl relative z-10"
                 >
@@ -114,9 +103,7 @@
             <p class="text-xs tracking-[0.25em] uppercase text-[#d4a373]">Curls and Colors</p>
         </header>
 
-        <!-- ============================== -->
-        <!-- ABOUT ME                       -->
-        <!-- ============================== -->
+        <!-- ABOUT ME -->
         <div class="w-full text-center mb-10 stagger-2">
             <div class="w-8 h-[1px] bg-[#d4a373] mx-auto mb-4 opacity-50"></div>
             <p class="text-[15px] leading-relaxed text-gray-300 font-light px-2">
@@ -125,19 +112,16 @@
             <div class="w-8 h-[1px] bg-[#d4a373] mx-auto mt-4 opacity-50"></div>
         </div>
 
-        <!-- ============================== -->
-        <!-- LINK BUTTONS                   -->
-        <!-- ============================== -->
+        <!-- LINK BUTTONS -->
         <div class="w-full space-y-4 mb-12 stagger-3">
             
-            <!-- PHONE BUTTON (Primary Call to Action) -->
-            <!-- REPLACE tel: inside the href with her actual number -->
+            <!-- PHONE BUTTON -->
             <a href="tel:+18175265696" class="link-button flex items-center justify-center gap-3 w-full bg-[#d4a373] text-[#111] font-medium py-4 px-6 rounded-xl shadow-lg border border-transparent">
                 <i data-lucide="phone" class="w-5 h-5"></i> 
                 <span>Call to Book Appointment</span>
             </a>
 
-            <!-- LOCATION BUTTON (Joshua, TX preset) -->
+            <!-- LOCATION BUTTON -->
             <a href="https://maps.google.com/?q=101+N+Main+St,+Suite+C,+Joshua,+TX+76058" target="_blank" rel="noopener noreferrer" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
                 <i data-lucide="map-pin" class="w-5 h-5 text-[#d4a373]"></i> 
                 <span>Get Directions to Salon</span>
@@ -156,15 +140,11 @@
             </a>
         </div>
 
-        <!-- ============================== -->
-        <!-- TRANSFORMATIONS GALLERY        -->
-        <!-- ============================== -->
+        <!-- TRANSFORMATIONS GALLERY -->
         <div class="w-full mb-10 stagger-4">
             <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-6">Recent Transformations</h2>
             
-            <!-- 2-Column Grid exactly for mobile width -->
             <div class="grid grid-cols-2 gap-3">
-                <!-- Replace src with client photos -->
                 <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
                     <img src="https://images.unsplash.com/photo-1605980776566-0486c3ac7617?q=80&w=400&h=500&fit=crop" alt="Client Curls" class="w-full h-full object-cover gallery-img">
                 </div>
@@ -183,9 +163,7 @@
             </div>
         </div>
 
-        <!-- ============================== -->
-        <!-- FOOTER                         -->
-        <!-- ============================== -->
+        <!-- FOOTER -->
         <footer class="w-full text-center mt-6 stagger-4">
             <p class="text-xs text-gray-600 uppercase tracking-widest">
                 © 2024 Shondell Slaughter
