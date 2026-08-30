@@ -89,12 +89,9 @@
         <!-- HEADER -->
         <header class="text-center w-full mb-8 stagger-1 flex flex-col items-center">
             
-            <!-- PORTRAIT OVAL: Tall and sleek to mask the rectangular image properly -->
+            <!-- PORTRAIT OVAL LOGO -->
             <div class="relative w-56 h-64 mb-6">
-                <!-- Subtle gold glowing ring -->
                 <div class="absolute inset-0 rounded-[50%] border border-[#d4a373] opacity-30 animate-pulse" style="animation-duration: 4s;"></div>
-                
-                <!-- LOGO IMAGE (Changed to object-cover to slice off the rectangular edges) -->
                 <img 
                     src="logo.jpg" 
                     alt="Shondell Slaughter Logo" 
@@ -147,7 +144,6 @@
         <div class="w-full mb-10 stagger-4">
             <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-6">Recent Transformations</h2>
             
-            <!-- Image grid using your provided files -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
                     <img src="13599.jpg" alt="Client Curls" class="w-full h-full object-cover gallery-img">
@@ -165,6 +161,7 @@
                     <img src="13602.jpg" alt="Finished Style" class="w-full h-full object-cover gallery-img">
                 </div>
             </div>
+            <p class="text-center text-xs text-gray-500 mt-4 italic">Tap an image to expand</p>
         </div>
 
         <!-- FOOTER -->
@@ -173,12 +170,66 @@
                 © 2026 Shondell Slaughter
             </p>
         </footer>
-
     </div>
 
-    <!-- Initialize Icons -->
+    <!-- LIGHTBOX MODAL (Hidden by default) -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 hidden flex justify-center items-center opacity-0 transition-opacity duration-300">
+        <!-- Close button -->
+        <button id="close-lightbox" class="absolute top-6 right-6 text-white hover:text-[#d4a373] p-2 focus:outline-none z-50">
+            <i data-lucide="x" class="w-8 h-8 drop-shadow-md"></i>
+        </button>
+        <!-- The Image -->
+        <img id="lightbox-img" src="" alt="Enlarged view" class="max-w-[95%] max-h-[90vh] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300">
+    </div>
+
+    <!-- Scripts -->
     <script>
+        // Initialize Icons
         lucide.createIcons();
+
+        // Lightbox Interactivity
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeBtn = document.getElementById('close-lightbox');
+        const galleryImages = document.querySelectorAll('.gallery-img');
+
+        // Open Lightbox when clicking an image
+        galleryImages.forEach(img => {
+            img.addEventListener('click', (e) => {
+                lightboxImg.src = e.target.src; // Set the big image to the one that was clicked
+                lightbox.classList.remove('hidden'); // Make it display
+                
+                // Slight delay to allow CSS transitions to trigger smoothly
+                setTimeout(() => {
+                    lightbox.classList.remove('opacity-0');
+                    lightboxImg.classList.remove('scale-95');
+                    lightboxImg.classList.add('scale-100');
+                }, 10);
+            });
+        });
+
+        // Function to close the Lightbox
+        const closeLightbox = () => {
+            lightbox.classList.add('opacity-0');
+            lightboxImg.classList.remove('scale-100');
+            lightboxImg.classList.add('scale-95');
+            
+            // Wait for the fade-out animation to finish before fully hiding it
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                lightboxImg.src = ''; // Clear image
+            }, 300);
+        };
+
+        // Close on 'X' button click
+        closeBtn.addEventListener('click', closeLightbox);
+        
+        // Close when clicking the dark background area
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
     </script>
 </body>
 </html>
