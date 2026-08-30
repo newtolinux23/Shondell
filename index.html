@@ -82,7 +82,7 @@
             color: #111;
         }
 
-        /* Image interaction effect */
+        /* Main Image interaction effect */
         .gallery-img {
             transition: filter 0.4s ease;
             filter: brightness(0.95);
@@ -153,11 +153,11 @@
             </a>
         </div>
 
-        <!-- TRANSFORMATIONS CAROUSEL -->
+        <!-- TRANSFORMATIONS CAROUSEL WITH PREVIEWS -->
         <div class="w-full mb-10 stagger-4">
             <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-6">Recent Transformations</h2>
             
-            <!-- Carousel Container -->
+            <!-- Main Carousel Container -->
             <div class="relative w-full overflow-hidden rounded-2xl bg-[#1a1a1a] shadow-xl border border-[#333] group touch-pan-y">
                 
                 <!-- Sliding Track -->
@@ -176,18 +176,26 @@
                 <button id="next-slide" class="carousel-nav-btn absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20 focus:outline-none">
                     <i data-lucide="chevron-right" class="w-6 h-6"></i>
                 </button>
-
-                <!-- Dots Indicator -->
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
-                    <button class="carousel-dot w-2 h-2 rounded-full bg-[#d4a373] transition-colors duration-300"></button>
-                    <button class="carousel-dot w-2 h-2 rounded-full bg-gray-600 transition-colors duration-300"></button>
-                    <button class="carousel-dot w-2 h-2 rounded-full bg-gray-600 transition-colors duration-300"></button>
-                    <button class="carousel-dot w-2 h-2 rounded-full bg-gray-600 transition-colors duration-300"></button>
-                </div>
             </div>
 
-            <p class="text-center text-xs text-gray-500 mt-4 italic flex items-center justify-center gap-2">
-                <i data-lucide="move-horizontal" class="w-4 h-4 opacity-50"></i> Swipe to see more • Tap to expand
+            <!-- Mini Picture Previews (Thumbnails) -->
+            <div class="grid grid-cols-4 gap-2 mt-3">
+                <button class="preview-thumb border-2 border-[#d4a373] rounded-lg overflow-hidden transition-all duration-300 focus:outline-none opacity-100 transform scale-100">
+                    <img src="13599.jpg" class="w-full h-full object-cover aspect-square" alt="Preview 1">
+                </button>
+                <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 focus:outline-none opacity-50 hover:opacity-100">
+                    <img src="13600.jpg" class="w-full h-full object-cover aspect-square" alt="Preview 2">
+                </button>
+                <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 focus:outline-none opacity-50 hover:opacity-100">
+                    <img src="13601.jpg" class="w-full h-full object-cover aspect-square" alt="Preview 3">
+                </button>
+                <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 focus:outline-none opacity-50 hover:opacity-100">
+                    <img src="13602.jpg" class="w-full h-full object-cover aspect-square" alt="Preview 4">
+                </button>
+            </div>
+
+            <p class="text-center text-xs text-gray-500 mt-5 italic flex items-center justify-center gap-2">
+                <i data-lucide="move-horizontal" class="w-4 h-4 opacity-50"></i> Swipe carousel or tap previews
             </p>
         </div>
 
@@ -215,31 +223,33 @@
         lucide.createIcons();
 
         /* ==========================
-           CAROUSEL LOGIC
+           CAROUSEL & PREVIEW LOGIC
         ========================== */
         const track = document.getElementById('carousel-track');
         const nextBtn = document.getElementById('next-slide');
         const prevBtn = document.getElementById('prev-slide');
-        const dots = Array.from(document.querySelectorAll('.carousel-dot'));
+        const thumbs = Array.from(document.querySelectorAll('.preview-thumb'));
         const totalSlides = 4;
         let currentIndex = 0;
 
         function updateCarousel(index) {
             currentIndex = index;
-            // Move track
+            // Move main track
             track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            // Update dots
-            dots.forEach((dot, i) => {
+            
+            // Update thumbnail borders and opacity
+            thumbs.forEach((thumb, i) => {
                 if (i === currentIndex) {
-                    dot.classList.remove('bg-gray-600');
-                    dot.classList.add('bg-[#d4a373]');
+                    thumb.classList.add('border-[#d4a373]', 'opacity-100', 'scale-100');
+                    thumb.classList.remove('border-transparent', 'opacity-50');
                 } else {
-                    dot.classList.add('bg-gray-600');
-                    dot.classList.remove('bg-[#d4a373]');
+                    thumb.classList.remove('border-[#d4a373]', 'opacity-100', 'scale-100');
+                    thumb.classList.add('border-transparent', 'opacity-50');
                 }
             });
         }
 
+        // Arrow clicks
         nextBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (currentIndex < totalSlides - 1) updateCarousel(currentIndex + 1);
@@ -252,9 +262,9 @@
             else updateCarousel(totalSlides - 1); // loop to end
         });
 
-        // Make dots clickable
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', (e) => {
+        // Click thumbnail previews
+        thumbs.forEach((thumb, index) => {
+            thumb.addEventListener('click', (e) => {
                 e.stopPropagation();
                 updateCarousel(index);
             });
@@ -292,7 +302,6 @@
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const closeBtn = document.getElementById('close-lightbox');
-        const galleryImages = document.querySelectorAll('.gallery-img');
 
         // Open Lightbox when clicking an image inside the carousel track
         track.addEventListener('click', (e) => {
