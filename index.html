@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shondell Slaughter | Curls and Colors</title>
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
     
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
@@ -83,14 +86,18 @@
 
     <div class="w-full max-w-[480px] px-6 pt-12 pb-16 flex flex-col items-center relative z-10">
         
+        <!-- HEADER -->
         <header class="text-center w-full mb-8 stagger-1 flex flex-col items-center">
+            
             <div class="relative w-64 h-48 mb-6">
+                <!-- Using rounded-[50%] to create a true ellipse -->
                 <div class="absolute inset-0 rounded-[50%] border-2 border-[#d4a373] opacity-50 animate-pulse" style="animation-duration: 3s;"></div>
                 
+                <!-- LOGO IMAGE (Changed to object-contain so it never cuts off) -->
                 <img 
                     src="logo.jpg" 
                     alt="Shondell Slaughter Logo" 
-                    class="w-full h-full rounded-[50%] object-cover border-4 border-[#111] shadow-xl relative z-10"
+                    class="w-full h-full rounded-[50%] object-contain bg-[#0a0a0a] border-4 border-[#111] shadow-xl relative z-10 p-1"
                 >
             </div>
             
@@ -98,6 +105,7 @@
             <p class="text-xs tracking-[0.25em] uppercase text-[#d4a373]">Curls and Colors</p>
         </header>
 
+        <!-- ABOUT ME -->
         <div class="w-full text-center mb-10 stagger-2">
             <div class="w-8 h-[1px] bg-[#d4a373] mx-auto mb-4 opacity-50"></div>
             <p class="text-[15px] leading-relaxed text-gray-300 font-light px-2">
@@ -106,32 +114,39 @@
             <div class="w-8 h-[1px] bg-[#d4a373] mx-auto mt-6 opacity-50"></div>
         </div>
 
+        <!-- LINK BUTTONS -->
         <div class="w-full space-y-4 mb-12 stagger-3">
             
+            <!-- PHONE BUTTON -->
             <a href="tel:+18174806160" class="link-button flex items-center justify-center gap-3 w-full bg-[#d4a373] text-[#111] font-medium py-4 px-6 rounded-xl shadow-lg border border-transparent">
                 <i data-lucide="phone" class="w-5 h-5"></i> 
                 <span>Call to Book Appointment</span>
             </a>
 
+            <!-- LOCATION BUTTON -->
             <a href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6?g_st=ac" target="_blank" rel="noopener noreferrer" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
                 <i data-lucide="map-pin" class="w-5 h-5 text-[#d4a373]"></i> 
                 <span>Get Directions to Salon</span>
             </a>
 
+            <!-- SOCIAL LINKS -->
             <a href="#" target="_blank" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
                 <i data-lucide="instagram" class="w-5 h-5 text-[#d4a373]"></i> 
                 <span>Follow my Portfolio</span>
             </a>
             
+            <!-- EMAIL BUTTON -->
             <a href="mailto:dellalouise39@gmail.com" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
                 <i data-lucide="mail" class="w-5 h-5 text-[#d4a373]"></i> 
                 <span>Send an Inquiry</span>
             </a>
         </div>
 
+        <!-- TRANSFORMATIONS GALLERY -->
         <div class="w-full mb-10 stagger-4">
             <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-6">Recent Transformations</h2>
             
+            <!-- Image grid using your provided files -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
                     <img src="13599.jpg" alt="Client Curls" class="w-full h-full object-cover gallery-img">
@@ -151,6 +166,7 @@
             </div>
         </div>
 
+        <!-- FOOTER -->
         <footer class="w-full text-center mt-6 stagger-4">
             <p class="text-xs text-gray-600 uppercase tracking-widest">
                 © 2026 Shondell Slaughter
@@ -159,6 +175,7 @@
 
     </div>
 
+    <!-- Initialize Icons -->
     <script>
         lucide.createIcons();
     </script>
