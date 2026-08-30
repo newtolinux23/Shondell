@@ -22,6 +22,7 @@
             background-color: #0a0a0a;
             color: #f8f8f8;
             background-image: radial-gradient(circle at 50% 0%, #2a2a2a 0%, transparent 50%);
+            overflow-x: hidden;
         }
         
         .font-serif { 
@@ -70,14 +71,27 @@
             transition: transform 0.1s;
         }
 
+        /* Carousel Navigation Buttons Hover */
+        .carousel-nav-btn {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+        }
+        .carousel-nav-btn:hover {
+            background: rgba(212, 163, 115, 0.8);
+            color: #111;
+        }
+
         /* Image interaction effect */
         .gallery-img {
-            transition: transform 0.6s ease, filter 0.4s ease;
-            filter: brightness(0.9);
+            transition: filter 0.4s ease;
+            filter: brightness(0.95);
+            width: 100%;
+            flex-shrink: 0;
+            object-fit: cover;
         }
-        .gallery-container:active .gallery-img, 
-        .gallery-container:hover .gallery-img {
-            transform: scale(1.05);
+        .gallery-img:active, 
+        .gallery-img:hover {
             filter: brightness(1.1);
         }
     </style>
@@ -88,7 +102,6 @@
         
         <!-- HEADER -->
         <header class="text-center w-full mb-8 stagger-1 flex flex-col items-center">
-            
             <!-- PORTRAIT OVAL LOGO -->
             <div class="relative w-56 h-64 mb-6">
                 <div class="absolute inset-0 rounded-[50%] border border-[#d4a373] opacity-30 animate-pulse" style="animation-duration: 4s;"></div>
@@ -140,32 +153,46 @@
             </a>
         </div>
 
-        <!-- TRANSFORMATIONS GALLERY -->
+        <!-- TRANSFORMATIONS CAROUSEL -->
         <div class="w-full mb-10 stagger-4">
             <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-6">Recent Transformations</h2>
             
-            <div class="grid grid-cols-2 gap-3">
-                <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
-                    <img src="13599.jpg" alt="Client Curls" class="w-full h-full object-cover gallery-img">
-                </div>
+            <!-- Carousel Container -->
+            <div class="relative w-full overflow-hidden rounded-2xl bg-[#1a1a1a] shadow-xl border border-[#333] group touch-pan-y">
                 
-                <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
-                    <img src="13600.jpg" alt="Color Artistry" class="w-full h-full object-cover gallery-img">
+                <!-- Sliding Track -->
+                <div id="carousel-track" class="flex transition-transform duration-500 ease-in-out w-full aspect-[4/5] cursor-pointer">
+                    <!-- Slides -->
+                    <img src="13599.jpg" alt="Client Curls" class="gallery-img">
+                    <img src="13600.jpg" alt="Color Artistry" class="gallery-img">
+                    <img src="13601.jpg" alt="Hair Styling" class="gallery-img">
+                    <img src="13602.jpg" alt="Finished Style" class="gallery-img">
                 </div>
-                
-                <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
-                    <img src="13601.jpg" alt="Hair Styling" class="w-full h-full object-cover gallery-img">
-                </div>
-                
-                <div class="gallery-container overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[4/5] relative cursor-pointer">
-                    <img src="13602.jpg" alt="Finished Style" class="w-full h-full object-cover gallery-img">
+
+                <!-- Navigation Arrows -->
+                <button id="prev-slide" class="carousel-nav-btn absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20 focus:outline-none">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <button id="next-slide" class="carousel-nav-btn absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20 focus:outline-none">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Dots Indicator -->
+                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
+                    <button class="carousel-dot w-2 h-2 rounded-full bg-[#d4a373] transition-colors duration-300"></button>
+                    <button class="carousel-dot w-2 h-2 rounded-full bg-gray-600 transition-colors duration-300"></button>
+                    <button class="carousel-dot w-2 h-2 rounded-full bg-gray-600 transition-colors duration-300"></button>
+                    <button class="carousel-dot w-2 h-2 rounded-full bg-gray-600 transition-colors duration-300"></button>
                 </div>
             </div>
-            <p class="text-center text-xs text-gray-500 mt-4 italic">Tap an image to expand</p>
+
+            <p class="text-center text-xs text-gray-500 mt-4 italic flex items-center justify-center gap-2">
+                <i data-lucide="move-horizontal" class="w-4 h-4 opacity-50"></i> Swipe to see more • Tap to expand
+            </p>
         </div>
 
         <!-- FOOTER -->
-        <footer class="w-full text-center mt-6 stagger-4">
+        <footer class="w-full text-center mt-2 stagger-4">
             <p class="text-xs text-gray-600 uppercase tracking-widest">
                 © 2026 Shondell Slaughter
             </p>
@@ -187,25 +214,98 @@
         // Initialize Icons
         lucide.createIcons();
 
-        // Lightbox Interactivity
+        /* ==========================
+           CAROUSEL LOGIC
+        ========================== */
+        const track = document.getElementById('carousel-track');
+        const nextBtn = document.getElementById('next-slide');
+        const prevBtn = document.getElementById('prev-slide');
+        const dots = Array.from(document.querySelectorAll('.carousel-dot'));
+        const totalSlides = 4;
+        let currentIndex = 0;
+
+        function updateCarousel(index) {
+            currentIndex = index;
+            // Move track
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            // Update dots
+            dots.forEach((dot, i) => {
+                if (i === currentIndex) {
+                    dot.classList.remove('bg-gray-600');
+                    dot.classList.add('bg-[#d4a373]');
+                } else {
+                    dot.classList.add('bg-gray-600');
+                    dot.classList.remove('bg-[#d4a373]');
+                }
+            });
+        }
+
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIndex < totalSlides - 1) updateCarousel(currentIndex + 1);
+            else updateCarousel(0); // loop to beginning
+        });
+
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIndex > 0) updateCarousel(currentIndex - 1);
+            else updateCarousel(totalSlides - 1); // loop to end
+        });
+
+        // Make dots clickable
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', (e) => {
+                e.stopPropagation();
+                updateCarousel(index);
+            });
+        });
+
+        // Touch swiping logic for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        track.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        track.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 40) {
+                // Swiped Left (Next)
+                if (currentIndex < totalSlides - 1) updateCarousel(currentIndex + 1);
+                else updateCarousel(0);
+            }
+            if (touchEndX > touchStartX + 40) {
+                // Swiped Right (Prev)
+                if (currentIndex > 0) updateCarousel(currentIndex - 1);
+                else updateCarousel(totalSlides - 1);
+            }
+        }
+
+        /* ==========================
+           LIGHTBOX LOGIC
+        ========================== */
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const closeBtn = document.getElementById('close-lightbox');
         const galleryImages = document.querySelectorAll('.gallery-img');
 
-        // Open Lightbox when clicking an image
-        galleryImages.forEach(img => {
-            img.addEventListener('click', (e) => {
-                lightboxImg.src = e.target.src; // Set the big image to the one that was clicked
-                lightbox.classList.remove('hidden'); // Make it display
+        // Open Lightbox when clicking an image inside the carousel track
+        track.addEventListener('click', (e) => {
+            if(e.target.tagName === 'IMG') {
+                lightboxImg.src = e.target.src; 
+                lightbox.classList.remove('hidden'); 
                 
-                // Slight delay to allow CSS transitions to trigger smoothly
                 setTimeout(() => {
                     lightbox.classList.remove('opacity-0');
                     lightboxImg.classList.remove('scale-95');
                     lightboxImg.classList.add('scale-100');
                 }, 10);
-            });
+            }
         });
 
         // Function to close the Lightbox
@@ -214,17 +314,14 @@
             lightboxImg.classList.remove('scale-100');
             lightboxImg.classList.add('scale-95');
             
-            // Wait for the fade-out animation to finish before fully hiding it
             setTimeout(() => {
                 lightbox.classList.add('hidden');
-                lightboxImg.src = ''; // Clear image
+                lightboxImg.src = ''; 
             }, 300);
         };
 
-        // Close on 'X' button click
         closeBtn.addEventListener('click', closeLightbox);
         
-        // Close when clicking the dark background area
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
                 closeLightbox();
