@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shondell Slaughter | Curls and Colors</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
     
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
@@ -100,9 +97,7 @@
 
     <div class="w-full max-w-[480px] px-6 pt-12 pb-8 flex flex-col items-center relative z-10">
         
-        <!-- HEADER -->
         <header class="text-center w-full mb-8 stagger-1 flex flex-col items-center">
-            <!-- PORTRAIT OVAL LOGO -->
             <div class="relative w-56 h-64 mb-6">
                 <div class="absolute inset-0 rounded-[50%] border border-[#d4a373] opacity-30 animate-pulse" style="animation-duration: 4s;"></div>
                 <img 
@@ -116,60 +111,54 @@
             <p class="text-xs tracking-[0.25em] uppercase text-[#d4a373]">Curls and Colors</p>
         </header>
 
-        <!-- ABOUT ME -->
         <div class="w-full mb-10 stagger-2 flex flex-col items-center">
             <div class="w-8 h-[1px] bg-[#d4a373] mb-4 opacity-50"></div>
             <p class="text-[15px] leading-relaxed text-gray-300 font-light px-2 text-justify">
-                Shondell Slaughter is a seasoned hairstylist with over two decades of experience, offering exceptional services at Main Street Parlor, a barber and beauty salon. Shondell's expertise lies in crafting stunning highlights and delivering precision haircuts that are perfectly suited to each client’s personal style and preferences. Her dedication to the craft and genuine passion for hairdressing shine through in her work, earning her a loyal client base who value the trust and care she infuses into every appointment. At Main Street Parlor, Shondell ensures that every client experiences a warm and welcoming atmosphere, making each visit both enjoyable and personalized.
+                Shondell Slaughter is a seasoned hairstylist with over two decades of experience, offering exceptional services at Main Street Parlor, a barber and beauty salon in Texas. Shondell's expertise lies in crafting stunning highlights and delivering precision haircuts that are perfectly suited to each client’s personal style and preferences. Her dedication to the craft and genuine passion for hairdressing shine through in her work, earning her a loyal client base who value the trust and care she infuses into every appointment. At Main Street Parlor, Shondell ensures that every client experiences a warm and welcoming atmosphere, making each visit both enjoyable and personalized.
             </p>
             <div class="w-8 h-[1px] bg-[#d4a373] mt-6 opacity-50"></div>
         </div>
 
-        <!-- LINK BUTTONS -->
         <div class="w-full space-y-4 mb-12 stagger-3">
             
-            <!-- PHONE BUTTON -->
             <a href="tel:+18174806160" class="link-button flex items-center justify-center gap-3 w-full bg-[#d4a373] text-[#111] font-medium py-4 px-6 rounded-xl shadow-lg border border-transparent">
                 <i data-lucide="phone" class="w-5 h-5"></i> 
                 <span>Call to Book Appointment</span>
             </a>
 
-            <!-- LOCATION BUTTON -->
             <a href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6?g_st=ac" target="_blank" rel="noopener noreferrer" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
                 <i data-lucide="map-pin" class="w-5 h-5 text-[#d4a373]"></i> 
                 <span>Get Directions to Salon</span>
             </a>
 
-            <!-- SOCIAL LINKS -->
+            <a href="https://substack.com/@dellalouise" target="_blank" rel="noopener noreferrer" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#d4a373] shadow-[0_0_15px_rgba(212,163,115,0.15)]">
+                <i data-lucide="book-open" class="w-5 h-5 text-[#d4a373]"></i> 
+                <span>Read My Hair Care Articles</span>
+            </a>
+
             <a href="#" target="_blank" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
                 <i data-lucide="instagram" class="w-5 h-5 text-[#d4a373]"></i> 
                 <span>Follow my Portfolio</span>
             </a>
             
-            <!-- EMAIL BUTTON -->
             <a href="mailto:dellalouise39@gmail.com" class="link-button flex items-center justify-center gap-3 w-full bg-[#1a1a1a] text-white font-medium py-4 px-6 rounded-xl border border-[#333]">
                 <i data-lucide="mail" class="w-5 h-5 text-[#d4a373]"></i> 
                 <span>Send an Inquiry</span>
             </a>
         </div>
 
-        <!-- TRANSFORMATIONS CAROUSEL WITH PREVIEWS -->
         <div class="w-full mb-12 stagger-4">
             <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-6">Recent Transformations</h2>
             
-            <!-- Main Carousel Container -->
             <div class="relative w-full overflow-hidden rounded-2xl bg-[#1a1a1a] shadow-xl border border-[#333] group touch-pan-y">
                 
-                <!-- Sliding Track -->
                 <div id="carousel-track" class="flex transition-transform duration-500 ease-in-out w-full aspect-[4/5] cursor-pointer">
-                    <!-- Slides -->
                     <img src="13599.jpg" alt="Client Curls" class="gallery-img">
                     <img src="13600.jpg" alt="Color Artistry" class="gallery-img">
                     <img src="13601.jpg" alt="Hair Styling" class="gallery-img">
                     <img src="13602.jpg" alt="Finished Style" class="gallery-img">
                 </div>
 
-                <!-- Navigation Arrows -->
                 <button id="prev-slide" class="carousel-nav-btn absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20 focus:outline-none">
                     <i data-lucide="chevron-left" class="w-6 h-6"></i>
                 </button>
@@ -178,7 +167,6 @@
                 </button>
             </div>
 
-            <!-- Mini Picture Previews (Thumbnails) -->
             <div class="grid grid-cols-4 gap-2 mt-3">
                 <button class="preview-thumb border-2 border-[#d4a373] rounded-lg overflow-hidden transition-all duration-300 focus:outline-none opacity-100 transform scale-100">
                     <img src="13599.jpg" class="w-full h-full object-cover aspect-square" alt="Preview 1">
@@ -199,9 +187,6 @@
             </p>
         </div>
 
-        <!-- ============================== -->
-        <!-- NEWSLETTER SECTION             -->
-        <!-- ============================== -->
         <div class="w-full bg-[#151515] rounded-2xl p-6 border border-[#222] mb-12 stagger-4 shadow-lg text-center">
             <div class="flex justify-center mb-3">
                 <i data-lucide="mail-open" class="w-8 h-8 text-[#d4a373]"></i>
@@ -211,19 +196,14 @@
                 Subscribe for exclusive hair care tips, product recommendations, and priority booking updates straight to your inbox.
             </p>
             
-            <!-- Replace "#" with the link to her Mailchimp, Substack, or Google Form -->
-            <a href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-[#d4a373] hover:bg-[#c29161] text-[#111] font-medium py-3 px-8 rounded-lg transition-colors w-full sm:w-auto">
+            <a href="https://substack.com/@dellalouise" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-[#d4a373] hover:bg-[#c29161] text-[#111] font-medium py-3 px-8 rounded-lg transition-colors w-full sm:w-auto">
                 <span>Subscribe Now</span>
                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
         </div>
 
-        <!-- ============================== -->
-        <!-- PROFESSIONAL FOOTER            -->
-        <!-- ============================== -->
         <footer class="w-full border-t border-[#222] pt-8 stagger-4">
             
-            <!-- Footer Links Grid -->
             <div class="grid grid-cols-2 gap-6 text-sm text-gray-400 mb-8 px-4">
                 <div class="flex flex-col space-y-3">
                     <h4 class="text-white font-medium uppercase tracking-wider text-xs mb-1">Menu</h4>
@@ -240,14 +220,12 @@
             </div>
 
             <div class="flex flex-col items-center justify-center space-y-3">
-                <!-- Mini Logo for Footer -->
                 <p class="font-serif italic text-[#d4a373] text-xl">S. S.</p>
                 
                 <p class="text-xs text-gray-600 uppercase tracking-widest text-center">
                     © 2026 Shondell Slaughter.<br>All rights reserved.
                 </p>
                 
-                <!-- Legal Links -->
                 <div class="flex gap-4 text-[10px] text-gray-600 mt-2">
                     <a href="#" class="hover:text-gray-400 transition-colors">Privacy Policy</a>
                     <span>|</span>
@@ -258,7 +236,6 @@
 
     </div>
 
-    <!-- LIGHTBOX MODAL (Hidden by default) -->
     <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 hidden flex justify-center items-center opacity-0 transition-opacity duration-300">
         <button id="close-lightbox" class="absolute top-6 right-6 text-white hover:text-[#d4a373] p-2 focus:outline-none z-50">
             <i data-lucide="x" class="w-8 h-8 drop-shadow-md"></i>
@@ -266,7 +243,6 @@
         <img id="lightbox-img" src="" alt="Enlarged view" class="max-w-[95%] max-h-[90vh] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300">
     </div>
 
-    <!-- Scripts -->
     <script>
         // Initialize Icons
         lucide.createIcons();
@@ -335,56 +311,4 @@
         function handleSwipe() {
             if (touchEndX < touchStartX - 40) {
                 // Swiped Left (Next)
-                if (currentIndex < totalSlides - 1) updateCarousel(currentIndex + 1);
-                else updateCarousel(0);
-            }
-            if (touchEndX > touchStartX + 40) {
-                // Swiped Right (Prev)
-                if (currentIndex > 0) updateCarousel(currentIndex - 1);
-                else updateCarousel(totalSlides - 1);
-            }
-        }
-
-        /* ==========================
-           LIGHTBOX LOGIC
-        ========================== */
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const closeBtn = document.getElementById('close-lightbox');
-
-        // Open Lightbox when clicking an image inside the carousel track
-        track.addEventListener('click', (e) => {
-            if(e.target.tagName === 'IMG') {
-                lightboxImg.src = e.target.src; 
-                lightbox.classList.remove('hidden'); 
-                
-                setTimeout(() => {
-                    lightbox.classList.remove('opacity-0');
-                    lightboxImg.classList.remove('scale-95');
-                    lightboxImg.classList.add('scale-100');
-                }, 10);
-            }
-        });
-
-        // Function to close the Lightbox
-        const closeLightbox = () => {
-            lightbox.classList.add('opacity-0');
-            lightboxImg.classList.remove('scale-100');
-            lightboxImg.classList.add('scale-95');
-            
-            setTimeout(() => {
-                lightbox.classList.add('hidden');
-                lightboxImg.src = ''; 
-            }, 300);
-        };
-
-        closeBtn.addEventListener('click', closeLightbox);
-        
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                closeLightbox();
-            }
-        });
-    </script>
-</body>
-</html>
+                if (currentIndex < totalSlides -
