@@ -89,15 +89,16 @@
         <!-- HEADER -->
         <header class="text-center w-full mb-8 stagger-1 flex flex-col items-center">
             
-            <div class="relative w-64 h-48 mb-6">
-                <!-- Using rounded-[50%] to create a true ellipse -->
-                <div class="absolute inset-0 rounded-[50%] border-2 border-[#d4a373] opacity-50 animate-pulse" style="animation-duration: 3s;"></div>
+            <!-- PORTRAIT OVAL: Tall and sleek to mask the rectangular image properly -->
+            <div class="relative w-56 h-64 mb-6">
+                <!-- Subtle gold glowing ring -->
+                <div class="absolute inset-0 rounded-[50%] border border-[#d4a373] opacity-30 animate-pulse" style="animation-duration: 4s;"></div>
                 
-                <!-- LOGO IMAGE (Changed to object-contain so it never cuts off) -->
+                <!-- LOGO IMAGE (Changed to object-cover to slice off the rectangular edges) -->
                 <img 
                     src="logo.jpg" 
                     alt="Shondell Slaughter Logo" 
-                    class="w-full h-full rounded-[50%] object-contain bg-[#0a0a0a] border-4 border-[#111] shadow-xl relative z-10 p-1"
+                    class="w-full h-full rounded-[50%] object-cover shadow-2xl relative z-10"
                 >
             </div>
             
