@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -153,9 +154,32 @@
             </a>
         </div>
 
+        <!-- FEATURED BEFORE & AFTER -->
+        <div class="w-full mb-10 stagger-4">
+            <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-4">Featured Transformation</h2>
+            
+            <div class="grid grid-cols-2 gap-2 p-2 bg-[#1a1a1a] rounded-2xl border border-[#333] shadow-xl">
+                <!-- Before Image -->
+                <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
+                    <div class="absolute top-2 left-2 bg-black/70 text-white text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 border border-white/10">Before</div>
+                    <img src="13738.jpg" alt="Before" class="gallery-img w-full h-full object-cover cursor-pointer">
+                </div>
+                
+                <!-- After Image -->
+                <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
+                    <div class="absolute top-2 right-2 bg-[#d4a373]/90 text-black text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 shadow-lg">After</div>
+                    <img src="13739.jpg" alt="After" class="gallery-img w-full h-full object-cover cursor-pointer">
+                </div>
+            </div>
+            
+            <p class="text-center text-xs text-gray-500 mt-3 italic flex items-center justify-center gap-2">
+                <i data-lucide="zoom-in" class="w-4 h-4 opacity-50"></i> Tap an image to expand
+            </p>
+        </div>
+
         <!-- TRANSFORMATIONS CAROUSEL WITH PREVIEWS -->
         <div class="w-full mb-12 stagger-4">
-            <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-6">Recent Transformations</h2>
+            <h2 class="font-serif text-xl text-center italic text-[#d4a373] mb-6">More Recent Work</h2>
             
             <!-- Main Carousel Container -->
             <div class="relative w-full overflow-hidden rounded-2xl bg-[#1a1a1a] shadow-xl border border-[#333] group touch-pan-y">
@@ -193,7 +217,7 @@
                     <img src="13602.jpg" class="w-full h-full object-cover aspect-square" alt="Preview 4">
                 </button>
             </div>
-
+            
             <p class="text-center text-xs text-gray-500 mt-5 italic flex items-center justify-center gap-2">
                 <i data-lucide="move-horizontal" class="w-4 h-4 opacity-50"></i> Swipe carousel or tap previews
             </p>
@@ -342,10 +366,11 @@
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const closeBtn = document.getElementById('close-lightbox');
+        const allGalleryImages = document.querySelectorAll('.gallery-img');
 
-        // Open Lightbox when clicking an image inside the carousel track
-        track.addEventListener('click', (e) => {
-            if(e.target.tagName === 'IMG') {
+        // Open Lightbox when clicking any image with the 'gallery-img' class
+        allGalleryImages.forEach(img => {
+            img.addEventListener('click', (e) => {
                 lightboxImg.src = e.target.src; 
                 lightbox.classList.remove('hidden'); 
                 
@@ -354,7 +379,7 @@
                     lightboxImg.classList.remove('scale-95');
                     lightboxImg.classList.add('scale-100');
                 }, 10);
-            }
+            });
         });
 
         // Function to close the Lightbox
