@@ -4,52 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>Shondell Slaughter | Expert Hairstylist & Color Specialist in Texas</title>
-    <meta name="title" content="Shondell Slaughter | Expert Hairstylist & Color Specialist in Texas">
-    <meta name="description" content="Shondell Slaughter is a seasoned hairstylist with over two decades of experience at Main Street Parlor in Texas, specializing in custom dimensional colors, natural curl shaping, and precision cuts.">
+    <!-- SEO: Primary Meta Tags -->
+    <title>Shondell Slaughter | Expert Hairstylist & Color Specialist</title>
+    <meta name="title" content="Shondell Slaughter | Expert Hairstylist & Color Specialist">
+    <meta name="description" content="Book an appointment with Shondell Slaughter or join her private Hair Science newsletter for behind-the-scenes color correction case studies.">
     
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://shondellslaughter.com/">
-    <meta property="og:title" content="Shondell Slaughter | Curls and Colors">
-    <meta property="og:description" content="Book an appointment with Shondell Slaughter, specializing in custom colors, precision cuts, and natural curl shaping in Texas.">
-    <meta property="og:image" content="https://shondellslaughter.com/logo.jpg">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "HealthAndBeautyBusiness",
-      "name": "Shondell Slaughter - Curls and Colors",
-      "image": "https://shondellslaughter.com/logo.jpg",
-      "description": "Expert hairstylist specializing in custom colors, lived-in blonding, natural curls, and men's haircuts at Main Street Parlor.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      },
-      "url": "https://shondellslaughter.com/",
-      "telephone": "+18174806160",
-      "priceRange": "$$"
-    }
-    </script>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #09090b; color: #f4f4f5; overflow-x: hidden; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #09090b; 
+            color: #f4f4f5; 
+            overflow-x: hidden;
+        }
         .font-serif { font-family: 'Cormorant Garamond', serif; }
+        
         .page-hidden { display: none !important; }
         
         .animate-fade-in { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; transform: translateY(30px); }
+        
         .delay-100 { animation-delay: 100ms; }
         .delay-200 { animation-delay: 200ms; }
         .delay-300 { animation-delay: 300ms; }
         .delay-400 { animation-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; }
         
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .pulse-glow { animation: pulseGlow 3s infinite alternate; }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(202, 138, 4, 0.2); } 100% { box-shadow: 0 0 25px rgba(234, 179, 8, 0.5); } }
 
         .ambient-glow { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 500px; background: radial-gradient(circle at top, rgba(202, 138, 4, 0.15) 0%, rgba(0,0,0,0) 70%); z-index: -1; pointer-events: none; }
+
+        .gold-gradient-text { color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(to right, #fde047, #eab308, #ca8a04); }
 
         .link-btn { transition: all 0.4s ease; position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; }
         .link-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(234, 179, 8, 0.1), transparent); transition: all 0.6s ease; }
@@ -58,6 +50,7 @@
 
         .gallery-img { transition: filter 0.4s ease; width: 100%; flex-shrink: 0; object-fit: cover; cursor: pointer; }
         .gallery-img:active, .gallery-img:hover { filter: brightness(1.1); }
+        
         .carousel-nav-btn { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); transition: all 0.3s ease; }
         .carousel-nav-btn:hover { background: rgba(234, 179, 8, 0.8); color: #000; }
     </style>
@@ -68,17 +61,20 @@
 
     <div class="max-w-md w-full mx-auto flex-1 flex flex-col px-6 pt-12 pb-6 relative z-10">
         
+        <!-- HEADER -->
         <header class="flex flex-col items-center mb-8 animate-fade-in">
             <div class="relative w-28 h-28 mb-5 group">
                 <div class="absolute inset-0 rounded-full border border-yellow-600/40 animate-[spin_10s_linear_infinite]"></div>
                 <div class="absolute inset-2 rounded-full border border-yellow-500/20 animate-[spin_15s_linear_infinite_reverse]"></div>
-                <img src="logo.jpg" alt="Shondell Slaughter" class="w-full h-full rounded-full object-cover shadow-[0_0_20px_rgba(202,138,4,0.2)]">
+                <img src="logo.jpg" alt="Portrait of Shondell Slaughter" class="w-full h-full rounded-full object-cover shadow-[0_0_20px_rgba(202,138,4,0.2)]">
             </div>
             
             <h1 class="text-3xl font-serif font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-yellow-600 tracking-wide mb-1 leading-tight">
                 Shondell Slaughter
             </h1>
-            <p class="text-[11px] tracking-[0.3em] uppercase text-zinc-400 font-medium mb-6">Curls and Colors</p>
+            <p class="text-[11px] tracking-[0.3em] uppercase text-zinc-400 font-medium mb-6">
+                Curls and Colors
+            </p>
 
             <!-- THREE TAB NAVIGATION -->
             <div class="flex w-full border-b border-zinc-800 pb-px">
@@ -92,7 +88,9 @@
         <main id="page-links" class="flex-1 flex flex-col gap-4 w-full">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXIBJh74vuA4i5n_tXaCa_Ic7ur9c5B8117QIt7eN66sxEjw/viewform" target="_blank" rel="noopener noreferrer" class="link-btn animate-fade-in delay-100 flex items-center justify-between p-4 rounded-xl border border-yellow-600/50 bg-gradient-to-r from-zinc-900 to-zinc-800 backdrop-blur-sm group shadow-lg">
                 <div class="flex items-center gap-4">
-                    <div class="p-2 rounded-lg bg-yellow-500/20 text-yellow-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors"><i data-lucide="clipboard-list" class="w-5 h-5"></i></div>
+                    <div class="p-2 rounded-lg bg-yellow-500/20 text-yellow-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                        <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+                    </div>
                     <span class="font-medium tracking-wide text-zinc-200 group-hover:text-white">Consultation & Booking Form</span>
                 </div>
                 <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500 group-hover:text-yellow-500 transition-colors"></i>
@@ -100,7 +98,9 @@
 
             <a href="tel:+18174806160" class="link-btn animate-fade-in delay-200 flex items-center justify-between p-4 rounded-xl border border-zinc-800 bg-zinc-900/60 backdrop-blur-sm group">
                 <div class="flex items-center gap-4">
-                    <div class="p-2 rounded-lg bg-zinc-800 text-zinc-400 group-hover:bg-green-500 group-hover:text-white transition-colors"><i data-lucide="phone" class="w-5 h-5"></i></div>
+                    <div class="p-2 rounded-lg bg-zinc-800 text-zinc-400 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                        <i data-lucide="phone" class="w-5 h-5"></i>
+                    </div>
                     <span class="font-medium tracking-wide text-zinc-200 group-hover:text-white">Call to Book</span>
                 </div>
                 <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-600 group-hover:text-green-500 transition-colors"></i>
@@ -108,7 +108,9 @@
 
             <a href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6?g_st=ac" target="_blank" rel="noopener noreferrer" class="link-btn animate-fade-in delay-300 flex items-center justify-between p-4 rounded-xl border border-zinc-800 bg-zinc-900/60 backdrop-blur-sm group">
                 <div class="flex items-center gap-4">
-                    <div class="p-2 rounded-lg bg-zinc-800 text-zinc-400 group-hover:bg-blue-500 group-hover:text-white transition-colors"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+                    <div class="p-2 rounded-lg bg-zinc-800 text-zinc-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                        <i data-lucide="map-pin" class="w-5 h-5"></i>
+                    </div>
                     <span class="font-medium tracking-wide text-zinc-200 group-hover:text-white">Get Directions</span>
                 </div>
                 <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-600 group-hover:text-blue-500 transition-colors"></i>
@@ -116,7 +118,9 @@
             
             <a href="mailto:dellalouise39@gmail.com" class="link-btn animate-fade-in delay-400 flex items-center justify-between p-4 rounded-xl border border-zinc-800 bg-zinc-900/60 backdrop-blur-sm group">
                 <div class="flex items-center gap-4">
-                    <div class="p-2 rounded-lg bg-zinc-800 text-zinc-400 group-hover:bg-purple-500 group-hover:text-white transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></div>
+                    <div class="p-2 rounded-lg bg-zinc-800 text-zinc-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                    </div>
                     <span class="font-medium tracking-wide text-zinc-200 group-hover:text-white">Email the Salon</span>
                 </div>
                 <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-600 group-hover:text-purple-500 transition-colors"></i>
@@ -125,6 +129,7 @@
 
         <!-- PAGE 2: SERVICES & WORK -->
         <main id="page-portfolio" class="flex-1 flex flex-col w-full page-hidden">
+            
             <div class="animate-fade-in delay-100 mb-10 flex flex-col items-center">
                 <div class="w-10 h-[1px] bg-yellow-600/50 mb-5"></div>
                 <p class="text-[14px] leading-relaxed text-zinc-300 font-light text-justify px-1">
@@ -135,6 +140,7 @@
 
             <div class="bg-zinc-900/40 border border-yellow-900/30 p-6 rounded-2xl mb-10 animate-fade-in delay-200 shadow-xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/5 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                
                 <h3 class="font-serif text-2xl text-yellow-500 mb-6 text-center border-b border-zinc-800/80 pb-3">Specialized Services</h3>
                 
                 <div class="space-y-6">
@@ -167,7 +173,7 @@
             <h3 class="font-serif text-2xl text-yellow-500 mb-5 text-center animate-fade-in delay-300">Featured Work</h3>
             
             <div class="space-y-8 animate-fade-in delay-300 pb-8">
-                <!-- Main Portfolio Image -->
+                
                 <div class="relative overflow-hidden rounded-xl border border-zinc-800 shadow-xl">
                     <img src="dimensional-copper-hair-color.jpg" alt="Dimensional Copper Color" class="gallery-img aspect-[4/5] object-cover">
                     <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4 pointer-events-none">
@@ -175,46 +181,48 @@
                     </div>
                 </div>
 
-                <!-- Transformations Section -->
                 <div>
                     <h4 class="text-sm font-semibold tracking-widest uppercase text-zinc-500 mb-4 text-center">Transformations</h4>
+                    
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-2 p-2 bg-zinc-900 rounded-2xl border border-zinc-800 shadow-xl">
                             <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
                                 <div class="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 border border-white/10">Before</div>
-                                <img src="15198.jpg" class="gallery-img w-full h-full object-cover">
+                                <img src="15198.jpg" alt="Before" class="gallery-img w-full h-full object-cover">
                             </div>
                             <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
                                 <div class="absolute top-2 right-2 bg-yellow-600 text-black text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 shadow-lg">After</div>
-                                <img src="15197.jpg" class="gallery-img w-full h-full object-cover">
+                                <img src="15197.jpg" alt="After" class="gallery-img w-full h-full object-cover">
                             </div>
                         </div>
+
                         <div class="grid grid-cols-2 gap-2 p-2 bg-zinc-900 rounded-2xl border border-zinc-800 shadow-xl">
                             <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
                                 <div class="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 border border-white/10">Before</div>
-                                <img src="13738.jpg" class="gallery-img w-full h-full object-cover">
+                                <img src="13738.jpg" alt="Before" class="gallery-img w-full h-full object-cover">
                             </div>
                             <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
                                 <div class="absolute top-2 right-2 bg-yellow-600 text-black text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 shadow-lg">After</div>
-                                <img src="13739.jpg" class="gallery-img w-full h-full object-cover">
+                                <img src="13739.jpg" alt="After" class="gallery-img w-full h-full object-cover">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Carousel Section -->
                 <div class="pt-4">
                     <h4 class="text-sm font-semibold tracking-widest uppercase text-zinc-500 mb-4 text-center">Recent Styling</h4>
+                    
                     <div class="relative w-full overflow-hidden rounded-2xl bg-zinc-900 shadow-xl border border-zinc-800 group touch-pan-y">
                         <div id="carousel-track" class="flex transition-transform duration-500 ease-in-out w-full aspect-[4/5]">
-                            <img src="13599.jpg" class="gallery-img">
-                            <img src="13600.jpg" class="gallery-img">
-                            <img src="13601.jpg" class="gallery-img">
-                            <img src="13602.jpg" class="gallery-img">
+                            <img src="13599.jpg" alt="Styling 1" class="gallery-img">
+                            <img src="13600.jpg" alt="Styling 2" class="gallery-img">
+                            <img src="13601.jpg" alt="Styling 3" class="gallery-img">
+                            <img src="13602.jpg" alt="Styling 4" class="gallery-img">
                         </div>
                         <button id="prev-slide" class="carousel-nav-btn absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
                         <button id="next-slide" class="carousel-nav-btn absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
                     </div>
+
                     <div class="grid grid-cols-4 gap-2 mt-3">
                         <button class="preview-thumb border-2 border-yellow-500 rounded-lg overflow-hidden transition-all duration-300 opacity-100 scale-100"><img src="13599.jpg" class="w-full h-full object-cover aspect-square"></button>
                         <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 opacity-50 hover:opacity-100"><img src="13600.jpg" class="w-full h-full object-cover aspect-square"></button>
@@ -222,6 +230,11 @@
                         <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 opacity-50 hover:opacity-100"><img src="13602.jpg" class="w-full h-full object-cover aspect-square"></button>
                     </div>
                 </div>
+
+                <p class="text-center text-xs text-gray-500 mt-2 italic flex items-center justify-center gap-2">
+                    <i data-lucide="zoom-in" class="w-4 h-4 opacity-50"></i> Tap any image to expand
+                </p>
+
             </div>
         </main>
 
@@ -230,25 +243,72 @@
             
             <div class="text-center animate-fade-in delay-100 mb-6">
                 <i data-lucide="mic-2" class="w-8 h-8 text-yellow-500 mx-auto mb-3 opacity-80"></i>
-                <p class="font-serif text-xl italic text-zinc-300">"The honest science behind the transformations."</p>
+                <h2 class="text-3xl font-serif font-bold text-white mb-2 leading-tight">The Science of <br> <span class="gold-gradient-text italic">Perfect Color</span></h2>
             </div>
 
-            <!-- Netflix Series Vibe Container -->
-            <div class="bg-zinc-900/40 border border-yellow-600/30 p-6 rounded-2xl mb-8 animate-fade-in delay-200 shadow-2xl relative overflow-hidden">
+            <!-- THE PITCH -->
+            <div class="animate-fade-in delay-100 flex flex-col items-center mb-8">
+                <p class="text-[15px] leading-relaxed text-zinc-300 font-light text-center px-2">
+                    Every stunning color correction has a story, and every healthy curl relies on science. 
+                    <br><br>
+                    Join my private newsletter for behind-the-scenes case studies of my biggest hair transformations, professional hair health education, and <strong>first access to my premium booking calendar</strong>.
+                </p>
+            </div>
+
+            <!-- WHAT THEY GET (NETFLIX VIBE) -->
+            <div class="bg-zinc-900/50 border border-yellow-900/30 p-6 rounded-2xl mb-10 animate-fade-up delay-200 shadow-xl relative overflow-hidden transition-transform duration-500 hover:-translate-y-1">
+                <h3 class="font-serif text-xl text-yellow-500 mb-4 text-center border-b border-zinc-800/80 pb-3">Inside The Series</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="headphones" class="w-5 h-5 text-yellow-600 shrink-0 mt-0.5"></i>
+                        <p class="text-sm text-zinc-300"><strong class="text-white">Episodes & Case Studies:</strong> Binge-read the stories behind my biggest color corrections and curl transformations.</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="flask-conical" class="w-5 h-5 text-yellow-600 shrink-0 mt-0.5"></i>
+                        <p class="text-sm text-zinc-300"><strong class="text-white">The Science of Repair:</strong> The honest truth about salon formulations, lifting banding, and protecting your hair's integrity.</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="ticket-star" class="w-5 h-5 text-yellow-600 shrink-0 mt-0.5"></i>
+                        <p class="text-sm text-zinc-300"><strong class="text-white">VIP Booking Access:</strong> Subscribers get first-dibs when my specialty color slots open for the next season.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AUTHORITY PROOF -->
+            <div class="mb-10 animate-fade-up delay-300">
+                <h4 class="text-xs font-semibold tracking-widest uppercase text-zinc-500 mb-3 text-center">Season 1: Currently Airing</h4>
+                
+                <a href="https://substack.com/@dellalouise" target="_blank" class="relative overflow-hidden rounded-xl border border-zinc-800 shadow-2xl block group cursor-pointer transition-all duration-300 hover:border-yellow-600/50 hover:shadow-[0_0_20px_rgba(202,138,4,0.2)]">
+                    <img src="dimensional-copper-hair-color.jpg" alt="Dimensional Copper Color Correction" class="w-full h-56 object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-700 ease-out">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-5 flex flex-col justify-end">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="inline-block bg-black/60 backdrop-blur-sm border border-yellow-600/30 text-yellow-500 text-[9px] font-bold uppercase tracking-widest mb-2 px-2 py-1 rounded">Episode 1</span>
+                                <span class="block text-white font-serif text-lg leading-tight group-hover:text-yellow-400 transition-colors duration-300">Reviving compromised texture into dimensional copper.</span>
+                            </div>
+                            <div class="bg-yellow-500/20 p-2 rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-x-2 group-hover:translate-x-0">
+                                <i data-lucide="play" class="w-4 h-4 text-yellow-500 ml-0.5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <p class="text-[10px] text-zinc-600 text-center mt-2 italic">Tap to read the full episode breakdown</p>
+            </div>
+
+            <!-- CALL TO ACTION / EMAIL CAPTURE -->
+            <div class="w-full mt-auto animate-fade-up delay-400 bg-zinc-900 border border-yellow-600/40 p-6 rounded-2xl text-center relative overflow-hidden shadow-2xl">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
                 
-                <h3 class="font-serif text-3xl font-bold text-white mb-2 text-center relative z-10">Now Streaming</h3>
-                <h4 class="text-[10px] font-bold tracking-[0.2em] uppercase text-yellow-500 mb-6 text-center relative z-10">Season 1: The Color Chronicles</h4>
+                <h2 class="font-serif text-2xl text-white mb-2 relative z-10">Ready for the next episode?</h2>
+                <p class="text-xs text-zinc-400 mb-6 relative z-10">Join a community of clients who refuse to compromise on color and care.</p>
                 
-                <p class="text-sm text-zinc-400 mb-8 text-center leading-relaxed relative z-10 px-2">
-                    Join my private newsletter series where I break down the chemistry and formulas behind my biggest salon transformations, step-by-step, just like your favorite podcast.
-                </p>
-                
-                <!-- Push to Landing Page -->
-                <a href="https://subscribe.shondellslaughter.com" class="block w-full bg-gradient-to-r from-yellow-600 to-yellow-500 text-black font-bold py-4 rounded-xl shadow-[0_0_15px_rgba(234,179,8,0.4)] transition-transform active:scale-95 hover:brightness-110 flex items-center justify-center gap-2 text-sm uppercase tracking-wider relative z-10">
-                    <i data-lucide="play-circle" class="w-5 h-5"></i>
-                    Start Reading
+                <a href="https://substack.com/@dellalouise" target="_blank" class="block w-full bg-gradient-to-r from-yellow-600 to-yellow-500 text-black font-bold py-4 rounded-xl pulse-glow transition-transform active:scale-95 hover:brightness-110 flex items-center justify-center gap-2 text-sm uppercase tracking-wider relative z-10">
+                    <i data-lucide="mail-plus" class="w-5 h-5"></i>
+                    Subscribe via Substack
                 </a>
+                
+                <p class="text-[10px] text-zinc-500 mt-4 relative z-10">No spam. Just high-quality hair science and booking access.</p>
             </div>
             
         </main>
@@ -300,21 +360,33 @@
         ];
 
         function triggerAnimations(container) {
-            container.querySelectorAll('.animate-fade-in').forEach(el => {
+            container.querySelectorAll('.animate-fade-in, .animate-fade-up').forEach(el => {
                 el.style.animation = 'none';
                 el.offsetHeight; 
                 el.style.animation = null; 
             });
         }
 
-        tabs.forEach(tab => {
-            tab.btn.addEventListener('click', () => {
-                // Hide all and reset buttons
+        // On page load, read URL parameters to handle direct subdomain/QR linking
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('tab') === 'science') {
                 tabs.forEach(t => {
                     t.btn.className = "flex-1 pb-3 text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-zinc-500 border-b-2 border-transparent hover:text-zinc-300 transition-colors";
                     t.page.classList.add('page-hidden');
                 });
-                // Activate clicked
+                tabs[2].btn.className = "flex-1 pb-3 text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-yellow-500 border-b-2 border-yellow-500 transition-colors";
+                tabs[2].page.classList.remove('page-hidden');
+                triggerAnimations(tabs[2].page);
+            }
+        });
+
+        tabs.forEach(tab => {
+            tab.btn.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.btn.className = "flex-1 pb-3 text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-zinc-500 border-b-2 border-transparent hover:text-zinc-300 transition-colors";
+                    t.page.classList.add('page-hidden');
+                });
                 tab.btn.className = "flex-1 pb-3 text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-yellow-500 border-b-2 border-yellow-500 transition-colors";
                 tab.page.classList.remove('page-hidden');
                 triggerAnimations(tab.page);
