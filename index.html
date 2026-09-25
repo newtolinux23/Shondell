@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shondell Slaughter | Curls and Colors</title>
     
+    <!-- SEO: Primary Meta Tags -->
+    <title>Shondell Slaughter | Expert Hairstylist & Color Specialist in Texas</title>
+    <meta name="title" content="Shondell Slaughter | Expert Hairstylist & Color Specialist in Texas">
+    <meta name="description" content="Shondell Slaughter is a seasoned hairstylist with over two decades of experience at Main Street Parlor in Texas, specializing in custom dimensional colors, natural curl shaping, and precision cuts.">
+    <meta name="keywords" content="Shondell Slaughter, Texas hairstylist, Main Street Parlor, custom hair color, balayage, dimensional highlights, curly hair specialist, men's haircuts">
+    <meta name="author" content="Shondell Slaughter">
+    
+    <!-- SEO: Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://newtolinux23.github.io/Shondell/">
+    <meta property="og:title" content="Shondell Slaughter | Curls and Colors">
+    <meta property="og:description" content="Book an appointment with Shondell Slaughter, specializing in custom colors, precision cuts, and natural curl shaping in Texas.">
+    <meta property="og:image" content="https://newtolinux23.github.io/Shondell/logo.jpg">
+
+    <!-- SEO: Google Structured Data (Local Business Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HealthAndBeautyBusiness",
+      "name": "Shondell Slaughter - Curls and Colors",
+      "image": "https://newtolinux23.github.io/Shondell/logo.jpg",
+      "description": "Expert hairstylist specializing in custom colors, lived-in blonding, natural curls, and men's haircuts at Main Street Parlor.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "TX",
+        "addressCountry": "US"
+      },
+      "url": "https://newtolinux23.github.io/Shondell/",
+      "telephone": "+18174806160",
+      "priceRange": "$$"
+    }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -18,7 +50,6 @@
         }
         .font-serif { font-family: 'Cormorant Garamond', serif; }
         
-        /* Page Transition Animations */
         .page-hidden { display: none !important; }
         .animate-fade-in {
             animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -35,7 +66,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Ambient Glow Effect */
         .ambient-glow {
             position: absolute;
             top: 0;
@@ -48,7 +78,6 @@
             pointer-events: none;
         }
 
-        /* Elegant Button Hover */
         .link-btn {
             transition: all 0.4s ease;
             position: relative;
@@ -73,7 +102,6 @@
         }
         .link-btn:active { transform: scale(0.97); }
 
-        /* Gallery & Carousel Effects */
         .gallery-img {
             transition: filter 0.4s ease;
             width: 100%;
@@ -103,7 +131,7 @@
             <div class="relative w-28 h-28 mb-5 group">
                 <div class="absolute inset-0 rounded-full border border-yellow-600/40 animate-[spin_10s_linear_infinite]"></div>
                 <div class="absolute inset-2 rounded-full border border-yellow-500/20 animate-[spin_15s_linear_infinite_reverse]"></div>
-                <img src="logo.jpg" alt="Shondell Slaughter" class="w-full h-full rounded-full object-cover shadow-[0_0_20px_rgba(202,138,4,0.2)]">
+                <img src="logo.jpg" alt="Portrait of Shondell Slaughter, hairstylist at Main Street Parlor" class="w-full h-full rounded-full object-cover shadow-[0_0_20px_rgba(202,138,4,0.2)]">
             </div>
             
             <h1 class="text-3xl font-serif font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-yellow-600 tracking-wide mb-1 leading-tight">
@@ -113,10 +141,9 @@
                 Curls and Colors
             </p>
 
-            <!-- Navigation Toggle -->
             <div class="flex gap-4 w-full border-b border-zinc-800 pb-px">
-                <button id="nav-links" class="flex-1 pb-3 text-sm font-semibold tracking-widest uppercase text-yellow-500 border-b-2 border-yellow-500 transition-colors">Links</button>
-                <button id="nav-portfolio" class="flex-1 pb-3 text-sm font-semibold tracking-widest uppercase text-zinc-500 border-b-2 border-transparent hover:text-zinc-300 transition-colors">Services & Work</button>
+                <button id="nav-links" class="flex-1 pb-3 text-sm font-semibold tracking-widest uppercase text-yellow-500 border-b-2 border-yellow-500 transition-colors" aria-label="View Booking Links">Links</button>
+                <button id="nav-portfolio" class="flex-1 pb-3 text-sm font-semibold tracking-widest uppercase text-zinc-500 border-b-2 border-transparent hover:text-zinc-300 transition-colors" aria-label="View Services and Portfolio">Services & Work</button>
             </div>
         </header>
 
@@ -215,7 +242,7 @@
                 
                 <!-- Main Portfolio Image (Copper) -->
                 <div class="relative overflow-hidden rounded-xl border border-zinc-800 shadow-xl">
-                    <img src="16044.jpg" alt="Dimensional Copper Hair" class="gallery-img aspect-[4/5] object-cover">
+                    <img src="dimensional-copper-hair-color.jpg" alt="Stunning dimensional copper hair color transformation by Shondell Slaughter" title="Dimensional Copper Color" class="gallery-img aspect-[4/5] object-cover">
                     <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4 pointer-events-none">
                         <span class="text-sm font-medium tracking-wide text-white">Dimensional Copper & Custom Highlights</span>
                     </div>
@@ -230,11 +257,11 @@
                         <div class="grid grid-cols-2 gap-2 p-2 bg-zinc-900 rounded-2xl border border-zinc-800 shadow-xl">
                             <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
                                 <div class="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 border border-white/10">Before</div>
-                                <img src="15198.jpg" alt="Before" class="gallery-img w-full h-full object-cover">
+                                <img src="15198.jpg" alt="Before styling and color treatment by Shondell Slaughter" class="gallery-img w-full h-full object-cover">
                             </div>
                             <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
                                 <div class="absolute top-2 right-2 bg-yellow-600 text-black text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 shadow-lg">After</div>
-                                <img src="15197.jpg" alt="After" class="gallery-img w-full h-full object-cover">
+                                <img src="15197.jpg" alt="After professional dimensional color and styling transformation" class="gallery-img w-full h-full object-cover">
                             </div>
                         </div>
 
@@ -242,11 +269,11 @@
                         <div class="grid grid-cols-2 gap-2 p-2 bg-zinc-900 rounded-2xl border border-zinc-800 shadow-xl">
                             <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
                                 <div class="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 border border-white/10">Before</div>
-                                <img src="13738.jpg" alt="Before" class="gallery-img w-full h-full object-cover">
+                                <img src="13738.jpg" alt="Client hair before custom color and precision cut" class="gallery-img w-full h-full object-cover">
                             </div>
                             <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
                                 <div class="absolute top-2 right-2 bg-yellow-600 text-black text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded backdrop-blur-md z-10 shadow-lg">After</div>
-                                <img src="13739.jpg" alt="After" class="gallery-img w-full h-full object-cover">
+                                <img src="13739.jpg" alt="After customized hair color and professional salon styling" class="gallery-img w-full h-full object-cover">
                             </div>
                         </div>
                     </div>
@@ -259,34 +286,34 @@
                     <div class="relative w-full overflow-hidden rounded-2xl bg-zinc-900 shadow-xl border border-zinc-800 group touch-pan-y">
                         <!-- Sliding Track -->
                         <div id="carousel-track" class="flex transition-transform duration-500 ease-in-out w-full aspect-[4/5]">
-                            <img src="13599.jpg" alt="Client Curls" class="gallery-img">
-                            <img src="13600.jpg" alt="Color Artistry" class="gallery-img">
-                            <img src="13601.jpg" alt="Hair Styling" class="gallery-img">
-                            <img src="13602.jpg" alt="Finished Style" class="gallery-img">
+                            <img src="13599.jpg" alt="Beautiful natural curl shaping and styling by Shondell" class="gallery-img">
+                            <img src="13600.jpg" alt="Vibrant custom hair color artistry and highlight placement" class="gallery-img">
+                            <img src="13601.jpg" alt="Precision hair styling and modern cut" class="gallery-img">
+                            <img src="13602.jpg" alt="Lived-in blonding and flawless salon finish" class="gallery-img">
                         </div>
 
                         <!-- Navigation Arrows -->
-                        <button id="prev-slide" class="carousel-nav-btn absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20">
+                        <button id="prev-slide" class="carousel-nav-btn absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20" aria-label="Previous photo">
                             <i data-lucide="chevron-left" class="w-6 h-6"></i>
                         </button>
-                        <button id="next-slide" class="carousel-nav-btn absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20">
+                        <button id="next-slide" class="carousel-nav-btn absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white z-20" aria-label="Next photo">
                             <i data-lucide="chevron-right" class="w-6 h-6"></i>
                         </button>
                     </div>
 
                     <!-- Mini Picture Previews -->
                     <div class="grid grid-cols-4 gap-2 mt-3">
-                        <button class="preview-thumb border-2 border-yellow-500 rounded-lg overflow-hidden transition-all duration-300 opacity-100 scale-100">
-                            <img src="13599.jpg" class="w-full h-full object-cover aspect-square">
+                        <button class="preview-thumb border-2 border-yellow-500 rounded-lg overflow-hidden transition-all duration-300 opacity-100 scale-100" aria-label="View curl styling photo">
+                            <img src="13599.jpg" alt="Curl styling preview" class="w-full h-full object-cover aspect-square">
                         </button>
-                        <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 opacity-50 hover:opacity-100">
-                            <img src="13600.jpg" class="w-full h-full object-cover aspect-square">
+                        <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 opacity-50 hover:opacity-100" aria-label="View color artistry photo">
+                            <img src="13600.jpg" alt="Color artistry preview" class="w-full h-full object-cover aspect-square">
                         </button>
-                        <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 opacity-50 hover:opacity-100">
-                            <img src="13601.jpg" class="w-full h-full object-cover aspect-square">
+                        <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 opacity-50 hover:opacity-100" aria-label="View precision cut photo">
+                            <img src="13601.jpg" alt="Precision cut preview" class="w-full h-full object-cover aspect-square">
                         </button>
-                        <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 opacity-50 hover:opacity-100">
-                            <img src="13602.jpg" class="w-full h-full object-cover aspect-square">
+                        <button class="preview-thumb border-2 border-transparent rounded-lg overflow-hidden transition-all duration-300 opacity-50 hover:opacity-100" aria-label="View blonding finish photo">
+                            <img src="13602.jpg" alt="Blonding finish preview" class="w-full h-full object-cover aspect-square">
                         </button>
                     </div>
                 </div>
@@ -328,10 +355,10 @@
 
     <!-- LIGHTBOX MODAL -->
     <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 hidden flex justify-center items-center opacity-0 transition-opacity duration-300">
-        <button id="close-lightbox" class="absolute top-6 right-6 text-white hover:text-yellow-500 p-2 z-50 transition-colors">
+        <button id="close-lightbox" class="absolute top-6 right-6 text-white hover:text-yellow-500 p-2 z-50 transition-colors" aria-label="Close image">
             <i data-lucide="x" class="w-8 h-8 drop-shadow-md"></i>
         </button>
-        <img id="lightbox-img" src="" class="max-w-[95%] max-h-[90vh] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300">
+        <img id="lightbox-img" src="" alt="Enlarged salon photo" class="max-w-[95%] max-h-[90vh] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300">
     </div>
 
     <!-- INTERACTIVITY LOGIC -->
