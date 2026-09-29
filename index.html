@@ -15,13 +15,19 @@
     <style>
         body { 
             font-family: 'Montserrat', sans-serif; 
-            background-color: #050505; /* Deep, rich black */
+            background-color: #050505; 
             color: #f4f4f5; 
             overflow-x: hidden;
         }
         .font-serif { font-family: 'Cormorant Garamond', serif; }
         
         .page-hidden { display: none !important; }
+        
+        /* Smooth Swipe Gallery Utilities */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .snap-x-mandatory { scroll-snap-type: x mandatory; }
+        .snap-center { scroll-snap-align: center; }
         
         /* Silky Luxury Animations */
         .animate-fade-in { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
@@ -35,7 +41,6 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Champagne Gold Gradient */
         .gold-gradient-text { 
             color: transparent; 
             background-clip: text; 
@@ -51,7 +56,6 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        /* Ambient Dynamic Background Glow */
         .ambient-glow { 
             position: fixed; 
             top: -10%; left: 50%; transform: translateX(-50%); 
@@ -60,7 +64,6 @@
             z-index: -1; pointer-events: none; 
         }
 
-        /* Frosted Link Buttons */
         .link-btn { 
             transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
             position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; 
@@ -81,7 +84,6 @@
         .gallery-img { transition: filter 0.5s ease, transform 0.5s ease; width: 100%; flex-shrink: 0; object-fit: cover; cursor: pointer; }
         .gallery-img:active, .gallery-img:hover { filter: brightness(1.05); }
 
-        /* Floating Audio Toggle */
         #audio-toggle {
             position: absolute;
             top: 20px;
@@ -99,14 +101,13 @@
 
     <div class="ambient-glow"></div>
 
-    <!-- AUDIO ELEMENT -->
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <div class="max-w-md w-full mx-auto flex-1 flex flex-col px-6 pt-16 pb-6 relative z-10">
         
-        <!-- AUDIO TOGGLE BUTTON -->
+        <!-- AUDIO TOGGLE -->
         <button id="audio-toggle" class="fixed top-6 right-6 flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] uppercase tracking-widest text-zinc-400 cursor-pointer animate-fade-in shadow-xl">
             <i data-lucide="volume-x" id="audio-icon" class="w-3.5 h-3.5 text-zinc-400"></i>
             <span id="audio-text">Atmosphere</span>
@@ -115,7 +116,6 @@
         <!-- HEADER -->
         <header class="flex flex-col items-center mb-10 animate-fade-in">
             <div class="relative w-32 h-32 mb-6 group">
-                <!-- Luxurious Golden Rings -->
                 <div class="absolute inset-0 rounded-full border border-[#d4af37]/30 animate-[spin_12s_linear_infinite]"></div>
                 <div class="absolute inset-2 rounded-full border border-[#f3e5ab]/20 animate-[spin_18s_linear_infinite_reverse]"></div>
                 <img src="logo.jpg" alt="Shondell Slaughter" class="w-full h-full rounded-full object-cover shadow-[0_0_30px_rgba(184,134,11,0.25)] p-1">
@@ -128,7 +128,7 @@
                 Exclusive Curls & Colors
             </p>
 
-            <!-- THREE TAB NAVIGATION -->
+            <!-- TABS -->
             <div class="flex w-full border-b border-zinc-800/60 pb-px">
                 <button id="nav-links" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-[#e6c875] border-b-[1px] border-[#e6c875] transition-colors">Links</button>
                 <button id="nav-portfolio" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors">Services</button>
@@ -140,9 +140,7 @@
         <main id="page-links" class="flex-1 flex flex-col gap-4 w-full">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXIBJh74vuA4i5n_tXaCa_Ic7ur9c5B8117QIt7eN66sxEjw/viewform" target="_blank" class="link-btn animate-fade-in delay-100 flex items-center justify-between p-5 rounded-2xl group">
                 <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-[#e6c875]/30 bg-[#e6c875]/5 text-[#e6c875] group-hover:bg-[#e6c875] group-hover:text-black transition-colors">
-                        <i data-lucide="calendar-clock" class="w-4 h-4"></i>
-                    </div>
+                    <div class="p-2.5 rounded-full border border-[#e6c875]/30 bg-[#e6c875]/5 text-[#e6c875] group-hover:bg-[#e6c875] group-hover:text-black transition-colors"><i data-lucide="calendar-clock" class="w-4 h-4"></i></div>
                     <div class="flex flex-col">
                         <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Request Appointment</span>
                         <span class="text-[9px] text-zinc-500 tracking-wider mt-0.5">Consultation & Booking</span>
@@ -153,9 +151,7 @@
 
             <a href="tel:+18174806160" class="link-btn animate-fade-in delay-200 flex items-center justify-between p-5 rounded-2xl group">
                 <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors">
-                        <i data-lucide="phone" class="w-4 h-4"></i>
-                    </div>
+                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors"><i data-lucide="phone" class="w-4 h-4"></i></div>
                     <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Concierge Desk</span>
                 </div>
                 <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
@@ -163,9 +159,7 @@
 
             <a href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6?g_st=ac" target="_blank" class="link-btn animate-fade-in delay-300 flex items-center justify-between p-5 rounded-2xl group">
                 <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors">
-                        <i data-lucide="map-pin" class="w-4 h-4"></i>
-                    </div>
+                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
                     <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Studio Location</span>
                 </div>
                 <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
@@ -173,9 +167,7 @@
             
             <a href="mailto:dellalouise39@gmail.com" class="link-btn animate-fade-in delay-400 flex items-center justify-between p-5 rounded-2xl group">
                 <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors">
-                        <i data-lucide="mail" class="w-4 h-4"></i>
-                    </div>
+                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></div>
                     <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Direct Inquiry</span>
                 </div>
                 <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
@@ -185,70 +177,115 @@
         <!-- PAGE 2: SERVICES & WORK -->
         <main id="page-portfolio" class="flex-1 flex flex-col w-full page-hidden">
             
-            <div class="animate-fade-in delay-100 mb-12 flex flex-col items-center px-2">
+            <div class="animate-fade-in delay-100 mb-10 flex flex-col items-center px-2">
                 <i data-lucide="quote" class="w-6 h-6 text-[#e6c875]/40 mb-4"></i>
                 <p class="text-[13px] leading-loose text-zinc-300 font-light text-center">
-                    With over two decades of refined expertise at Main Street Parlor, Shondell elevates hairdressing into an art form. Specializing in bespoke lived-in color, dimensional highlighting, and precision structural cuts, every appointment is a personalized, luxury experience designed to protect the integrity of your hair while achieving flawless results.
+                    With over two decades of refined expertise at Main Street Parlor, Shondell elevates hairdressing into an art form. Specializing in bespoke lived-in color, dimensional highlighting, and precision structural cuts.
                 </p>
             </div>
 
-            <!-- Glassmorphism Service Menu -->
+            <!-- Services Overview -->
             <div class="glass-card p-8 rounded-3xl mb-12 animate-fade-in delay-200 relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-40 h-40 bg-[#e6c875]/5 rounded-full blur-3xl -mr-10 -mt-10"></div>
-                
                 <h3 class="font-serif text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#e6c875] to-[#ffffff] mb-8 text-center tracking-wide">Signature Services</h3>
                 
                 <div class="space-y-8">
                     <div class="flex items-start gap-5">
                         <div class="mt-1"><i data-lucide="sparkles" class="w-5 h-5 text-[#e6c875] opacity-80"></i></div>
                         <div>
-                            <h4 class="text-zinc-100 font-medium tracking-widest text-xs uppercase mb-1.5">Bespoke Color & Dimension</h4>
-                            <p class="text-xs text-zinc-400 leading-relaxed font-light">Lived-in luxury color, total transformations, and seamless dimensional highlighting tailored entirely to your hair's unique architecture.</p>
+                            <h4 class="text-zinc-100 font-medium tracking-widest text-[11px] uppercase mb-1.5">Bespoke Color & Dimension</h4>
+                            <p class="text-[11px] text-zinc-400 leading-relaxed font-light">Lived-in luxury color, total transformations, and seamless dimensional highlighting tailored to your hair's architecture.</p>
                         </div>
                     </div>
                     <div class="w-full h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent"></div>
                     <div class="flex items-start gap-5">
                         <div class="mt-1"><i data-lucide="scissors" class="w-5 h-5 text-[#e6c875] opacity-80"></i></div>
                         <div>
-                            <h4 class="text-zinc-100 font-medium tracking-widest text-xs uppercase mb-1.5">Structural & Precision Cuts</h4>
-                            <p class="text-xs text-zinc-400 leading-relaxed font-light">From master-level men's grooming and fading to beautifully sculpted shapes that enhance your natural curl pattern and daily wear.</p>
+                            <h4 class="text-zinc-100 font-medium tracking-widest text-[11px] uppercase mb-1.5">Structural & Precision Cuts</h4>
+                            <p class="text-[11px] text-zinc-400 leading-relaxed font-light">From master-level men's grooming to beautifully sculpted shapes that enhance your natural curl pattern.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <h3 class="font-serif text-2xl text-center text-zinc-200 mb-6 animate-fade-in delay-300 tracking-wide">The Portfolio</h3>
+            <h3 class="font-serif text-2xl text-center text-zinc-200 mb-8 animate-fade-in delay-300 tracking-wide">The Portfolio</h3>
             
-            <div class="space-y-10 animate-fade-in delay-300 pb-8">
+            <div class="animate-fade-in delay-300 w-full">
                 
-                <!-- Main Portfolio Image -->
-                <div class="relative overflow-hidden rounded-2xl shadow-2xl border border-white/5">
-                    <img src="dimensional-copper-hair-color.jpg" alt="Dimensional Copper Color" class="gallery-img aspect-[4/5] object-cover">
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 via-black/40 to-transparent p-6 pointer-events-none">
-                        <span class="text-[10px] font-light tracking-[0.2em] uppercase text-[#e6c875]">Dimensional Copper</span>
-                    </div>
-                </div>
-
-                <!-- Transformations Section -->
-                <div>
-                    <h4 class="text-[10px] font-medium tracking-[0.3em] uppercase text-zinc-500 mb-5 text-center">Transformations</h4>
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-2 p-2 bg-[#0a0a0a] rounded-2xl border border-white/5 shadow-2xl">
-                            <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
-                                <div class="absolute bottom-3 left-3 text-white/70 text-[9px] font-light uppercase tracking-widest z-10">Before</div>
-                                <img src="15198.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                            <div class="relative rounded-xl overflow-hidden aspect-[4/5]">
-                                <div class="absolute bottom-3 right-3 text-[#e6c875] text-[9px] font-medium uppercase tracking-widest z-10">After</div>
-                                <img src="15197.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
+                <!-- NEW DECLUTTERED SWIPE GALLERY: Transformations -->
+                <h4 class="text-[10px] font-medium tracking-[0.3em] uppercase text-zinc-500 mb-4 ml-1">Transformations</h4>
+                <div class="flex overflow-x-auto hide-scrollbar snap-x-mandatory gap-4 pb-8 -mx-6 px-6">
+                    
+                    <!-- Transformation Pair 1 -->
+                    <div class="min-w-[85%] sm:min-w-[320px] snap-center flex gap-1 rounded-2xl overflow-hidden shadow-2xl border border-white/5 relative bg-zinc-900">
+                        <div class="w-1/2 relative">
+                            <span class="absolute bottom-2 left-2 text-[8px] uppercase tracking-widest text-white/60 bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Before</span>
+                            <img src="15198.jpg" class="gallery-img w-full h-64 object-cover">
+                        </div>
+                        <div class="w-1/2 relative">
+                            <span class="absolute bottom-2 right-2 text-[8px] uppercase tracking-widest text-[#e6c875] bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">After</span>
+                            <img src="15197.jpg" class="gallery-img w-full h-64 object-cover">
                         </div>
                     </div>
+
+                    <!-- Transformation Pair 2 -->
+                    <div class="min-w-[85%] sm:min-w-[320px] snap-center flex gap-1 rounded-2xl overflow-hidden shadow-2xl border border-white/5 relative bg-zinc-900">
+                        <div class="w-1/2 relative">
+                            <span class="absolute bottom-2 left-2 text-[8px] uppercase tracking-widest text-white/60 bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Before</span>
+                            <img src="13738.jpg" class="gallery-img w-full h-64 object-cover">
+                        </div>
+                        <div class="w-1/2 relative">
+                            <span class="absolute bottom-2 right-2 text-[8px] uppercase tracking-widest text-[#e6c875] bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">After</span>
+                            <img src="13739.jpg" class="gallery-img w-full h-64 object-cover">
+                        </div>
+                    </div>
+
+                    <!-- To add a new transformation in the future, just paste the block above right here! -->
                 </div>
 
-                <p class="text-center text-[10px] text-zinc-600 mt-2 font-light tracking-widest uppercase flex items-center justify-center gap-2">
-                    <i data-lucide="scan" class="w-3 h-3 opacity-50"></i> Tap any portrait to view
-                </p>
+                <!-- NEW DECLUTTERED SWIPE GALLERY: Styling Portfolio -->
+                <h4 class="text-[10px] font-medium tracking-[0.3em] uppercase text-zinc-500 mb-4 mt-2 ml-1">Recent Work</h4>
+                <div class="flex overflow-x-auto hide-scrollbar snap-x-mandatory gap-4 pb-4 -mx-6 px-6">
+                    
+                    <!-- Single Image 1 -->
+                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
+                        <img src="dimensional-copper-hair-color.jpg" class="gallery-img w-full h-80 object-cover">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4 pointer-events-none">
+                            <span class="text-[9px] font-light tracking-[0.2em] uppercase text-[#e6c875]">Copper Dimension</span>
+                        </div>
+                    </div>
+
+                    <!-- Single Image 2 -->
+                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
+                        <img src="13599.jpg" class="gallery-img w-full h-80 object-cover">
+                    </div>
+
+                    <!-- Single Image 3 -->
+                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
+                        <img src="13600.jpg" class="gallery-img w-full h-80 object-cover">
+                    </div>
+                    
+                    <!-- Single Image 4 -->
+                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
+                        <img src="13601.jpg" class="gallery-img w-full h-80 object-cover">
+                    </div>
+
+                    <!-- Single Image 5 -->
+                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
+                        <img src="13602.jpg" class="gallery-img w-full h-80 object-cover">
+                    </div>
+
+                    <!-- To add a single picture in the future, just paste the block above right here! -->
+                </div>
+                
+                <!-- Elegant Swipe Hint -->
+                <div class="flex justify-center items-center gap-3 mt-4 mb-4">
+                    <div class="w-12 h-px bg-zinc-800"></div>
+                    <span class="text-[8px] text-zinc-500 font-light tracking-[0.3em] uppercase flex items-center gap-2">
+                        <i data-lucide="arrow-left-right" class="w-3 h-3"></i> Swipe to explore
+                    </span>
+                    <div class="w-12 h-px bg-zinc-800"></div>
+                </div>
 
             </div>
         </main>
@@ -260,7 +297,6 @@
                 <h2 class="text-3xl font-serif font-light text-white mb-2 leading-tight tracking-wide">The Science of <br> <span class="gold-gradient-text italic">Perfect Color</span></h2>
             </div>
 
-            <!-- WHAT THEY GET (NETFLIX VIBE - Glassmorphism) -->
             <div class="glass-card p-8 rounded-3xl mb-10 animate-fade-up delay-200 relative overflow-hidden transition-transform duration-700 hover:-translate-y-1">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-[#e6c875]/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
                 
@@ -282,7 +318,6 @@
                 </div>
             </div>
 
-            <!-- AUTHORITY PROOF -->
             <div class="mb-12 animate-fade-up delay-300">
                 <h4 class="text-[9px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-4 text-center">Season 1: Currently Streaming</h4>
                 
@@ -302,7 +337,6 @@
                 </a>
             </div>
 
-            <!-- CALL TO ACTION -->
             <div class="w-full mt-auto animate-fade-up delay-400 glass-card p-8 rounded-3xl text-center relative overflow-hidden">
                 <h2 class="font-serif text-2xl text-zinc-100 mb-2 relative z-10 tracking-wide">Ready for the next episode?</h2>
                 <p class="text-[11px] font-light text-zinc-400 mb-8 relative z-10">Join a community of clients who refuse to compromise on care.</p>
@@ -312,7 +346,6 @@
                     Subscribe to the Series
                 </a>
             </div>
-            
         </main>
 
     </div>
@@ -364,7 +397,7 @@
                 audioBtn.classList.remove('border-[#e6c875]', 'text-[#e6c875]');
                 audioBtn.classList.add('border-zinc-700/50', 'text-zinc-400');
             } else {
-                bgMusic.volume = 0.4; // Keeps the luxury music subtle
+                bgMusic.volume = 0.4;
                 bgMusic.play().catch(e => console.log("Audio play failed:", e));
                 audioIcon.setAttribute('data-lucide', 'volume-2');
                 audioText.textContent = "Playing";
@@ -418,7 +451,7 @@
         });
 
         // -------------------------
-        // LIGHTBOX LOGIC
+        // LIGHTBOX LOGIC (Tap to expand)
         // -------------------------
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
