@@ -2,509 +2,405 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>Shondell Slaughter | Luxury Hair & Color Studio</title>
-    <meta name="title" content="Shondell Slaughter | Luxury Hair & Color Studio">
-    <meta name="description" content="Exclusive booking and Hair Science insights by Shondell Slaughter, specializing in custom dimensional color and precision curl shaping in Texas.">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Della | Appointment Request</title>
     <style>
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: #050505; 
-            color: #f4f4f5; 
-            overflow-x: hidden;
-        }
-        .font-serif { font-family: 'Cormorant Garamond', serif; }
-        
-        .page-hidden { display: none !important; }
-        
-        /* Smooth Swipe Gallery Utilities */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .snap-x-mandatory { scroll-snap-type: x mandatory; }
-        .snap-center { scroll-snap-align: center; }
-        
-        /* Silky Luxury Animations */
-        .animate-fade-in { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-        .animate-fade-up { animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; transform: translateY(20px); }
-        
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
-        .delay-400 { animation-delay: 400ms; }
-        
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .gold-gradient-text { 
-            color: transparent; 
-            background-clip: text; 
-            -webkit-background-clip: text; 
-            background-image: linear-gradient(to right, #e6c875, #ffd700, #b8860b); 
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(230, 200, 117, 0.15);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        /* BRANDING VARIABLES */
+        :root {
+            --brand-color: #111111; 
+            --bg-color: #f9f8f6;    
+            --text-color: #222222;
         }
 
-        .ambient-glow { 
-            position: fixed; 
-            top: -10%; left: 50%; transform: translateX(-50%); 
-            width: 150vw; height: 80vh; 
-            background: radial-gradient(ellipse at top, rgba(184, 134, 11, 0.08) 0%, rgba(5,5,5,0) 60%); 
-            z-index: -1; pointer-events: none; 
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap');
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px 0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        .link-btn { 
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-            position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; 
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .container {
+            background: #ffffff;
+            max-width: 550px;
+            width: 90%;
+            padding: 50px 40px;
+            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.04);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        @media (hover: hover) { 
-            .link-btn:hover { 
-                transform: translateY(-2px); 
-                background: rgba(255, 255, 255, 0.06);
-                border-color: rgba(230, 200, 117, 0.3);
-                box-shadow: 0 15px 30px -5px rgba(184, 134, 11, 0.15); 
-            } 
+
+        /* Branding & Logo Header */
+        .logo-container {
+            background-color: #000000; 
+            margin: -50px -40px 30px -40px; 
+            padding: 40px 20px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .link-btn:active { transform: scale(0.98); }
 
-        .gallery-img { transition: filter 0.5s ease, transform 0.5s ease; width: 100%; flex-shrink: 0; object-fit: cover; cursor: pointer; }
-        .gallery-img:active, .gallery-img:hover { filter: brightness(1.05); }
+        .logo-container img {
+            max-width: 170px; 
+            height: auto;
+            display: block;
+        }
 
-        #audio-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 50;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(230,200,117,0.2);
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 5px;
+            color: var(--brand-color);
+        }
+
+        .slogan {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 40px;
+        }
+
+        /* Multi-Step Form Logic */
+        .form-step {
+            display: none;
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: var(--brand-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #eaeaea;
+            border-radius: 2px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            background-color: #fafafa;
+            box-sizing: border-box;
             transition: all 0.3s ease;
         }
-        #audio-toggle:hover { border-color: rgba(230,200,117,0.6); }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col relative selection:bg-yellow-600/30">
 
-    <div class="ambient-glow"></div>
-
-    <audio id="bg-music" loop>
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="max-w-md w-full mx-auto flex-1 flex flex-col px-6 pt-16 pb-6 relative z-10">
-        
-        <!-- AUDIO TOGGLE -->
-        <button id="audio-toggle" class="fixed top-6 right-6 flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] uppercase tracking-widest text-zinc-400 cursor-pointer animate-fade-in shadow-xl">
-            <i data-lucide="volume-x" id="audio-icon" class="w-3.5 h-3.5 text-zinc-400"></i>
-            <span id="audio-text">Atmosphere</span>
-        </button>
-
-        <!-- HEADER -->
-        <header class="flex flex-col items-center mb-10 animate-fade-in">
-            <div class="relative w-32 h-32 mb-6 group">
-                <div class="absolute inset-0 rounded-full border border-[#d4af37]/30 animate-[spin_12s_linear_infinite]"></div>
-                <div class="absolute inset-2 rounded-full border border-[#f3e5ab]/20 animate-[spin_18s_linear_infinite_reverse]"></div>
-                <img src="logo.jpg" alt="Shondell Slaughter" class="w-full h-full rounded-full object-cover shadow-[0_0_30px_rgba(184,134,11,0.25)] p-1">
-            </div>
-            
-            <h1 class="text-4xl font-serif font-light text-center text-transparent bg-clip-text bg-gradient-to-r from-[#e6c875] via-[#ffffff] to-[#b8860b] tracking-wider mb-2 leading-tight">
-                Shondell Slaughter
-            </h1>
-            <p class="text-[9px] tracking-[0.4em] uppercase text-zinc-400 font-light mb-8">
-                Exclusive Curls & Colors
-            </p>
-
-            <!-- TABS -->
-            <div class="flex w-full border-b border-zinc-800/60 pb-px">
-                <button id="nav-links" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-[#e6c875] border-b-[1px] border-[#e6c875] transition-colors">Links</button>
-                <button id="nav-portfolio" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors">Services</button>
-                <button id="nav-science" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors">The Series</button>
-            </div>
-        </header>
-
-        <!-- PAGE 1: LINKS -->
-        <main id="page-links" class="flex-1 flex flex-col gap-4 w-full">
-            
-            <!-- NEW BRANDED APPOINTMENT LINK -->
-            <a href="https://newtolinux23.github.io/appointment-/" target="_blank" class="link-btn animate-fade-in delay-100 flex items-center justify-between p-5 rounded-2xl group">
-                <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-[#e6c875]/30 bg-[#e6c875]/5 text-[#e6c875] group-hover:bg-[#e6c875] group-hover:text-black transition-colors"><i data-lucide="calendar-clock" class="w-4 h-4"></i></div>
-                    <div class="flex flex-col">
-                        <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Request Appointment</span>
-                        <span class="text-[9px] text-zinc-500 tracking-wider mt-0.5">Consultation & Booking</span>
-                    </div>
-                </div>
-                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 group-hover:text-[#e6c875] transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
-            </a>
-
-            <a href="tel:+18174806160" class="link-btn animate-fade-in delay-200 flex items-center justify-between p-5 rounded-2xl group">
-                <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors"><i data-lucide="phone" class="w-4 h-4"></i></div>
-                    <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Concierge Desk</span>
-                </div>
-                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
-            </a>
-
-            <a href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6?g_st=ac" target="_blank" class="link-btn animate-fade-in delay-300 flex items-center justify-between p-5 rounded-2xl group">
-                <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
-                    <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Studio Location</span>
-                </div>
-                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
-            </a>
-            
-            <a href="mailto:dellalouise39@gmail.com" class="link-btn animate-fade-in delay-400 flex items-center justify-between p-5 rounded-2xl group">
-                <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></div>
-                    <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Direct Inquiry</span>
-                </div>
-                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
-            </a>
-        </main>
-
-        <!-- PAGE 2: SERVICES & WORK -->
-        <main id="page-portfolio" class="flex-1 flex flex-col w-full page-hidden">
-            
-            <div class="animate-fade-in delay-100 mb-12 flex flex-col items-center px-2">
-                <i data-lucide="quote" class="w-6 h-6 text-[#e6c875]/40 mb-4"></i>
-                <p class="text-[13px] leading-loose text-zinc-300 font-light text-center">
-                    With over two decades of refined expertise at Main Street Parlor, Shondell elevates hairdressing into an art form. Specializing in bespoke lived-in color, dimensional highlighting, and precision structural cuts.
-                </p>
-            </div>
-
-            <!-- Services Overview -->
-            <div class="glass-card p-8 rounded-3xl mb-12 animate-fade-in delay-200 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-40 h-40 bg-[#e6c875]/5 rounded-full blur-3xl -mr-10 -mt-10"></div>
-                <h3 class="font-serif text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#e6c875] to-[#ffffff] mb-8 text-center tracking-wide">Signature Services</h3>
-                
-                <div class="space-y-8">
-                    <div class="flex items-start gap-5">
-                        <div class="mt-1"><i data-lucide="sparkles" class="w-5 h-5 text-[#e6c875] opacity-80"></i></div>
-                        <div>
-                            <h4 class="text-zinc-100 font-medium tracking-widest text-[11px] uppercase mb-1.5">Bespoke Color & Dimension</h4>
-                            <p class="text-[11px] text-zinc-400 leading-relaxed font-light">Lived-in luxury color, total transformations, and seamless dimensional highlighting tailored to your hair's architecture.</p>
-                        </div>
-                    </div>
-                    <div class="w-full h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent"></div>
-                    <div class="flex items-start gap-5">
-                        <div class="mt-1"><i data-lucide="scissors" class="w-5 h-5 text-[#e6c875] opacity-80"></i></div>
-                        <div>
-                            <h4 class="text-zinc-100 font-medium tracking-widest text-[11px] uppercase mb-1.5">Structural & Precision Cuts</h4>
-                            <p class="text-[11px] text-zinc-400 leading-relaxed font-light">From master-level men's grooming to beautifully sculpted shapes that enhance your natural curl pattern.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h3 class="font-serif text-2xl text-center text-zinc-200 mb-8 animate-fade-in delay-300 tracking-wide">The Portfolio</h3>
-            
-            <div class="animate-fade-in delay-300 w-full">
-                
-                <!-- UNIFIED STORY-DRIVEN TRANSFORMATIONS GALLERY -->
-                <h4 class="text-[10px] font-medium tracking-[0.3em] uppercase text-zinc-500 mb-4 ml-1">Transformations</h4>
-                <div class="flex overflow-x-auto hide-scrollbar snap-x-mandatory gap-4 pb-8 -mx-6 px-6">
-                    
-                    <!-- Transformation 1: Color Match Mastery -->
-                    <div class="min-w-[85%] sm:min-w-[320px] snap-center flex flex-col gap-1 rounded-2xl overflow-hidden shadow-2xl border border-white/5 relative bg-zinc-900 group">
-                        <div class="flex gap-1 w-full h-72">
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-white/70 bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Inspiration</span>
-                                <img src="16666.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 right-2 text-[8px] uppercase tracking-widest text-[#e6c875] bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Della's Result</span>
-                                <img src="16665.png" class="gallery-img w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent p-5 text-center">
-                            <h5 class="text-[11px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-2 drop-shadow-md">Color Match Mastery</h5>
-                            <p class="text-[10px] text-zinc-300 font-light leading-relaxed">The client brought in a vibrant inspiration photo (left). Della formulated a custom, dimensional cherry-wine glaze to bring the exact vision to life flawlessly (right).</p>
-                        </div>
-                    </div>
-
-                    <!-- Transformation 2: Seamless Dimension -->
-                    <div class="min-w-[85%] sm:min-w-[320px] snap-center flex flex-col gap-1 rounded-2xl overflow-hidden shadow-2xl border border-white/5 relative bg-zinc-900 group">
-                        <div class="flex gap-1 w-full h-72">
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-white/60 bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Before</span>
-                                <img src="15198.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 right-2 text-[8px] uppercase tracking-widest text-[#e6c875] bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">After</span>
-                                <img src="15197.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent p-5 text-center">
-                            <h5 class="text-[11px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-2 drop-shadow-md">Seamless Dimension</h5>
-                            <p class="text-[10px] text-zinc-300 font-light leading-relaxed">Correcting previous banding to create a flawless, natural-looking flow with strategically placed dimensional highlights.</p>
-                        </div>
-                    </div>
-
-                    <!-- Transformation 3: Vibrant Refresh -->
-                    <div class="min-w-[85%] sm:min-w-[320px] snap-center flex flex-col gap-1 rounded-2xl overflow-hidden shadow-2xl border border-white/5 relative bg-zinc-900 group">
-                        <div class="flex gap-1 w-full h-72">
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-white/60 bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Before</span>
-                                <img src="13738.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 right-2 text-[8px] uppercase tracking-widest text-[#e6c875] bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">After</span>
-                                <img src="13739.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent p-5 text-center">
-                            <h5 class="text-[11px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-2 drop-shadow-md">Vibrant Refresh</h5>
-                            <p class="text-[10px] text-zinc-300 font-light leading-relaxed">Breathing life back into faded tones. A custom gloss and precision shaping restored the hair's natural vitality and shine.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SWIPE GALLERY: Styling Portfolio -->
-                <h4 class="text-[10px] font-medium tracking-[0.3em] uppercase text-zinc-500 mb-4 mt-2 ml-1">Recent Work</h4>
-                <div class="flex overflow-x-auto hide-scrollbar snap-x-mandatory gap-4 pb-4 -mx-6 px-6">
-                    
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="dimensional-copper-hair-color.jpg" class="gallery-img w-full h-80 object-cover">
-                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4 pointer-events-none">
-                            <span class="text-[9px] font-light tracking-[0.2em] uppercase text-[#e6c875]">Copper Dimension</span>
-                        </div>
-                    </div>
-
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="13599.jpg" class="gallery-img w-full h-80 object-cover">
-                    </div>
-
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="13600.jpg" class="gallery-img w-full h-80 object-cover">
-                    </div>
-                    
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="13601.jpg" class="gallery-img w-full h-80 object-cover">
-                    </div>
-
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="13602.jpg" class="gallery-img w-full h-80 object-cover">
-                    </div>
-                </div>
-                
-                <div class="flex justify-center items-center gap-3 mt-4 mb-4">
-                    <div class="w-12 h-px bg-zinc-800"></div>
-                    <span class="text-[8px] text-zinc-500 font-light tracking-[0.3em] uppercase flex items-center gap-2">
-                        <i data-lucide="arrow-left-right" class="w-3 h-3"></i> Swipe to explore
-                    </span>
-                    <div class="w-12 h-px bg-zinc-800"></div>
-                </div>
-
-            </div>
-        </main>
-
-        <!-- PAGE 3: HAIR SCIENCE (THE NETFLIX TAB) -->
-        <main id="page-science" class="flex-1 flex flex-col w-full page-hidden">
-            
-            <div class="text-center animate-fade-in delay-100 mb-8 mt-4">
-                <h2 class="text-3xl font-serif font-light text-white mb-2 leading-tight tracking-wide">The Science of <br> <span class="gold-gradient-text italic">Perfect Color</span></h2>
-            </div>
-
-            <!-- WHAT THEY GET (NETFLIX VIBE - Glassmorphism) -->
-            <div class="glass-card p-8 rounded-3xl mb-10 animate-fade-up delay-200 relative overflow-hidden transition-transform duration-700 hover:-translate-y-1">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-[#e6c875]/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
-                
-                <h3 class="text-[10px] tracking-[0.3em] uppercase text-zinc-400 mb-6 text-center font-medium">Inside The Series</h3>
-                
-                <div class="space-y-6">
-                    <div class="flex items-start gap-4">
-                        <i data-lucide="headphones" class="w-4 h-4 text-[#e6c875] shrink-0 mt-0.5 opacity-80"></i>
-                        <p class="text-xs text-zinc-400 font-light leading-relaxed"><strong class="text-zinc-200 font-medium">Episodes & Case Studies:</strong> Binge-read the stories behind my biggest color corrections and curl transformations.</p>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <i data-lucide="flask-conical" class="w-4 h-4 text-[#e6c875] shrink-0 mt-0.5 opacity-80"></i>
-                        <p class="text-xs text-zinc-400 font-light leading-relaxed"><strong class="text-zinc-200 font-medium">The Science of Repair:</strong> The honest truth about salon formulations, lifting banding, and protecting integrity.</p>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <i data-lucide="gem" class="w-4 h-4 text-[#e6c875] shrink-0 mt-0.5 opacity-80"></i>
-                        <p class="text-xs text-zinc-400 font-light leading-relaxed"><strong class="text-zinc-200 font-medium">VIP Booking Access:</strong> Subscribers get first-dibs when specialty color slots open for the next season.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AUTHORITY PROOF -->
-            <div class="mb-12 animate-fade-up delay-300">
-                <h4 class="text-[9px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-4 text-center">Season 1: Currently Streaming</h4>
-                
-                <a href="https://substack.com/@dellalouise" target="_blank" class="relative overflow-hidden rounded-2xl border border-white/5 shadow-2xl block group cursor-pointer transition-all duration-500 hover:border-[#e6c875]/40">
-                    <img src="dimensional-copper-hair-color.jpg" alt="Episode 1" class="w-full h-64 object-cover filter brightness-[0.85] group-hover:scale-105 transition-transform duration-[1.5s] ease-out">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent p-6 flex flex-col justify-end">
-                        <div class="flex justify-between items-end">
-                            <div>
-                                <span class="inline-block border border-white/20 text-white text-[8px] font-light uppercase tracking-[0.2em] mb-3 px-2 py-1 rounded backdrop-blur-md">Episode 1</span>
-                                <span class="block text-zinc-200 font-serif text-xl leading-tight group-hover:text-[#e6c875] transition-colors duration-500">Reviving compromised texture into dimensional copper.</span>
-                            </div>
-                            <div class="bg-white/10 p-3 rounded-full backdrop-blur-md border border-white/10 opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
-                                <i data-lucide="play" class="w-4 h-4 text-white ml-0.5"></i>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <!-- CALL TO ACTION -->
-            <div class="w-full mt-auto animate-fade-up delay-400 glass-card p-8 rounded-3xl text-center relative overflow-hidden">
-                <h2 class="font-serif text-2xl text-zinc-100 mb-2 relative z-10 tracking-wide">Ready for the next episode?</h2>
-                <p class="text-[11px] font-light text-zinc-400 mb-8 relative z-10">Join a community of clients who refuse to compromise on care.</p>
-                
-                <a href="https://substack.com/@dellalouise" target="_blank" class="block w-full bg-gradient-to-r from-[#e6c875] to-[#b8860b] text-black font-medium py-4 rounded-xl shadow-[0_10px_30px_rgba(184,134,11,0.2)] transition-transform active:scale-95 hover:brightness-110 flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.2em] relative z-10">
-                    <i data-lucide="mail-plus" class="w-4 h-4"></i>
-                    Subscribe to the Series
-                </a>
-            </div>
-            
-        </main>
-
-    </div>
-
-    <!-- ELEGANT FOOTER -->
-    <footer class="w-full mt-auto border-t border-white/5 bg-black/60 backdrop-blur-xl pt-10 pb-12 px-6 z-10 relative">
-        <div class="max-w-md mx-auto text-center space-y-8 animate-fade-in delay-300">
-            <div class="flex justify-center items-center gap-3 text-[#e6c875]">
-                <div class="w-8 h-px bg-[#e6c875]/30"></div>
-                <span class="text-[10px] font-light tracking-[0.3em] uppercase">Texas</span>
-                <div class="w-8 h-px bg-[#e6c875]/30"></div>
-            </div>
-            <div class="flex flex-col items-center justify-center gap-3 border-y border-white/5 py-8">
-                <span class="text-zinc-400 text-[9px] uppercase tracking-[0.3em] font-light">Studio Access</span>
-                <span class="text-zinc-200 font-serif text-lg italic tracking-wide">Strictly By Appointment Only</span>
-            </div>
-            <p class="text-[9px] text-zinc-600 tracking-[0.2em] uppercase font-light pt-2">
-                &copy; <span id="year"></span> Shondell Slaughter.
-            </p>
-        </div>
-    </footer>
-
-    <!-- LIGHTBOX MODAL -->
-    <div id="lightbox" class="fixed inset-0 z-50 bg-black/98 hidden flex justify-center items-center opacity-0 transition-opacity duration-500 backdrop-blur-sm">
-        <button id="close-lightbox" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors">
-            <i data-lucide="x" class="w-8 h-8 font-light"></i>
-        </button>
-        <img id="lightbox-img" src="" class="max-w-[95%] max-h-[90vh] object-contain shadow-2xl scale-95 transition-transform duration-700">
-    </div>
-
-    <script>
-        lucide.createIcons();
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // -------------------------
-        // AUDIO LOGIC
-        // -------------------------
-        const audioBtn = document.getElementById('audio-toggle');
-        const audioIcon = document.getElementById('audio-icon');
-        const audioText = document.getElementById('audio-text');
-        const bgMusic = document.getElementById('bg-music');
-        let isPlaying = false;
-
-        audioBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                bgMusic.pause();
-                audioIcon.setAttribute('data-lucide', 'volume-x');
-                audioText.textContent = "Atmosphere";
-                audioBtn.classList.remove('border-[#e6c875]', 'text-[#e6c875]');
-                audioBtn.classList.add('border-zinc-700/50', 'text-zinc-400');
-            } else {
-                bgMusic.volume = 0.4;
-                bgMusic.play().catch(e => console.log("Audio play failed:", e));
-                audioIcon.setAttribute('data-lucide', 'volume-2');
-                audioText.textContent = "Playing";
-                audioBtn.classList.remove('border-zinc-700/50', 'text-zinc-400');
-                audioBtn.classList.add('border-[#e6c875]/50', 'text-[#e6c875]');
-            }
-            lucide.createIcons();
-            isPlaying = !isPlaying;
-        });
-
-        // -------------------------
-        // THREE-PAGE TOGGLE LOGIC
-        // -------------------------
-        const tabs = [
-            { btn: document.getElementById('nav-links'), page: document.getElementById('page-links') },
-            { btn: document.getElementById('nav-portfolio'), page: document.getElementById('page-portfolio') },
-            { btn: document.getElementById('nav-science'), page: document.getElementById('page-science') }
-        ];
-
-        function triggerAnimations(container) {
-            container.querySelectorAll('.animate-fade-in, .animate-fade-up').forEach(el => {
-                el.style.animation = 'none';
-                el.offsetHeight; 
-                el.style.animation = null; 
-            });
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            background-color: #fff;
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('tab') === 'science') {
-                tabs.forEach(t => {
-                    t.btn.className = "flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors";
-                    t.page.classList.add('page-hidden');
-                });
-                tabs[2].btn.className = "flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-[#e6c875] border-b-[1px] border-[#e6c875] transition-colors";
-                tabs[2].page.classList.remove('page-hidden');
-                triggerAnimations(tabs[2].page);
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            background-color: var(--brand-color);
+            color: #fff;
+            border: 1px solid var(--brand-color);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button.outline {
+            background-color: transparent;
+            color: var(--brand-color);
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        /* Success & Links Section */
+        #success-message {
+            display: none;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        .success-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--brand-color);
+            margin-bottom: 15px;
+        }
+
+        .success-text {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .link-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .link-menu a {
+            padding: 15px;
+            border: 1px solid var(--brand-color);
+            color: var(--brand-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .link-menu a:hover {
+            background-color: var(--brand-color);
+            color: #fff;
+        }
+
+        /* Branded Footer */
+        .footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #eaeaea;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--brand-color);
+            letter-spacing: 1px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: var(--brand-color);
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.5;
+        }
+
+        .footer-copyright {
+            font-size: 0.7rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Logo Section with Black Header -->
+        <div class="logo-container">
+            <img src="logo.jpg" alt="Della Curls and Colors Logo">
+        </div>
+
+        <h1>Della</h1>
+        <div class="slogan">Appointment Request</div>
+
+        <form name="appointment-request" id="appointment-request">
+            
+            <!-- STEP 1: Contact Details -->
+            <div id="step-1" class="form-step active">
+                <div class="step-title">Step 1: Your Details</div>
+                
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" name="firstName" required placeholder="Enter your first name">
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" name="lastName" required placeholder="Enter your last name">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" required placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" required placeholder="Enter your email">
+                </div>
+                
+                <div class="btn-group">
+                    <button type="button" onclick="nextStep(2)">Next Step</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Scheduling -->
+            <div id="step-2" class="form-step">
+                <div class="step-title">Step 2: Scheduling</div>
+                
+                <div class="form-group">
+                    <label>First Choice Date</label>
+                    <input type="date" name="firstChoiceDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Alternative Choice Date</label>
+                    <input type="date" name="alternativeChoiceDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Time of Day</label>
+                    <select name="preferredTime" required>
+                        <option value="" disabled selected>Select a time</option>
+                        <option value="Morning">Morning</option>
+                        <option value="Mid-Day">Mid-Day</option>
+                        <option value="Late Afternoon">Late Afternoon</option>
+                    </select>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="outline" onclick="prevStep(1)">Back</button>
+                    <button type="button" onclick="nextStep(3)">Next Step</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Final Details -->
+            <div id="step-3" class="form-step">
+                <div class="step-title">Step 3: Final Details</div>
+                
+                <div class="form-group">
+                    <label>Referred By (Optional)</label>
+                    <textarea name="referredBy" rows="2" placeholder="Who referred you to the studio?"></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="outline" onclick="prevStep(2)">Back</button>
+                    <button type="submit" id="submit-btn">Request Appointment</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- SUCCESS SCREEN & LINKS -->
+        <div id="success-message">
+            <div class="success-title">Request Received.</div>
+            <div class="success-text">
+                Thank you. We have received your appointment request and will review our schedule. The studio will contact you shortly to confirm your date and time.
+            </div>
+            
+            <div class="link-menu">
+                <a href="https://shondellslaughter.com" target="_blank">Return to Link-in-Bio</a>
+            </div>
+        </div>
+
+        <!-- BRANDED FOOTER -->
+        <div class="footer">
+            <div class="footer-brand">Della</div>
+            <div class="footer-links">
+                <a href="https://shondellslaughter.com" target="_blank">Website</a>
+                <a href="https://instagram.com" target="_blank">Instagram</a>
+                <a href="https://your-newsletter-link.com" target="_blank">Newsletter</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 Della Curls and Colors. Texas Exclusive Custom Color.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script to Handle Multi-Step Logic and Google Sheets Submission -->
+    <script>
+        // YOUR EXACT GOOGLE APPS SCRIPT URL FOR APPOINTMENTS
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzzP28IDrGIOyBU9YDwEZGwRZf1JKg0PE_uJj_J_OA8JkGYiWQGjgtS_HFimAoPO_SfJA/exec'; 
+        
+        const form = document.forms['appointment-request'];
+        const successMessage = document.getElementById('success-message');
+        const submitBtn = document.getElementById('submit-btn');
+
+        function nextStep(stepNumber) {
+            const currentStepNumber = stepNumber - 1;
+            const currentStep = document.getElementById('step-' + currentStepNumber);
+            
+            const inputs = currentStep.querySelectorAll('input[required], select[required], textarea[required]');
+            
+            for (let i = 0; i < inputs.length; i++) {
+                if (!inputs[i].checkValidity()) {
+                    inputs[i].reportValidity(); 
+                    return; 
+                }
             }
-        });
 
-        tabs.forEach(tab => {
-            tab.btn.addEventListener('click', () => {
-                tabs.forEach(t => {
-                    t.btn.className = "flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors";
-                    t.page.classList.add('page-hidden');
+            document.querySelectorAll('.form-step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step-' + stepNumber).classList.add('active');
+        }
+
+        function prevStep(stepNumber) {
+            document.querySelectorAll('.form-step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step-' + stepNumber).classList.add('active');
+        }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault(); 
+            
+            submitBtn.innerHTML = "Sending..."; 
+            
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    submitBtn.innerHTML = "Error. Please try again.";
                 });
-                tab.btn.className = "flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-[#e6c875] border-b-[1px] border-[#e6c875] transition-colors";
-                tab.page.classList.remove('page-hidden');
-                triggerAnimations(tab.page);
-            });
         });
-
-        // -------------------------
-        // LIGHTBOX LOGIC (Tap to expand)
-        // -------------------------
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const closeBtn = document.getElementById('close-lightbox');
-        const allGalleryImages = document.querySelectorAll('.gallery-img');
-
-        allGalleryImages.forEach(img => {
-            img.addEventListener('click', (e) => {
-                lightboxImg.src = e.target.src; 
-                lightbox.classList.remove('hidden'); 
-                setTimeout(() => {
-                    lightbox.classList.remove('opacity-0');
-                    lightboxImg.classList.remove('scale-95');
-                    lightboxImg.classList.add('scale-100');
-                }, 10);
-            });
-        });
-
-        const closeLightbox = () => {
-            lightbox.classList.add('opacity-0');
-            lightboxImg.classList.remove('scale-100');
-            lightboxImg.classList.add('scale-95');
-            setTimeout(() => { lightbox.classList.add('hidden'); lightboxImg.src = ''; }, 500);
-        };
-
-        closeBtn.addEventListener('click', closeLightbox);
-        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
     </script>
 </body>
 </html>
