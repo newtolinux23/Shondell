@@ -23,23 +23,31 @@
         
         .page-hidden { display: none !important; }
         
-        /* Smooth Swipe Gallery Utilities */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .snap-x-mandatory { scroll-snap-type: x mandatory; }
-        .snap-center { scroll-snap-align: center; }
-        
-        /* Silky Luxury Animations */
-        .animate-fade-in { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-        .animate-fade-up { animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; transform: translateY(20px); }
-        
+        /* --- NEW: SCROLL REVEAL ANIMATIONS --- */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(40px); 
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        }
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        /* Silky Initial Load Animations */
+        .animate-fade-in { animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
         .delay-100 { animation-delay: 100ms; }
         .delay-200 { animation-delay: 200ms; }
         .delay-300 { animation-delay: 300ms; }
-        .delay-400 { animation-delay: 400ms; }
         
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Floating & Pulsing Animations */
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        
+        .animate-pulse-slow { animation: pulseGlow 8s infinite alternate; }
+        @keyframes pulseGlow { 0% { opacity: 0.5; transform: translateX(-50%) scale(1); } 100% { opacity: 0.8; transform: translateX(-50%) scale(1.1); } }
 
         .gold-gradient-text { 
             color: transparent; 
@@ -50,10 +58,10 @@
         
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(230, 200, 117, 0.15);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
         }
 
         .ambient-glow { 
@@ -68,38 +76,38 @@
             transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
             position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; 
             background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         @media (hover: hover) { 
             .link-btn:hover { 
-                transform: translateY(-2px); 
+                transform: translateY(-4px); 
                 background: rgba(255, 255, 255, 0.06);
-                border-color: rgba(230, 200, 117, 0.3);
-                box-shadow: 0 15px 30px -5px rgba(184, 134, 11, 0.15); 
+                border-color: rgba(230, 200, 117, 0.4);
+                box-shadow: 0 20px 40px -10px rgba(184, 134, 11, 0.2); 
             } 
         }
-        .link-btn:active { transform: scale(0.98); }
+        .link-btn:active { transform: scale(0.97); }
 
-        .gallery-img { transition: filter 0.5s ease, transform 0.5s ease; width: 100%; flex-shrink: 0; object-fit: cover; cursor: pointer; }
-        .gallery-img:active, .gallery-img:hover { filter: brightness(1.05); }
+        .gallery-img { transition: filter 0.7s ease, transform 0.7s ease; width: 100%; object-fit: cover; cursor: pointer; }
+        .gallery-img:active, .gallery-img:hover { filter: brightness(1.1); transform: scale(1.02); }
 
         #audio-toggle {
             position: absolute;
             top: 20px;
             right: 20px;
             z-index: 50;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(230,200,117,0.2);
-            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(230,200,117,0.3);
+            transition: all 0.4s ease;
         }
-        #audio-toggle:hover { border-color: rgba(230,200,117,0.6); }
+        #audio-toggle:hover { border-color: rgba(230,200,117,0.8); box-shadow: 0 0 15px rgba(230,200,117,0.2); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative selection:bg-yellow-600/30">
 
-    <div class="ambient-glow"></div>
+    <div class="ambient-glow animate-pulse-slow"></div>
 
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
@@ -108,17 +116,18 @@
     <div class="max-w-md w-full mx-auto flex-1 flex flex-col px-6 pt-16 pb-6 relative z-10">
         
         <!-- AUDIO TOGGLE -->
-        <button id="audio-toggle" class="fixed top-6 right-6 flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] uppercase tracking-widest text-zinc-400 cursor-pointer animate-fade-in shadow-xl">
+        <button id="audio-toggle" class="fixed top-6 right-6 flex items-center gap-2 px-4 py-2 rounded-full text-[9px] uppercase tracking-widest text-zinc-400 cursor-pointer animate-fade-in shadow-2xl">
             <i data-lucide="volume-x" id="audio-icon" class="w-3.5 h-3.5 text-zinc-400"></i>
             <span id="audio-text">Atmosphere</span>
         </button>
 
         <!-- HEADER -->
         <header class="flex flex-col items-center mb-10 animate-fade-in">
-            <div class="relative w-32 h-32 mb-6 group">
-                <div class="absolute inset-0 rounded-full border border-[#d4af37]/30 animate-[spin_12s_linear_infinite]"></div>
+            <!-- FLOATING LOGO -->
+            <div class="relative w-36 h-36 mb-6 group animate-float">
+                <div class="absolute inset-0 rounded-full border border-[#d4af37]/40 animate-[spin_12s_linear_infinite]"></div>
                 <div class="absolute inset-2 rounded-full border border-[#f3e5ab]/20 animate-[spin_18s_linear_infinite_reverse]"></div>
-                <img src="logo.jpg" alt="Shondell Slaughter" class="w-full h-full rounded-full object-cover shadow-[0_0_30px_rgba(184,134,11,0.25)] p-1">
+                <img src="logo.jpg" alt="Shondell Slaughter" class="w-full h-full rounded-full object-cover shadow-[0_0_40px_rgba(184,134,11,0.3)] p-1.5">
             </div>
             
             <h1 class="text-4xl font-serif font-light text-center text-transparent bg-clip-text bg-gradient-to-r from-[#e6c875] via-[#ffffff] to-[#b8860b] tracking-wider mb-2 leading-tight">
@@ -129,7 +138,7 @@
             </p>
 
             <!-- TABS -->
-            <div class="flex w-full border-b border-zinc-800/60 pb-px">
+            <div class="flex w-full border-b border-zinc-800/60 pb-px relative">
                 <button id="nav-links" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-[#e6c875] border-b-[1px] border-[#e6c875] transition-colors">Links</button>
                 <button id="nav-portfolio" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors">Services</button>
                 <button id="nav-science" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors">The Series</button>
@@ -137,61 +146,64 @@
         </header>
 
         <!-- PAGE 1: LINKS -->
-        <main id="page-links" class="flex-1 flex flex-col gap-4 w-full">
+        <main id="page-links" class="flex-1 flex flex-col gap-5 w-full">
             
-            <!-- NEW BRANDED APPOINTMENT LINK -->
-            <a href="https://newtolinux23.github.io/appointment-/" target="_blank" class="link-btn animate-fade-in delay-100 flex items-center justify-between p-5 rounded-2xl group">
+            <a href="https://newtolinux23.github.io/appointment-/" target="_blank" class="link-btn reveal flex items-center justify-between p-5 rounded-2xl group">
                 <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-[#e6c875]/30 bg-[#e6c875]/5 text-[#e6c875] group-hover:bg-[#e6c875] group-hover:text-black transition-colors"><i data-lucide="calendar-clock" class="w-4 h-4"></i></div>
+                    <div class="p-3 rounded-full border border-[#e6c875]/40 bg-[#e6c875]/10 text-[#e6c875] group-hover:bg-[#e6c875] group-hover:text-black transition-colors shadow-[0_0_15px_rgba(230,200,117,0.2)]"><i data-lucide="calendar-clock" class="w-4 h-4"></i></div>
                     <div class="flex flex-col">
-                        <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Request Appointment</span>
-                        <span class="text-[9px] text-zinc-500 tracking-wider mt-0.5">Consultation & Booking</span>
+                        <span class="font-light tracking-widest text-[13px] text-zinc-100 group-hover:text-white uppercase">Request Appointment</span>
+                        <span class="text-[9px] text-[#e6c875]/70 tracking-wider mt-1 uppercase font-medium">Consultation & Booking</span>
                     </div>
                 </div>
-                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 group-hover:text-[#e6c875] transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
+                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-500 group-hover:text-[#e6c875] transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
             </a>
 
-            <a href="tel:+18174806160" class="link-btn animate-fade-in delay-200 flex items-center justify-between p-5 rounded-2xl group">
+            <!-- CHANGED: Studio Direct Line -->
+            <a href="tel:+18174806160" class="link-btn reveal flex items-center justify-between p-5 rounded-2xl group">
                 <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors"><i data-lucide="phone" class="w-4 h-4"></i></div>
-                    <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Concierge Desk</span>
+                    <div class="p-3 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-300 group-hover:border-zinc-400 group-hover:text-white transition-colors"><i data-lucide="phone" class="w-4 h-4"></i></div>
+                    <div class="flex flex-col">
+                        <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Studio Direct Line</span>
+                        <span class="text-[9px] text-zinc-500 tracking-wider mt-1 uppercase">Speak with Della</span>
+                    </div>
                 </div>
                 <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
             </a>
 
-            <a href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6?g_st=ac" target="_blank" class="link-btn animate-fade-in delay-300 flex items-center justify-between p-5 rounded-2xl group">
+            <a href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6?g_st=ac" target="_blank" class="link-btn reveal flex items-center justify-between p-5 rounded-2xl group">
                 <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
+                    <div class="p-3 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-300 group-hover:border-zinc-400 group-hover:text-white transition-colors"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
                     <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Studio Location</span>
                 </div>
                 <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
             </a>
             
-            <a href="mailto:dellalouise39@gmail.com" class="link-btn animate-fade-in delay-400 flex items-center justify-between p-5 rounded-2xl group">
+            <a href="mailto:dellalouise39@gmail.com" class="link-btn reveal flex items-center justify-between p-5 rounded-2xl group">
                 <div class="flex items-center gap-5">
-                    <div class="p-2.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 group-hover:border-zinc-500 group-hover:text-white transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></div>
+                    <div class="p-3 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-300 group-hover:border-zinc-400 group-hover:text-white transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></div>
                     <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Direct Inquiry</span>
                 </div>
                 <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
             </a>
         </main>
 
-        <!-- PAGE 2: SERVICES & WORK -->
+        <!-- PAGE 2: SERVICES & WORK (THE MAGAZINE FEED) -->
         <main id="page-portfolio" class="flex-1 flex flex-col w-full page-hidden">
             
-            <div class="animate-fade-in delay-100 mb-12 flex flex-col items-center px-2">
-                <i data-lucide="quote" class="w-6 h-6 text-[#e6c875]/40 mb-4"></i>
+            <div class="reveal mb-12 flex flex-col items-center px-2">
+                <i data-lucide="quote" class="w-6 h-6 text-[#e6c875]/40 mb-4 animate-pulse-slow"></i>
                 <p class="text-[13px] leading-loose text-zinc-300 font-light text-center">
                     With over two decades of refined expertise at Main Street Parlor, Shondell elevates hairdressing into an art form. Specializing in bespoke lived-in color, dimensional highlighting, and precision structural cuts.
                 </p>
             </div>
 
             <!-- Services Overview -->
-            <div class="glass-card p-8 rounded-3xl mb-12 animate-fade-in delay-200 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-40 h-40 bg-[#e6c875]/5 rounded-full blur-3xl -mr-10 -mt-10"></div>
+            <div class="reveal glass-card p-8 rounded-3xl mb-16 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-[#e6c875]/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
                 <h3 class="font-serif text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#e6c875] to-[#ffffff] mb-8 text-center tracking-wide">Signature Services</h3>
                 
-                <div class="space-y-8">
+                <div class="space-y-8 relative z-10">
                     <div class="flex items-start gap-5">
                         <div class="mt-1"><i data-lucide="sparkles" class="w-5 h-5 text-[#e6c875] opacity-80"></i></div>
                         <div>
@@ -210,102 +222,90 @@
                 </div>
             </div>
 
-            <h3 class="font-serif text-2xl text-center text-zinc-200 mb-8 animate-fade-in delay-300 tracking-wide">The Portfolio</h3>
+            <h3 class="reveal font-serif text-3xl text-center text-zinc-200 mb-10 tracking-wide border-b border-white/10 pb-6">The Editorial</h3>
             
-            <div class="animate-fade-in delay-300 w-full">
+            <!-- NEW: MASSIVE VERTICAL SCROLL FEED -->
+            <div class="w-full flex flex-col gap-16 pb-12">
                 
-                <!-- UNIFIED STORY-DRIVEN TRANSFORMATIONS GALLERY -->
-                <h4 class="text-[10px] font-medium tracking-[0.3em] uppercase text-zinc-500 mb-4 ml-1">Transformations</h4>
-                <div class="flex overflow-x-auto hide-scrollbar snap-x-mandatory gap-4 pb-8 -mx-6 px-6">
+                <!-- Transformation 1: Color Match Mastery (PICTURE-IN-PICTURE) -->
+                <div class="reveal relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 group bg-zinc-900">
+                    <!-- Massive After Result -->
+                    <img src="16665.png" class="w-full h-auto min-h-[500px] object-cover gallery-img" alt="Result">
                     
-                    <!-- Transformation 1: Color Match Mastery -->
-                    <div class="min-w-[85%] sm:min-w-[320px] snap-center flex flex-col gap-1 rounded-2xl overflow-hidden shadow-2xl border border-white/5 relative bg-zinc-900 group">
-                        <div class="flex gap-1 w-full h-72">
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-white/70 bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Inspiration</span>
-                                <img src="16666.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 right-2 text-[8px] uppercase tracking-widest text-[#e6c875] bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Della's Result</span>
-                                <img src="16665.png" class="gallery-img w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent p-5 text-center">
-                            <h5 class="text-[11px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-2 drop-shadow-md">Color Match Mastery</h5>
-                            <p class="text-[10px] text-zinc-300 font-light leading-relaxed">The client brought in a vibrant inspiration photo (left). Della formulated a custom, dimensional cherry-wine glaze to bring the exact vision to life flawlessly (right).</p>
-                        </div>
+                    <!-- Floating Before/Inspiration Polaroid -->
+                    <div class="absolute top-6 left-6 w-1/3 max-w-[130px] rounded-xl overflow-hidden border-2 border-[#e6c875]/80 shadow-[0_15px_30px_rgba(0,0,0,0.9)] z-10">
+                        <span class="absolute bottom-1 left-1 bg-black/80 text-white text-[7px] uppercase tracking-widest px-1.5 py-0.5 rounded backdrop-blur-md">Inspiration</span>
+                        <img src="16666.jpg" class="w-full h-auto object-cover" alt="Inspiration">
                     </div>
 
-                    <!-- Transformation 2: Seamless Dimension -->
-                    <div class="min-w-[85%] sm:min-w-[320px] snap-center flex flex-col gap-1 rounded-2xl overflow-hidden shadow-2xl border border-white/5 relative bg-zinc-900 group">
-                        <div class="flex gap-1 w-full h-72">
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-white/60 bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Before</span>
-                                <img src="15198.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 right-2 text-[8px] uppercase tracking-widest text-[#e6c875] bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">After</span>
-                                <img src="15197.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent p-5 text-center">
-                            <h5 class="text-[11px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-2 drop-shadow-md">Seamless Dimension</h5>
-                            <p class="text-[10px] text-zinc-300 font-light leading-relaxed">Correcting previous banding to create a flawless, natural-looking flow with strategically placed dimensional highlights.</p>
-                        </div>
-                    </div>
-
-                    <!-- Transformation 3: Vibrant Refresh -->
-                    <div class="min-w-[85%] sm:min-w-[320px] snap-center flex flex-col gap-1 rounded-2xl overflow-hidden shadow-2xl border border-white/5 relative bg-zinc-900 group">
-                        <div class="flex gap-1 w-full h-72">
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-white/60 bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">Before</span>
-                                <img src="13738.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                            <div class="w-1/2 relative">
-                                <span class="absolute top-2 right-2 text-[8px] uppercase tracking-widest text-[#e6c875] bg-black/50 px-2 py-1 rounded backdrop-blur-md z-10">After</span>
-                                <img src="13739.jpg" class="gallery-img w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent p-5 text-center">
-                            <h5 class="text-[11px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-2 drop-shadow-md">Vibrant Refresh</h5>
-                            <p class="text-[10px] text-zinc-300 font-light leading-relaxed">Breathing life back into faded tones. A custom gloss and precision shaping restored the hair's natural vitality and shine.</p>
-                        </div>
+                    <!-- Luxury Text Overlay -->
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent pt-32 pb-8 px-6 text-right pointer-events-none">
+                        <h5 class="text-[14px] font-medium tracking-[0.3em] uppercase text-[#e6c875] drop-shadow-lg mb-2">Color Match Mastery</h5>
+                        <p class="text-[11px] text-zinc-300 font-light leading-relaxed max-w-[80%] ml-auto">Flawlessly executed cherry-wine glaze custom formulated to match the client's exact vision.</p>
                     </div>
                 </div>
 
-                <!-- SWIPE GALLERY: Styling Portfolio -->
-                <h4 class="text-[10px] font-medium tracking-[0.3em] uppercase text-zinc-500 mb-4 mt-2 ml-1">Recent Work</h4>
-                <div class="flex overflow-x-auto hide-scrollbar snap-x-mandatory gap-4 pb-4 -mx-6 px-6">
+                <!-- Transformation 2: Seamless Dimension -->
+                <div class="reveal relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 group bg-zinc-900">
+                    <img src="15197.jpg" class="w-full h-auto min-h-[500px] object-cover gallery-img" alt="Result">
                     
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="dimensional-copper-hair-color.jpg" class="gallery-img w-full h-80 object-cover">
-                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4 pointer-events-none">
-                            <span class="text-[9px] font-light tracking-[0.2em] uppercase text-[#e6c875]">Copper Dimension</span>
-                        </div>
+                    <div class="absolute top-6 left-6 w-1/3 max-w-[130px] rounded-xl overflow-hidden border-2 border-white/30 shadow-[0_15px_30px_rgba(0,0,0,0.9)] z-10">
+                        <span class="absolute bottom-1 left-1 bg-black/80 text-white text-[7px] uppercase tracking-widest px-1.5 py-0.5 rounded backdrop-blur-md">Before</span>
+                        <img src="15198.jpg" class="w-full h-auto object-cover" alt="Before">
                     </div>
 
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="13599.jpg" class="gallery-img w-full h-80 object-cover">
-                    </div>
-
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="13600.jpg" class="gallery-img w-full h-80 object-cover">
-                    </div>
-                    
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="13601.jpg" class="gallery-img w-full h-80 object-cover">
-                    </div>
-
-                    <div class="min-w-[70%] sm:min-w-[240px] snap-center rounded-2xl overflow-hidden border border-white/5 shadow-xl relative">
-                        <img src="13602.jpg" class="gallery-img w-full h-80 object-cover">
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent pt-32 pb-8 px-6 text-right pointer-events-none">
+                        <h5 class="text-[14px] font-medium tracking-[0.3em] uppercase text-[#e6c875] drop-shadow-lg mb-2">Seamless Dimension</h5>
+                        <p class="text-[11px] text-zinc-300 font-light leading-relaxed max-w-[80%] ml-auto">Banding correction resulting in a flawless, natural-looking flow of highlights.</p>
                     </div>
                 </div>
+
+                <!-- Transformation 3: Vibrant Refresh -->
+                <div class="reveal relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 group bg-zinc-900">
+                    <img src="13739.jpg" class="w-full h-auto min-h-[500px] object-cover gallery-img" alt="Result">
+                    
+                    <div class="absolute top-6 left-6 w-1/3 max-w-[130px] rounded-xl overflow-hidden border-2 border-white/30 shadow-[0_15px_30px_rgba(0,0,0,0.9)] z-10">
+                        <span class="absolute bottom-1 left-1 bg-black/80 text-white text-[7px] uppercase tracking-widest px-1.5 py-0.5 rounded backdrop-blur-md">Before</span>
+                        <img src="13738.jpg" class="w-full h-auto object-cover" alt="Before">
+                    </div>
+
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent pt-32 pb-8 px-6 text-right pointer-events-none">
+                        <h5 class="text-[14px] font-medium tracking-[0.3em] uppercase text-[#e6c875] drop-shadow-lg mb-2">Vibrant Refresh</h5>
+                        <p class="text-[11px] text-zinc-300 font-light leading-relaxed max-w-[80%] ml-auto">Custom gloss and precision shaping to restore the hair's natural vitality and shine.</p>
+                    </div>
+                </div>
+
+                <!-- Recent Work (Massive Single Images) -->
+                <div class="w-full flex justify-center py-4 reveal">
+                    <span class="text-[9px] text-zinc-500 font-medium tracking-[0.4em] uppercase">Gallery Collection</span>
+                </div>
+
+                <div class="reveal relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
+                    <img src="dimensional-copper-hair-color.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-6 pointer-events-none">
+                        <span class="text-[10px] font-light tracking-[0.3em] uppercase text-[#e6c875]">Copper Dimension</span>
+                    </div>
+                </div>
+
+                <div class="reveal rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
+                    <img src="13599.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
+                </div>
+
+                <div class="reveal rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
+                    <img src="13600.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
+                </div>
                 
-                <div class="flex justify-center items-center gap-3 mt-4 mb-4">
+                <div class="reveal rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
+                    <img src="13601.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
+                </div>
+
+                <div class="reveal rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
+                    <img src="13602.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
+                </div>
+                
+                <div class="flex justify-center items-center gap-3 mt-4 mb-4 reveal">
                     <div class="w-12 h-px bg-zinc-800"></div>
-                    <span class="text-[8px] text-zinc-500 font-light tracking-[0.3em] uppercase flex items-center gap-2">
-                        <i data-lucide="arrow-left-right" class="w-3 h-3"></i> Swipe to explore
-                    </span>
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#e6c875]/50"></i>
                     <div class="w-12 h-px bg-zinc-800"></div>
                 </div>
 
@@ -315,17 +315,17 @@
         <!-- PAGE 3: HAIR SCIENCE (THE NETFLIX TAB) -->
         <main id="page-science" class="flex-1 flex flex-col w-full page-hidden">
             
-            <div class="text-center animate-fade-in delay-100 mb-8 mt-4">
+            <div class="text-center reveal mb-8 mt-4">
                 <h2 class="text-3xl font-serif font-light text-white mb-2 leading-tight tracking-wide">The Science of <br> <span class="gold-gradient-text italic">Perfect Color</span></h2>
             </div>
 
             <!-- WHAT THEY GET (NETFLIX VIBE - Glassmorphism) -->
-            <div class="glass-card p-8 rounded-3xl mb-10 animate-fade-up delay-200 relative overflow-hidden transition-transform duration-700 hover:-translate-y-1">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-[#e6c875]/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+            <div class="glass-card p-8 rounded-3xl mb-12 reveal relative overflow-hidden transition-transform duration-700 hover:-translate-y-1 group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-[#e6c875]/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none group-hover:bg-[#e6c875]/20 transition-colors duration-700"></div>
                 
                 <h3 class="text-[10px] tracking-[0.3em] uppercase text-zinc-400 mb-6 text-center font-medium">Inside The Series</h3>
                 
-                <div class="space-y-6">
+                <div class="space-y-6 relative z-10">
                     <div class="flex items-start gap-4">
                         <i data-lucide="headphones" class="w-4 h-4 text-[#e6c875] shrink-0 mt-0.5 opacity-80"></i>
                         <p class="text-xs text-zinc-400 font-light leading-relaxed"><strong class="text-zinc-200 font-medium">Episodes & Case Studies:</strong> Binge-read the stories behind my biggest color corrections and curl transformations.</p>
@@ -342,19 +342,19 @@
             </div>
 
             <!-- AUTHORITY PROOF -->
-            <div class="mb-12 animate-fade-up delay-300">
+            <div class="mb-12 reveal">
                 <h4 class="text-[9px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-4 text-center">Season 1: Currently Streaming</h4>
                 
-                <a href="https://substack.com/@dellalouise" target="_blank" class="relative overflow-hidden rounded-2xl border border-white/5 shadow-2xl block group cursor-pointer transition-all duration-500 hover:border-[#e6c875]/40">
-                    <img src="dimensional-copper-hair-color.jpg" alt="Episode 1" class="w-full h-64 object-cover filter brightness-[0.85] group-hover:scale-105 transition-transform duration-[1.5s] ease-out">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent p-6 flex flex-col justify-end">
+                <a href="https://substack.com/@dellalouise" target="_blank" class="relative overflow-hidden rounded-[2rem] border border-white/5 shadow-2xl block group cursor-pointer transition-all duration-500 hover:border-[#e6c875]/40">
+                    <img src="dimensional-copper-hair-color.jpg" alt="Episode 1" class="w-full h-[400px] object-cover filter brightness-[0.80] group-hover:scale-105 transition-transform duration-[1.5s] ease-out">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent p-8 flex flex-col justify-end">
                         <div class="flex justify-between items-end">
                             <div>
-                                <span class="inline-block border border-white/20 text-white text-[8px] font-light uppercase tracking-[0.2em] mb-3 px-2 py-1 rounded backdrop-blur-md">Episode 1</span>
-                                <span class="block text-zinc-200 font-serif text-xl leading-tight group-hover:text-[#e6c875] transition-colors duration-500">Reviving compromised texture into dimensional copper.</span>
+                                <span class="inline-block border border-white/20 text-white text-[8px] font-light uppercase tracking-[0.2em] mb-4 px-2 py-1.5 rounded backdrop-blur-md">Episode 1</span>
+                                <span class="block text-zinc-200 font-serif text-2xl leading-tight group-hover:text-[#e6c875] transition-colors duration-500 max-w-[90%]">Reviving compromised texture into dimensional copper.</span>
                             </div>
-                            <div class="bg-white/10 p-3 rounded-full backdrop-blur-md border border-white/10 opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
-                                <i data-lucide="play" class="w-4 h-4 text-white ml-0.5"></i>
+                            <div class="bg-white/10 p-4 rounded-full backdrop-blur-md border border-white/10 opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                                <i data-lucide="play" class="w-5 h-5 text-white ml-0.5"></i>
                             </div>
                         </div>
                     </div>
@@ -362,7 +362,7 @@
             </div>
 
             <!-- CALL TO ACTION -->
-            <div class="w-full mt-auto animate-fade-up delay-400 glass-card p-8 rounded-3xl text-center relative overflow-hidden">
+            <div class="w-full mt-auto reveal glass-card p-10 rounded-3xl text-center relative overflow-hidden">
                 <h2 class="font-serif text-2xl text-zinc-100 mb-2 relative z-10 tracking-wide">Ready for the next episode?</h2>
                 <p class="text-[11px] font-light text-zinc-400 mb-8 relative z-10">Join a community of clients who refuse to compromise on care.</p>
                 
@@ -378,7 +378,7 @@
 
     <!-- ELEGANT FOOTER -->
     <footer class="w-full mt-auto border-t border-white/5 bg-black/60 backdrop-blur-xl pt-10 pb-12 px-6 z-10 relative">
-        <div class="max-w-md mx-auto text-center space-y-8 animate-fade-in delay-300">
+        <div class="max-w-md mx-auto text-center space-y-8 reveal">
             <div class="flex justify-center items-center gap-3 text-[#e6c875]">
                 <div class="w-8 h-px bg-[#e6c875]/30"></div>
                 <span class="text-[10px] font-light tracking-[0.3em] uppercase">Texas</span>
@@ -405,6 +405,22 @@
     <script>
         lucide.createIcons();
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // -------------------------
+        // SCROLL REVEAL LOGIC
+        // -------------------------
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+        
+        const revealObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => revealObserver.observe(el));
 
         // -------------------------
         // AUDIO LOGIC
@@ -444,14 +460,21 @@
         ];
 
         function triggerAnimations(container) {
-            container.querySelectorAll('.animate-fade-in, .animate-fade-up').forEach(el => {
-                el.style.animation = 'none';
-                el.offsetHeight; 
-                el.style.animation = null; 
+            // Trigger reveals for the newly visible tab
+            const tabReveals = container.querySelectorAll('.reveal');
+            tabReveals.forEach(el => {
+                el.classList.remove('active'); // reset
+                setTimeout(() => { el.classList.add('active'); }, 50); // pop them in instantly
             });
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Initial load reveal for default tab
+            setTimeout(() => {
+                document.querySelectorAll('#page-links .reveal').forEach(el => el.classList.add('active'));
+                document.querySelectorAll('header .reveal, footer .reveal').forEach(el => el.classList.add('active'));
+            }, 100);
+
             const urlParams = new URLSearchParams(window.location.search);
             if(urlParams.get('tab') === 'science') {
                 tabs.forEach(t => {
@@ -466,6 +489,7 @@
 
         tabs.forEach(tab => {
             tab.btn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 tabs.forEach(t => {
                     t.btn.className = "flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors";
                     t.page.classList.add('page-hidden');
