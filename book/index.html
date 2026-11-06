@@ -10,6 +10,7 @@
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -283,6 +284,12 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 #auth .sub{text-align:center;color:var(--soft);font-size:14.5px;margin-top:-6px}
 #auth [data-s]{display:none;gap:10px}
 #auth[data-step="login"] [data-s~="login"],#auth[data-step="join"] [data-s~="join"],#auth[data-step="check"] [data-s~="check"],#auth[data-step="newpass"] [data-s~="newpass"]{display:grid}
+.payhelp{display:flex;gap:14px;align-items:center;margin-top:14px;padding:14px;border-radius:16px;border:1px solid var(--gold);background:var(--gold-bg)}
+.payhelp .qr{flex:none;background:#fff;padding:8px;border-radius:12px;line-height:0}
+.payhelp .qr img,.payhelp .qr canvas{width:140px;height:140px}
+.payhelp .pi{display:grid;gap:4px;font-size:14.5px}
+.payhelp .pi > b{font-family:var(--display);font-size:1.3rem;font-weight:500}
+.payhelp .pi span{color:var(--soft)}
 #a-msg{color:var(--bad);font-size:14px;text-align:center;min-height:1.2em}
 .lockline{display:flex;gap:8px;align-items:center;justify-content:center;font-size:12.5px;color:var(--soft);margin-top:8px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -425,6 +432,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
       <div class="fg"><span class="lbl">Tip</span><div class="chips" id="r-tips"></div><input class="in num" id="r-tipamt" type="number" inputmode="decimal" step="0.01" placeholder="Tip amount ($)" style="margin-top:8px" aria-label="Tip amount"></div>
       <div class="fg"><span class="lbl">Paid with</span><div class="chips" id="r-pay"></div>
         <div id="r-cashrow" style="display:none;margin-top:8px"><input class="in num" id="r-cash" type="number" inputmode="decimal" placeholder="Cash received ($)" aria-label="Cash received"><p id="r-change-due" style="margin-top:6px;font-weight:600"></p></div></div>
+      <div id="r-payhelp"></div>
       <div class="sum" id="r-sum"></div>
       <div class="sheet-foot"><button class="btn gold" id="r-charge">Complete sale</button></div>
     </div>
@@ -465,6 +473,11 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
     <div class="fg"><span class="lbl">Service menu</span><div id="s-menu"></div><button class="btn small" id="s-addm" style="margin-top:8px">+ Add a service</button></div>
     <div class="fg"><span class="lbl">Retail products</span><div id="s-products"></div><button class="btn small" id="s-addp" style="margin-top:8px">+ Add a product</button></div>
     <div class="fg"><label for="s-tax">Sales tax on products (%)</label><input class="in num" id="s-tax" type="number" inputmode="decimal" step="0.01"><p class="fine" style="margin-top:6px">Texas charges sales tax on retail products, not on hair services. Most cities total 8.25%.</p></div>
+    <div class="fg"><span class="lbl">Getting paid</span><p class="fine" style="margin:0 0 8px">Fill in the ones she uses. At checkout the app shows a QR code the client scans to pay her, with the amount already filled in.</p>
+      <div class="grid2"><div><label class="lbl" for="s-venmo">Venmo username</label><input class="in" id="s-venmo" placeholder="@Della-Curls" autocomplete="off"></div>
+        <div><label class="lbl" for="s-cashtag">Cash App $cashtag</label><input class="in" id="s-cashtag" placeholder="$DellaCurls" autocomplete="off"></div>
+        <div><label class="lbl" for="s-zelle">Zelle email or phone</label><input class="in" id="s-zelle" placeholder="email or (817) number" autocomplete="off"></div>
+        <div><label class="lbl" for="s-zellename">Name Zelle shows</label><input class="in" id="s-zellename" placeholder="Shondell Slaughter" autocomplete="off"></div></div></div>
     <div class="fg"><label for="s-square">Square Application ID (optional)</label><input class="in" id="s-square" placeholder="sq0idp-…" autocomplete="off">
       <p class="fine" style="margin-top:6px">When this is filled in, choosing <b>Card</b> at checkout opens the Square app on Android with the total ready to tap.</p></div>
     <div class="fg card"><span class="lbl">Account</span><p id="s-account" style="font-size:14.5px">…</p><button class="btn small" data-a-out style="margin-top:10px">Sign out</button></div>
@@ -1437,6 +1450,28 @@ function drawRegister() {
   drawTotals();
 }
 function addLine(l, silent) { R.lines.push({ qty: 1, ...l }); if (!silent) { drawRegister(); const ins = $$('#r-cart [data-f=price]'); const last = ins.at(-1); if (last && !l.price) last.focus(); else if (!l.name) $$('#r-cart [data-f=name]').at(-1).focus(); } }
+function drawPayHelp() {
+  const box = $('#r-payhelp'); if (!box) return;
+  const st = SET(), t = rTotals(), amt = t.total.toFixed(2);
+  let info = '', qr = '';
+  if (R.payment === 'Venmo' && st.venmoHandle) {
+    const h = st.venmoHandle.replace(/^@/, '').trim();
+    qr = `https://venmo.com/u/${encodeURIComponent(h)}?txn=pay&amount=${amt}&note=${encodeURIComponent('Curls & Colors')}`;
+    info = `<b>Venmo · @${esc(h)}</b><span>Client scans with their phone camera to pay ${money(t.total)}.</span>`;
+  } else if (R.payment === 'Cash App' && st.cashtag) {
+    const tag = st.cashtag.replace(/^\$/, '').trim();
+    qr = `https://cash.app/$${encodeURIComponent(tag)}/${amt}`;
+    info = `<b>Cash App · $${esc(tag)}</b><span>Client scans with their phone camera to pay ${money(t.total)}.</span>`;
+  } else if (R.payment === 'Zelle' && st.zelleContact) {
+    info = `<b>Zelle ${money(t.total)} to</b><span><b style="font-size:1rem">${esc(st.zelleName || '')}</b><br>${esc(st.zelleContact)}</span><button type="button" class="btn small" id="r-zcopy" style="margin-top:6px">Copy</button>`;
+  } else if (R.payment === 'Card' && st.squareAppId && isAndroid) {
+    info = `<b>Square</b><span>Tapping Complete sale opens Square with ${money(t.total)} ready for the card.</span>`;
+  }
+  if (!info) { box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="payhelp">${qr ? '<div class="qr" id="r-qr" aria-label="Payment QR code"></div>' : ''}<div class="pi">${info}${R.payment !== 'Card' ? '<p class="fine" style="margin-top:6px">Check that the money arrived before tapping Complete sale.</p>' : ''}</div></div>`;
+  if (qr && window.QRCode) { try { new QRCode($('#r-qr'), { text: qr, width: 156, height: 156, colorDark: '#1d1a16', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M }); } catch (e) {} }
+  const zc = $('#r-zcopy'); if (zc) zc.onclick = () => navigator.clipboard.writeText(st.zelleContact).then(() => toast('Copied'), () => {});
+}
 function drawTotals() {
   const t = rTotals();
   $('#r-sum').innerHTML = `
@@ -1448,6 +1483,7 @@ function drawTotals() {
   const cash = +$('#r-cash').value || 0;
   $('#r-change-due').textContent = cash ? (cash >= t.total ? `Change due: ${money(cash - t.total)}` : `Still owes ${money(t.total - cash)}`) : '';
   $('#r-charge').textContent = t.total ? `Complete sale · ${money(t.total)}` : 'Complete sale';
+  drawPayHelp();
 }
 $('#r-disc').addEventListener('input', e => { R.discount = +e.target.value || 0; drawTotals(); });
 $('#r-discmode').addEventListener('click', () => { R.discMode = R.discMode === '$' ? '%' : '$'; $('#r-discmode').textContent = R.discMode; drawTotals(); });
@@ -1601,6 +1637,7 @@ function drawSettings() {
   $('#s-menu').innerHTML = row(draftSet.menu, 'mi'); $('#s-products').innerHTML = row(draftSet.products, 'pi') || '<p class="fine" style="margin:0">No retail products yet.</p>';
   $('#s-tax').value = draftSet.salesTaxRate;
   if ($('#s-square')) $('#s-square').value = draftSet.squareAppId || '';
+  [['#s-venmo', 'venmoHandle'], ['#s-cashtag', 'cashtag'], ['#s-zelle', 'zelleContact'], ['#s-zellename', 'zelleName']].forEach(([id, k]) => { if ($(id)) $(id).value = draftSet[k] || ''; });
   if (window.__bookInfo && $('#s-account')) window.__bookInfo().then(i => { if (i) $('#s-account').innerHTML = `Signed in as <b>${esc(i.email || '')}</b><br>Invite code for a helper: <b>${esc(i.invite_code || '')}</b>`; });
   [['mi', 'menu'], ['pi', 'products']].forEach(([k, arr]) => {
     $$(`[data-${k}]`).forEach(inp => inp.oninput = () => { const it = draftSet[arr][+inp.dataset[k]]; if (inp.dataset.f === 'price') it.price = +inp.value || 0; else it.name = inp.value; });
@@ -1613,6 +1650,7 @@ $('#s-save').addEventListener('click', async () => {
   draftSet.menu = draftSet.menu.filter(m => m.name.trim()); draftSet.products = draftSet.products.filter(m => m.name.trim());
   draftSet.salesTaxRate = +$('#s-tax').value || 0;
   if ($('#s-square')) draftSet.squareAppId = $('#s-square').value.trim();
+  [['#s-venmo', 'venmoHandle'], ['#s-cashtag', 'cashtag'], ['#s-zelle', 'zelleContact'], ['#s-zellename', 'zelleName']].forEach(([id, k]) => { if ($(id)) draftSet[k] = $(id).value.trim(); });
   await saveSettings(draftSet); closeSheet('ssheet'); toast('Prices saved ✓'); render();
 });
 
