@@ -1,551 +1,1301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>Shondell Slaughter | Luxury Hair & Color Studio</title>
-    <meta name="title" content="Shondell Slaughter | Luxury Hair & Color Studio">
-    <meta name="description" content="Exclusive booking and Hair Science insights by Shondell Slaughter, specializing in custom dimensional color and precision curl shaping in Texas.">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
-    
-    <style>
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: #050505; 
-            color: #f4f4f5; 
-            overflow-x: hidden;
-        }
-        .font-serif { font-family: 'Cormorant Garamond', serif; }
-        
-        .page-hidden { display: none !important; }
-        
-        /* --- SCROLL REVEAL ANIMATIONS --- */
-        .reveal { 
-            opacity: 0; 
-            transform: translateY(40px); 
-            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
-        }
-        .reveal.active { 
-            opacity: 1; 
-            transform: translateY(0); 
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shondell Slaughter | Curls &amp; Colors — Luxury Hair Artistry in Texas</title>
+<meta name="description" content="Shondell “Della” Slaughter — bespoke lived-in color, dimensional highlights, color correction and precision curl shaping at Main Street Parlor, Texas. Strictly by appointment.">
+<meta name="theme-color" content="#0b0a09">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Shondell Slaughter | Curls & Colors">
+<meta property="og:description" content="Bespoke color, dimension and curl artistry. Where Texas radiance begins. Strictly by appointment.">
+<meta property="og:image" content="https://shondellslaughter.com/assets/img/og.jpg">
+<meta property="og:url" content="https://shondellslaughter.com/">
+<meta name="twitter:card" content="summary_large_image">
 
-        /* Silky Initial Load Animations */
-        .animate-fade-in { animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
-        
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/img/crest.webp">
 
-        /* Floating & Pulsing Animations */
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-        
-        .animate-pulse-slow { animation: pulseGlow 8s infinite alternate; }
-        @keyframes pulseGlow { 0% { opacity: 0.5; transform: translateX(-50%) scale(1); } 100% { opacity: 0.8; transform: translateX(-50%) scale(1.1); } }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HairSalon",
+  "name": "Shondell Slaughter — Curls & Colors",
+  "alternateName": "Della Curls and Colors",
+  "image": "https://shondellslaughter.com/assets/img/og.jpg",
+  "url": "https://shondellslaughter.com/",
+  "telephone": "+1-817-480-6160",
+  "email": "dellalouise39@gmail.com",
+  "slogan": "Where Texas Radiance Begins",
+  "address": { "@type": "PostalAddress", "addressRegion": "TX", "addressCountry": "US" },
+  "hasMap": "https://maps.app.goo.gl/2SY98mmXWBfeyjyt6"
+}
+</script>
 
-        .gold-gradient-text { 
-            color: transparent; 
-            background-clip: text; 
-            -webkit-background-clip: text; 
-            background-image: linear-gradient(to right, #e6c875, #ffd700, #b8860b); 
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(230, 200, 117, 0.15);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-        }
+<style>
+:root{
+  --bg:#0b0a09; --bg2:#12100e; --card:#161310;
+  --ivory:#f3ede2; --ink:#d9d1c4; --muted:#9a9087; --dim:#6b645c;
+  --gold:#d8bf8a; --gold-hi:#f1dfb4; --gold-lo:#a8834a;
+  --line:rgba(216,191,138,.18);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Jost',system-ui,-apple-system,sans-serif;
+  --script:'Pinyon Script',cursive;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --pad:clamp(1.25rem,5vw,4rem);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:rgba(216,191,138,.3);color:#fff}
+:focus-visible{outline:1px solid var(--gold);outline-offset:4px}
+body.locked{overflow:hidden}
+[hidden]{display:none !important}
 
-        .ambient-glow { 
-            position: fixed; 
-            top: -10%; left: 50%; transform: translateX(-50%); 
-            width: 150vw; height: 80vh; 
-            background: radial-gradient(ellipse at top, rgba(184, 134, 11, 0.08) 0%, rgba(5,5,5,0) 60%); 
-            z-index: -1; pointer-events: none; 
-        }
+/* grain overlay for a filmic, editorial texture */
+body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-        .link-btn { 
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-            position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; 
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        @media (hover: hover) { 
-            .link-btn:hover { 
-                transform: translateY(-4px); 
-                background: rgba(255, 255, 255, 0.06);
-                border-color: rgba(230, 200, 117, 0.4);
-                box-shadow: 0 20px 40px -10px rgba(184, 134, 11, 0.2); 
-            } 
-        }
-        .link-btn:active { transform: scale(0.97); }
+/* ---------- type ---------- */
+.eyebrow{font-family:var(--sans);font-size:12px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold);font-weight:400;display:inline-flex;align-items:center;gap:.9em}
+.eyebrow::before{content:"";width:2.2em;height:1px;background:currentColor;opacity:.6}
+.h-display{font-family:var(--serif);font-weight:300;color:var(--ivory);line-height:1.02;letter-spacing:.005em}
+.h2{font-size:clamp(2.6rem,7vw,5rem)}
+.h2 em,.h-display em{font-style:italic;font-weight:300}
+.gold-text{background:linear-gradient(100deg,var(--gold-lo) 0%,var(--gold-hi) 30%,var(--gold) 50%,var(--gold-hi) 70%,var(--gold-lo) 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 7s linear infinite}
+@keyframes sheen{to{background-position:-250% 0}}
+.lead{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--ink);max-width:36em}
+.muted{color:var(--muted)}
 
-        .gallery-img { transition: filter 0.7s ease, transform 0.7s ease; width: 100%; object-fit: cover; cursor: pointer; }
-        .gallery-img:active, .gallery-img:hover { filter: brightness(1.1); transform: scale(1.02); }
+/* ---------- buttons ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.8em;padding:1.1em 2.2em;font-size:12.5px;letter-spacing:.28em;text-transform:uppercase;font-weight:400;border-radius:999px;overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s var(--ease),color .4s;isolation:isolate;white-space:nowrap}
+.btn-gold{color:#1a140a;background:linear-gradient(120deg,var(--gold-lo),var(--gold-hi) 45%,var(--gold) 60%,var(--gold-lo));background-size:200% 100%;box-shadow:0 12px 40px -12px rgba(216,191,138,.55)}
+.btn-gold::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);transition:transform 1s var(--ease)}
+.btn-gold:hover::after{transform:translateX(120%)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 18px 50px -12px rgba(216,191,138,.75)}
+.btn-ghost{color:var(--ivory);border:1px solid var(--line)}
+.btn-ghost::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
+.btn-ghost:hover{color:#1a140a;border-color:var(--gold)}
+.btn-ghost:hover::before{transform:scaleX(1);transform-origin:left}
+.btn svg{width:15px;height:15px;flex:none}
+.arrow-link{display:inline-flex;align-items:center;gap:.8em;font-size:12.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+.arrow-link span{position:relative}
+.arrow-link span::after{content:"";position:absolute;left:0;bottom:-4px;width:100%;height:1px;background:currentColor;transform:scaleX(.3);transform-origin:left;transition:transform .6s var(--ease)}
+.arrow-link:hover span::after{transform:scaleX(1)}
 
-        #audio-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 50;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(230,200,117,0.3);
-            transition: all 0.4s ease;
-        }
-        #audio-toggle:hover { border-color: rgba(230,200,117,0.8); box-shadow: 0 0 15px rgba(230,200,117,0.2); }
-    </style>
+/* ---------- intro gate ---------- */
+#intro{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;text-align:center;padding:2rem;transition:clip-path 1.4s var(--ease),visibility 0s 1.4s;clip-path:inset(0 0 0 0)}
+#intro.gone{clip-path:inset(0 0 100% 0);visibility:hidden}
+#intro .crest{width:100%;opacity:0;filter:blur(12px);transform:scale(.92);animation:crestIn 2s var(--ease) .2s forwards}
+@keyframes crestIn{to{opacity:1;filter:blur(0);transform:scale(1)}}
+#intro .crest-wrap{position:relative;display:block;width:min(46vw,210px);margin:0 auto;-webkit-mask:url(assets/img/crest-sm.webp) 0 0/100% 100% no-repeat;mask:url(assets/img/crest-sm.webp) 0 0/100% 100% no-repeat}
+#intro .crest-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,240,200,.75) 50%,transparent 65%);transform:translateX(-130%);animation:shine 2.4s var(--ease) 1.4s forwards}
+@keyframes shine{to{transform:translateX(130%)}}
+#intro h1{margin-top:1.6rem;font-size:clamp(1.9rem,6vw,3rem);opacity:0;animation:up 1.4s var(--ease) 1s forwards}
+#intro p{margin-top:.4rem;opacity:0;animation:up 1.4s var(--ease) 1.25s forwards}
+.intro-actions{margin-top:2.4rem;display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center;opacity:0;animation:up 1.4s var(--ease) 1.7s forwards}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* ---------- nav ---------- */
+.progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:80;background:linear-gradient(90deg,var(--gold-lo),var(--gold-hi));transform-origin:left;transform:scaleX(0)}
+header.nav{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:calc(1rem + env(safe-area-inset-top)) var(--pad) 1rem;transition:background .5s,backdrop-filter .5s,padding .5s,border-color .5s;border-bottom:1px solid transparent}
+header.nav.scrolled{background:rgba(11,10,9,.72);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);border-color:rgba(216,191,138,.1);padding-top:calc(.7rem + env(safe-area-inset-top));padding-bottom:.7rem}
+.brand{display:flex;align-items:center;gap:.75rem}
+.brand img{width:34px;height:auto}
+.brand b{font-family:var(--serif);font-weight:400;font-size:1.3rem;color:var(--ivory);letter-spacing:.04em;line-height:1}
+.brand small{display:block;font-size:9.5px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+.nav-links{display:flex;gap:2.2rem}
+.nav-links a{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);position:relative;padding:.3em 0}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.nav-links a:hover,.nav-links a.on{color:var(--gold-hi)}
+.nav-links a:hover::after,.nav-links a.on::after{transform:scaleX(1);transform-origin:left}
+.nav-right{display:flex;align-items:center;gap:.8rem}
+.nav-right .btn{padding:.85em 1.6em;font-size:11.5px}
+
+/* sound toggle */
+.sound{display:flex;align-items:center;gap:.6rem;height:40px;padding:0 1rem;border:1px solid var(--line);border-radius:999px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);transition:border-color .4s,color .4s}
+.sound:hover,.sound.on{border-color:rgba(216,191,138,.6);color:var(--gold)}
+.eq{display:flex;align-items:flex-end;gap:2px;height:14px}
+.eq i{width:2px;height:6px;background:currentColor;border-radius:2px;transition:height .3s}
+.sound.on .eq i{animation:eq 1s ease-in-out infinite}
+.sound.on .eq i:nth-child(2){animation-delay:-.4s}.sound.on .eq i:nth-child(3){animation-delay:-.7s}.sound.on .eq i:nth-child(4){animation-delay:-.2s}
+@keyframes eq{0%,100%{height:3px}50%{height:14px}}
+
+.burger{display:none;width:44px;height:44px;position:relative}
+.burger i{position:absolute;left:11px;right:11px;height:1px;background:var(--ivory);transition:transform .5s var(--ease),top .5s var(--ease)}
+.burger i:first-child{top:18px}.burger i:last-child{top:25px}
+.menu-open .burger i:first-child{top:22px;transform:rotate(45deg)}
+.menu-open .burger i:last-child{top:22px;transform:rotate(-45deg)}
+
+#menu{position:fixed;inset:0;z-index:65;background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:6rem var(--pad) 3rem;clip-path:circle(0 at calc(100% - 44px) 40px);transition:clip-path .9s var(--ease);visibility:hidden}
+.menu-open #menu{clip-path:circle(150% at calc(100% - 44px) 40px);visibility:visible}
+#menu a.m{font-family:var(--serif);font-size:clamp(2.4rem,11vw,3.4rem);color:var(--ivory);font-weight:300;line-height:1.25;display:flex;align-items:baseline;gap:1rem;opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease),color .3s}
+#menu a.m small{font-family:var(--sans);font-size:11px;color:var(--gold);letter-spacing:.2em}
+#menu a.m:hover{color:var(--gold-hi)}
+.menu-open #menu a.m{opacity:1;transform:none}
+.menu-open #menu a.m:nth-child(2){transition-delay:.06s}.menu-open #menu a.m:nth-child(3){transition-delay:.12s}.menu-open #menu a.m:nth-child(4){transition-delay:.18s}.menu-open #menu a.m:nth-child(5){transition-delay:.24s}.menu-open #menu a.m:nth-child(6){transition-delay:.3s}
+#menu .menu-foot{margin-top:2.5rem;display:flex;flex-direction:column;gap:.4rem;color:var(--muted);font-size:15px}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;padding:7rem var(--pad) 5rem;overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-20%;z-index:-2;background:
+  radial-gradient(40% 35% at 50% 38%,rgba(216,191,138,.16),transparent 70%),
+  radial-gradient(30% 30% at 20% 80%,rgba(168,131,74,.10),transparent 70%),
+  radial-gradient(30% 30% at 85% 15%,rgba(120,40,50,.10),transparent 70%);
+  animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(3%,-2%,0) scale(1.06)}}
+#dust{position:absolute;inset:0;z-index:-1;width:100%;height:100%}
+.hero-crest{width:min(52vw,250px);margin:0 auto 1.6rem;filter:drop-shadow(0 20px 60px rgba(216,191,138,.25));animation:float 8s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+.hero h1{font-size:clamp(3.2rem,11vw,8.5rem);letter-spacing:.01em}
+.hero h1 .line{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .line span{display:inline-block;transform:translateY(110%);transition:transform 1.4s var(--ease)}
+.ready .hero h1 .line span{transform:none}
+.ready .hero h1 .line:nth-child(2) span{transition-delay:.12s}
+.hero .tag{font-family:var(--script);font-size:clamp(2rem,5.5vw,3.4rem);color:var(--gold);line-height:1;margin-top:.4rem;opacity:0;transform:translateY(12px);transition:all 1.4s var(--ease) .45s}
+.hero .sub{margin-top:1.4rem;font-size:12.5px;letter-spacing:.42em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity 1.4s var(--ease) .7s}
+.hero .cta{margin-top:2.6rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;opacity:0;transform:translateY(12px);transition:all 1.4s var(--ease) .9s}
+.ready .hero .tag,.ready .hero .sub,.ready .hero .cta{opacity:1;transform:none}
+.scroll-cue{position:absolute;bottom:calc(1.6rem + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.7rem;font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--dim)}
+.scroll-cue i{width:1px;height:44px;background:linear-gradient(var(--gold),transparent);transform-origin:top;animation:cue 2.4s var(--ease) infinite}
+@keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- marquee ---------- */
+.marquee{border-block:1px solid var(--line);padding:1.3rem 0;overflow:hidden;background:var(--bg2)}
+.marquee-track{display:flex;width:max-content;animation:marq 38s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{font-family:var(--serif);font-style:italic;font-size:clamp(1.4rem,3vw,2rem);color:var(--ink);padding:0 1.6rem;white-space:nowrap;display:flex;align-items:center;gap:3.2rem}
+.marquee span::after{content:"✦";font-style:normal;font-size:.6em;color:var(--gold)}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ---------- sections ---------- */
+section{position:relative}
+.wrap{max-width:1280px;margin:0 auto;padding:clamp(5rem,12vw,9rem) var(--pad)}
+.sec-head{display:flex;flex-direction:column;gap:1.2rem;margin-bottom:clamp(3rem,6vw,5rem)}
+.sec-head.center{align-items:center;text-align:center}
+.sec-head .eyebrow.c::after{content:"";width:2.2em;height:1px;background:currentColor;opacity:.6}
+
+/* about */
+.about{display:grid;grid-template-columns:1fr;gap:clamp(3rem,6vw,6rem);align-items:center}
+.about-media{position:relative;max-width:520px;width:100%;margin:0 auto}
+.about-media .frame{position:absolute;inset:-14px 14px 14px -14px;border:1px solid var(--line);border-radius:240px 240px 6px 6px;z-index:-1;transition:transform 1.2s var(--ease)}
+.about-media:hover .frame{transform:translate(8px,-8px)}
+.arch{border-radius:240px 240px 6px 6px;overflow:hidden;aspect-ratio:3/4;background:var(--card)}
+.arch img{width:100%;height:118%;object-fit:cover;will-change:transform}
+.about-media .seal{position:absolute;right:-8px;bottom:12%;width:120px;height:120px;border-radius:50%;background:var(--bg);display:grid;place-items:center;border:1px solid var(--line)}
+.seal svg{position:absolute;inset:0;animation:spin 22s linear infinite}
+.seal img{width:46px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.about-copy .h2{margin:1.2rem 0 1.6rem}
+.about-copy p+p{margin-top:1.1rem}
+.signature{font-family:var(--script);font-size:2.8rem;color:var(--gold);margin-top:1.6rem;line-height:1}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.6rem;padding-top:2rem;border-top:1px solid var(--line)}
+.stats b{display:block;font-family:var(--serif);font-weight:300;font-size:clamp(2.2rem,5vw,3.2rem);color:var(--ivory);line-height:1}
+.stats span{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+
+/* services */
+.services{background:linear-gradient(var(--bg),var(--bg2) 30%,var(--bg2) 70%,var(--bg))}
+.svc-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.svc{position:relative;background:var(--bg2);padding:clamp(2rem,4vw,3rem);overflow:hidden;transition:background .6s}
+.svc::before{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(216,191,138,.12),transparent 60%);opacity:0;transition:opacity .5s}
+.svc:hover::before{opacity:1}
+.svc .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:1.1rem}
+.svc h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,3vw,2.3rem);color:var(--ivory);line-height:1.1;margin:.8rem 0 1rem}
+.svc p{color:var(--muted);font-size:16px}
+.svc ul{list-style:none;margin-top:1.3rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.svc li{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);border:1px solid var(--line);padding:.45em 1em;border-radius:999px}
+.svc .ico{position:absolute;top:clamp(2rem,4vw,3rem);right:clamp(2rem,4vw,3rem);width:28px;height:28px;color:var(--gold);opacity:.7;transition:transform .8s var(--ease)}
+.svc:hover .ico{transform:rotate(-12deg) scale(1.15)}
+.svc-note{margin-top:2rem;text-align:center;color:var(--muted);font-size:15px;font-style:italic;font-family:var(--serif);font-size:1.2rem}
+
+/* transformations */
+.ba-list{display:grid;grid-template-columns:1fr;gap:clamp(4rem,8vw,6rem)}
+.ba-item{display:grid;grid-template-columns:1fr;gap:1.8rem;align-items:center}
+.ba{position:relative;aspect-ratio:3/4;border-radius:4px;overflow:hidden;background:var(--card);cursor:ew-resize;touch-action:pan-y;user-select:none;-webkit-user-select:none;--pos:50%;box-shadow:0 40px 80px -30px rgba(0,0,0,.8)}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ba .before{clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+.ba .handle{position:absolute;top:0;bottom:0;left:var(--pos);width:1px;background:linear-gradient(transparent,var(--gold-hi) 15%,var(--gold-hi) 85%,transparent);transform:translateX(-.5px)}
+.ba .knob{position:absolute;top:50%;left:var(--pos);width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:rgba(11,10,9,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--gold);display:grid;place-items:center;color:var(--gold-hi);transition:transform .4s var(--ease)}
+.ba:active .knob{transform:scale(.9)}
+.ba .knob svg{width:22px}
+.ba .lbl{position:absolute;top:1rem;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;padding:.5em 1em;border-radius:999px;background:rgba(11,10,9,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--ivory);transition:opacity .3s}
+.ba .lbl.b{left:1rem}.ba .lbl.a{right:1rem;color:var(--gold-hi)}
+.ba input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.ba-copy .idx{font-family:var(--serif);font-size:clamp(4rem,9vw,7rem);line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(216,191,138,.45)}
+.ba-copy h3{font-family:var(--serif);font-weight:300;font-size:clamp(2.1rem,4.5vw,3.3rem);color:var(--ivory);line-height:1.05;margin:1rem 0 1rem}
+.ba-copy p{color:var(--muted);max-width:30em}
+.ba-copy .hint{margin-top:1.4rem;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:.6rem}
+
+/* gallery */
+.gallery{columns:2 160px;column-gap:clamp(.7rem,1.5vw,1.2rem)}
+.g-item{break-inside:avoid;margin-bottom:clamp(.7rem,1.5vw,1.2rem);position:relative;overflow:hidden;border-radius:4px;cursor:zoom-in;background:var(--card);display:block;width:100%}
+.g-item img{width:100%;height:auto;transition:transform 1.4s var(--ease),filter 1s}
+.g-item:hover img{transform:scale(1.06);filter:brightness(1.08)}
+.g-item figcaption{position:absolute;inset:auto 0 0 0;padding:2.4rem 1rem 1rem;background:linear-gradient(transparent,rgba(0,0,0,.75));font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-hi);text-align:left;opacity:0;transform:translateY(10px);transition:all .6s var(--ease)}
+.g-item:hover figcaption,.g-item:focus-visible figcaption{opacity:1;transform:none}
+@media (hover:none){.g-item figcaption{opacity:1;transform:none}}
+
+/* experience */
+.steps{display:grid;grid-template-columns:1fr;gap:0;position:relative;counter-reset:s}
+.step{position:relative;padding:2rem 0 2rem 4.5rem;border-top:1px solid var(--line)}
+.step:last-child{border-bottom:1px solid var(--line)}
+.step::before{counter-increment:s;content:"0" counter(s);position:absolute;left:0;top:2.1rem;font-family:var(--serif);font-style:italic;font-size:1.6rem;color:var(--gold)}
+.step h3{font-family:var(--serif);font-weight:400;font-size:1.8rem;color:var(--ivory);line-height:1.1;margin-bottom:.5rem}
+.step p{color:var(--muted);font-size:16px}
+.step .bar{position:absolute;top:-1px;left:0;height:1px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 1.6s var(--ease)}
+.step.in .bar{transform:scaleX(1)}
+
+/* journal */
+.journal{position:relative;border:1px solid var(--line);border-radius:4px;overflow:hidden;display:grid;grid-template-columns:1fr;background:var(--bg2)}
+.journal-media{position:relative;min-height:340px;overflow:hidden}
+.journal-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.3) brightness(.55);transform:scale(1.08);transition:transform 6s ease-out}
+.journal:hover .journal-media img{transform:scale(1)}
+.journal-media .badge{position:absolute;top:1.4rem;left:1.4rem;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;padding:.55em 1.1em;border:1px solid rgba(241,223,180,.5);border-radius:999px;color:var(--gold-hi);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);background:rgba(0,0,0,.3)}
+.journal-media .wave{position:absolute;left:1.4rem;right:1.4rem;bottom:1.6rem;display:flex;align-items:center;gap:3px;height:44px}
+.journal-media .wave i{flex:1;background:var(--gold);opacity:.75;border-radius:2px;animation:wave 1.6s ease-in-out infinite;height:20%}
+@keyframes wave{50%{height:100%}}
+.journal-copy{padding:clamp(2rem,5vw,4rem)}
+.journal-copy h2{font-size:clamp(2.3rem,5vw,3.6rem);margin:1.1rem 0 1.2rem}
+.journal-copy ul{list-style:none;margin:1.6rem 0 2.2rem;display:grid;gap:.9rem}
+.journal-copy li{display:flex;gap:.9rem;color:var(--muted);font-size:16px}
+.journal-copy li::before{content:"✦";color:var(--gold);font-size:.8em;margin-top:.25em}
+
+/* visit */
+.visit{text-align:center;position:relative;overflow:hidden}
+.visit::before{content:"";position:absolute;left:50%;top:50%;width:900px;height:900px;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(216,191,138,.10),transparent);z-index:-1}
+.visit .h2{margin:1.3rem auto 1.4rem;max-width:14em}
+.visit .cards{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;max-width:960px;margin:3rem auto 0}
+.vcard{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:1.6rem .9rem;border:1px solid var(--line);border-radius:4px;transition:border-color .5s,transform .6s var(--ease),background .5s}
+.vcard:hover{border-color:rgba(216,191,138,.55);transform:translateY(-4px);background:rgba(216,191,138,.04)}
+.vcard svg{width:22px;height:22px;color:var(--gold);margin-bottom:.4rem}
+.vcard small{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.vcard b{font-family:var(--serif);font-weight:400;font-size:clamp(1.1rem,3.6vw,1.35rem);line-height:1.2;color:var(--ivory);word-break:break-word}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:4rem var(--pad) calc(6.5rem + env(safe-area-inset-bottom));text-align:center}
+footer img{width:90px;margin:0 auto 1.2rem;opacity:.9}
+footer .fname{font-family:var(--serif);font-size:1.8rem;color:var(--ivory);font-weight:300}
+footer .ftag{font-family:var(--script);color:var(--gold);font-size:1.8rem;line-height:1.2}
+footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+
+/* mobile sticky booking */
+.dock{position:fixed;left:1rem;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom));z-index:60;display:flex;gap:.6rem;transform:translateY(160%);transition:transform .8s var(--ease)}
+.dock.show{transform:none}
+.dock .btn{flex:1;padding:1.05em 1em}
+.dock .call{flex:none;width:54px;padding:0;border-radius:50%;background:rgba(11,10,9,.8);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+
+.vcard .go{font-style:normal;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);opacity:.75;margin-top:.2rem}
+.vcard:active{transform:scale(.98)}
+/* welcome-back toast */
+#toast{position:fixed;left:50%;bottom:calc(5.6rem + env(safe-area-inset-bottom));z-index:85;width:min(92vw,420px);transform:translate(-50%,30px);opacity:0;visibility:hidden;transition:all .8s var(--ease);background:rgba(18,16,14,.92);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid rgba(216,191,138,.35);border-radius:18px;padding:1.2rem 1.3rem;display:flex;gap:1rem;align-items:center;box-shadow:0 30px 60px -20px rgba(0,0,0,.8)}
+#toast.show{transform:translate(-50%,0);opacity:1;visibility:visible}
+#toast img{width:44px;flex:none}
+#toast p{font-family:var(--serif);font-size:1.25rem;color:var(--ivory);line-height:1.2}
+#toast p small{display:block;font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:.3rem;line-height:1.4}
+#toast .t-actions{display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap}
+#toast .t-actions a,#toast .t-actions button{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;padding:.7em 1.2em;border-radius:999px;border:1px solid var(--line);color:var(--ivory)}
+#toast .t-actions a{background:linear-gradient(120deg,var(--gold-lo),var(--gold-hi));color:#1a140a;border:0}
+@media (min-width:960px){#toast{bottom:2rem}}
+
+.svc-book{margin-top:1.6rem;position:relative;z-index:1}
+/* ================= BOOKING ================= */
+#book{position:fixed;inset:0;z-index:96;display:grid;place-items:end center;visibility:hidden;pointer-events:none}
+#book.open{visibility:visible;pointer-events:auto}
+#book .scrim{position:absolute;inset:0;background:rgba(5,4,3,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .6s var(--ease)}
+#book.open .scrim{opacity:1}
+.bk{position:relative;width:100%;max-width:620px;max-height:100svh;height:100svh;background:var(--bg);border:1px solid var(--line);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .8s var(--ease);overflow:hidden}
+#book.open .bk{transform:none}
+@media (min-width:720px){#book{place-items:center}.bk{height:auto;max-height:min(880px,92svh);border-radius:22px;transform:translateY(40px) scale(.97);opacity:0;transition:transform .8s var(--ease),opacity .6s}#book.open .bk{opacity:1}}
+.bk-head{padding:calc(1.1rem + env(safe-area-inset-top)) 1.4rem 1rem;display:flex;align-items:center;gap:.9rem;border-bottom:1px solid rgba(216,191,138,.1)}
+.bk-head img{width:34px}
+.bk-head div{flex:1;line-height:1.2}
+.bk-head b{display:block;font-family:var(--serif);font-weight:400;font-size:1.3rem;color:var(--ivory)}
+.bk-head small{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.bk-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:border-color .3s}
+.bk-x:hover{border-color:var(--gold)}
+.bk-x svg{width:18px}
+.bk-prog{height:2px;background:rgba(216,191,138,.12)}
+.bk-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-lo),var(--gold-hi));width:25%;transition:width .8s var(--ease)}
+.bk-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:1.8rem 1.4rem 1.4rem;-webkit-overflow-scrolling:touch}
+.bk-step{display:none}
+.bk-step.on{display:block;animation:bkIn .7s var(--ease)}
+.bk-step.on.back{animation:bkBack .7s var(--ease)}
+@keyframes bkIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes bkBack{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.bk-count{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.bk-step h3{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,6vw,2.5rem);color:var(--ivory);line-height:1.08;margin:.5rem 0 .5rem}
+.bk-step h3 em{color:var(--gold)}
+.bk-step .bk-sub{color:var(--muted);font-size:15.5px;margin-bottom:1.6rem}
+.bk-label{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);margin:1.4rem 0 .7rem}
+.bk-label i{font-style:normal;color:var(--dim);letter-spacing:.1em;text-transform:none;font-size:12.5px}
+.opts{display:grid;gap:.6rem}
+.opts.two{grid-template-columns:1fr 1fr}
+.opts.three{grid-template-columns:repeat(3,1fr)}
+.opt{position:relative;display:block;cursor:pointer}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt span{display:flex;flex-direction:column;gap:.15rem;padding:1rem 1.1rem;border:1px solid var(--line);border-radius:12px;transition:border-color .35s,background .35s,transform .35s var(--ease);min-height:100%}
+.opt span b{font-family:var(--serif);font-weight:400;font-size:1.2rem;color:var(--ivory);line-height:1.15}
+.opt span small{font-size:13px;color:var(--muted);line-height:1.4}
+.opt.center span{align-items:center;justify-content:center;text-align:center;padding:.9rem .5rem}
+.opt.center span b{font-size:1.05rem}
+.opt:hover span{border-color:rgba(216,191,138,.45)}
+.opt input:checked+span{border-color:var(--gold);background:rgba(216,191,138,.09);box-shadow:inset 0 0 0 1px var(--gold)}
+.opt input:checked+span b{color:var(--gold-hi)}
+.opt input:focus-visible+span{outline:1px solid var(--gold);outline-offset:3px}
+.opt input:checked+span::after{content:"✓";position:absolute;top:.7rem;right:.9rem;color:var(--gold);font-size:.9rem}
+.opt.center input:checked+span::after{display:none}
+.fld{position:relative;margin-top:.8rem}
+.fld input,.fld textarea{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--ivory);font:inherit;font-size:16px;padding:1.45rem 1rem .55rem;transition:border-color .3s,background .3s;color-scheme:dark;-webkit-appearance:none;appearance:none;min-height:58px}
+.fld textarea{resize:vertical;min-height:110px;line-height:1.5;padding-top:1.9rem}
+.fld label{position:absolute;left:1rem;top:1.05rem;font-size:15px;color:var(--muted);pointer-events:none;transition:all .3s var(--ease);transform-origin:left}
+.fld input:focus,.fld textarea:focus{outline:none;border-color:var(--gold);background:#16130f}
+.fld input:focus+label,.fld input:not(:placeholder-shown)+label,.fld textarea:focus+label,.fld textarea:not(:placeholder-shown)+label,.fld.date label{top:.5rem;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.fld.date input{padding-top:1.5rem}
+.fld .err,.bk-err{display:block;font-size:12.5px;color:#e7a29a;margin-top:.4rem;min-height:0}
+.fld.bad input,.fld.bad textarea{border-color:#c9776d}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.bk-review{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.bk-review div{display:flex;justify-content:space-between;gap:1rem;padding:.9rem 1.1rem;border-bottom:1px solid rgba(216,191,138,.08);font-size:15px}
+.bk-review div:last-child{border-bottom:0}
+.bk-review dt{color:var(--muted);font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding-top:.2em;flex:none}
+.bk-review dd{color:var(--ivory);text-align:right;word-break:break-word}
+.bk-review button{color:var(--gold);font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-left:.6rem}
+.bk-fine{font-size:13px;color:var(--dim);margin-top:1.2rem;line-height:1.55}
+.bk-foot{display:flex;gap:.7rem;padding:1rem 1.4rem calc(1rem + env(safe-area-inset-bottom));border-top:1px solid rgba(216,191,138,.1);background:var(--bg)}
+.bk-foot .btn{flex:1;padding:1.05em 1em}
+.bk-foot .btn-ghost{flex:0 0 auto;padding:1.05em 1.5em}
+.bk-foot .btn[disabled]{opacity:.6;pointer-events:none}
+.spin{width:16px;height:16px;border:1.5px solid rgba(26,20,10,.3);border-top-color:#1a140a;border-radius:50%;animation:spin .8s linear infinite;display:none}
+.sending .spin{display:inline-block}
+/* success */
+.bk-done{text-align:center;padding:1.5rem 0 1rem}
+.seal-ok{width:120px;height:120px;margin:0 auto 1.6rem;position:relative}
+.seal-ok svg{width:100%;height:100%}
+.seal-ok circle{stroke-dasharray:340;stroke-dashoffset:340}
+.seal-ok path{stroke-dasharray:60;stroke-dashoffset:60}
+.bk-step.on .seal-ok circle{animation:draw 1.4s var(--ease) .1s forwards}
+.bk-step.on .seal-ok path{animation:draw .8s var(--ease) 1s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.bk-done h3{margin-top:0}
+.bk-done .btns{display:grid;gap:.7rem;margin-top:2rem}
+.bk-alt{margin-top:1.4rem;padding:1.2rem;border:1px dashed rgba(216,191,138,.35);border-radius:14px;text-align:left}
+.bk-alt p{font-size:14.5px;color:var(--ink);margin-bottom:.9rem}
+.bk-alt .row2 .btn{padding:.95em .5em;font-size:11px}
+/* lightbox */
+#lb{position:fixed;inset:0;z-index:95;background:rgba(6,5,4,.96);display:grid;place-items:center;opacity:0;visibility:hidden;transition:opacity .5s,visibility 0s .5s;touch-action:pan-y}
+#lb.open{opacity:1;visibility:visible;transition:opacity .5s}
+#lb img{max-width:92vw;max-height:82vh;object-fit:contain;border-radius:2px;transform:scale(.96);transition:transform .7s var(--ease),opacity .35s}
+#lb.open img{transform:none}
+#lb .lb-cap{position:absolute;bottom:calc(1.6rem + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-hi)}
+#lb button{position:absolute;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--ivory);transition:border-color .3s,background .3s}
+#lb button:hover{border-color:var(--gold);background:rgba(216,191,138,.08)}
+#lb button svg{width:20px}
+#lb .x{top:calc(1.2rem + env(safe-area-inset-top));right:1.2rem}
+#lb .prev{left:1.2rem;top:50%;margin-top:-26px}
+#lb .next{right:1.2rem;top:50%;margin-top:-26px}
+
+/* cursor glow (desktop) */
+#glow{position:fixed;top:0;left:0;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(closest-side,rgba(216,191,138,.07),transparent);opacity:0;transition:opacity .6s}
+@media (hover:hover) and (pointer:fine){body:hover #glow{opacity:1}}
+
+/* reveal system */
+.rv{opacity:0;transform:translateY(40px);transition:opacity 1.3s var(--ease),transform 1.3s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv-img{clip-path:inset(12% 0 12% 0);transition:clip-path 1.6s var(--ease)}
+.rv-img.in{clip-path:inset(0 0 0 0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ---------- responsive ---------- */
+@media (min-width:720px){
+  .svc-grid{grid-template-columns:1fr 1fr}
+  .visit .cards{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr);column-gap:3rem}
+  .step:nth-last-child(2){border-bottom:1px solid var(--line)}
+  .gallery{columns:3}
+}
+@media (min-width:960px){
+  .about{grid-template-columns:1fr 1.1fr}
+  .ba-item{grid-template-columns:1.05fr 1fr;gap:clamp(3rem,6vw,6rem)}
+  .ba-item:nth-child(even) .ba{order:2}
+  .ba{max-width:560px;width:100%;justify-self:center}
+  .journal{grid-template-columns:1fr 1.1fr}
+  .steps{grid-template-columns:repeat(4,1fr);column-gap:2rem}
+  .step{padding:3.2rem 0 0;border-bottom:0 !important}
+  .step::before{position:static;display:block;margin-bottom:1.2rem}
+  .dock{display:none}
+  .visit .cards{grid-template-columns:repeat(4,1fr);max-width:1180px}
+}
+@media (max-width:959px){
+  .nav-links,.nav-right .btn-book{display:none}
+  .burger{display:block}
+  .sound .lbl-txt{display:none}
+  .sound{padding:0 .9rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+  .rv{opacity:1;transform:none}.rv-img{clip-path:none}
+}
+</style>
 </head>
-<body class="min-h-screen flex flex-col relative selection:bg-yellow-600/30">
+<body class="locked">
 
-    <div class="ambient-glow animate-pulse-slow"></div>
+<!-- ============ INTRO ============ -->
+<div id="intro" role="dialog" aria-label="Welcome">
+  <div>
+    <span class="crest-wrap"><img class="crest" src="assets/img/crest-sm.webp" alt="Della — Curls and Colors crest" width="320" height="408"></span>
+    <h1 class="h-display">Shondell <em class="gold-text">Slaughter</em></h1>
+    <p class="eyebrow" style="justify-content:center">Curls &amp; Colors · Texas</p>
+    <div class="intro-actions">
+      <button class="btn btn-gold" data-enter="sound">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
+        Enter with music
+      </button>
+      <button class="btn btn-ghost" data-enter="quiet">Enter quietly</button>
+    </div>
+  </div>
+</div>
 
-    <audio id="bg-music" loop>
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
+<div class="progress" id="progress"></div>
+<div id="glow" aria-hidden="true"></div>
+<audio id="music" src="assets/atmosphere.mp3" loop preload="none"></audio>
 
-    <div class="max-w-md w-full mx-auto flex-1 flex flex-col px-6 pt-16 pb-6 relative z-10">
-        
-        <!-- AUDIO TOGGLE -->
-        <button id="audio-toggle" class="fixed top-6 right-6 flex items-center gap-2 px-4 py-2 rounded-full text-[9px] uppercase tracking-widest text-zinc-400 cursor-pointer animate-fade-in shadow-2xl">
-            <i data-lucide="volume-x" id="audio-icon" class="w-3.5 h-3.5 text-zinc-400"></i>
-            <span id="audio-text">Atmosphere</span>
-        </button>
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <a href="#top" class="brand" aria-label="Shondell Slaughter — home">
+    <img src="assets/img/crest-sm.webp" alt="" width="34" height="43">
+    <span><b>Shondell Slaughter</b><small>Curls &amp; Colors</small></span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <a href="#artist">The Artist</a>
+    <a href="#services">Services</a>
+    <a href="#transformations">Transformations</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#series">The Series</a>
+  </nav>
+  <div class="nav-right">
+    <button class="sound" id="sound" aria-pressed="false" aria-label="Toggle background music">
+      <span class="eq" aria-hidden="true"><i style="height:5px"></i><i style="height:11px"></i><i style="height:7px"></i><i style="height:13px"></i></span><span class="lbl-txt">Sound</span>
+    </button>
+    <a class="btn btn-gold btn-book" href="#book" data-book>Book</a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+</header>
 
-        <!-- HEADER -->
-        <header class="flex flex-col items-center mb-10 animate-fade-in">
-            <!-- FLOATING LOGO -->
-            <div class="relative w-36 h-36 mb-6 group animate-float">
-                <div class="absolute inset-0 rounded-full border border-[#d4af37]/40 animate-[spin_12s_linear_infinite]"></div>
-                <div class="absolute inset-2 rounded-full border border-[#f3e5ab]/20 animate-[spin_18s_linear_infinite_reverse]"></div>
-                <img src="logo.jpg" alt="Shondell Slaughter" class="w-full h-full rounded-full object-cover shadow-[0_0_40px_rgba(184,134,11,0.3)] p-1.5">
-            </div>
-            
-            <h1 class="text-4xl font-serif font-light text-center text-transparent bg-clip-text bg-gradient-to-r from-[#e6c875] via-[#ffffff] to-[#b8860b] tracking-wider mb-2 leading-tight">
-                Shondell Slaughter
-            </h1>
-            <p class="text-[9px] tracking-[0.4em] uppercase text-zinc-400 font-light mb-8">
-                Exclusive Curls & Colors
-            </p>
+<div id="menu" aria-hidden="true">
+  <a class="m" href="#artist"><small>01</small>The Artist</a>
+  <a class="m" href="#services"><small>02</small>Services</a>
+  <a class="m" href="#transformations"><small>03</small>Transformations</a>
+  <a class="m" href="#gallery"><small>04</small>Gallery</a>
+  <a class="m" href="#series"><small>05</small>The Series</a>
+  <a class="m" href="#visit"><small>06</small>Visit</a>
+  <div class="menu-foot">
+    <span class="eyebrow">Strictly by appointment</span>
+    <a href="tel:+18174806160" data-out>Call (817) 480-6160</a>
+  </div>
+</div>
 
-            <!-- TABS -->
-            <div class="flex w-full border-b border-zinc-800/60 pb-px relative">
-                <button id="nav-links" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-[#e6c875] border-b-[1px] border-[#e6c875] transition-colors">Links</button>
-                <button id="nav-portfolio" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors">Services</button>
-                <button id="nav-science" class="flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors">The Series</button>
-            </div>
-        </header>
+<main id="top">
 
-        <!-- PAGE 1: LINKS -->
-        <main id="page-links" class="flex-1 flex flex-col gap-5 w-full">
-            
-            <a href="https://newtolinux23.github.io/appointment-/" target="_blank" class="link-btn reveal flex items-center justify-between p-5 rounded-2xl group">
-                <div class="flex items-center gap-5">
-                    <div class="p-3 rounded-full border border-[#e6c875]/40 bg-[#e6c875]/10 text-[#e6c875] group-hover:bg-[#e6c875] group-hover:text-black transition-colors shadow-[0_0_15px_rgba(230,200,117,0.2)]"><i data-lucide="calendar-clock" class="w-4 h-4"></i></div>
-                    <div class="flex flex-col">
-                        <span class="font-light tracking-widest text-[13px] text-zinc-100 group-hover:text-white uppercase">Request Appointment</span>
-                        <span class="text-[9px] text-[#e6c875]/70 tracking-wider mt-1 uppercase font-medium">Consultation & Booking</span>
-                    </div>
-                </div>
-                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-500 group-hover:text-[#e6c875] transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
-            </a>
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <canvas id="dust" aria-hidden="true"></canvas>
+  <div>
+    <img class="hero-crest" src="assets/img/crest.webp" alt="Della — Curls and Colors, Where Texas Radiance Begins" width="640" height="816">
+    <h1 class="h-display">
+      <span class="line"><span>Shondell</span></span>
+      <span class="line"><span class="gold-text">Slaughter</span></span>
+    </h1>
+    <p class="tag">Curls &amp; Colors</p>
+    <p class="sub">Where Texas Radiance Begins</p>
+    <div class="cta">
+      <a class="btn btn-gold" href="#book" data-book>Request an Appointment</a>
+      <a class="btn btn-ghost" href="#transformations">See the Transformations</a>
+    </div>
+  </div>
+  <div class="scroll-cue" aria-hidden="true"><i></i>Scroll</div>
+</section>
 
-            <a href="tel:+18174806160" class="link-btn reveal flex items-center justify-between p-5 rounded-2xl group">
-                <div class="flex items-center gap-5">
-                    <div class="p-3 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-300 group-hover:border-zinc-400 group-hover:text-white transition-colors"><i data-lucide="phone" class="w-4 h-4"></i></div>
-                    <div class="flex flex-col">
-                        <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Studio Direct Line</span>
-                        <span class="text-[9px] text-zinc-500 tracking-wider mt-1 uppercase">Speak with Della</span>
-                    </div>
-                </div>
-                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
-            </a>
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Lived-in Color</span><span>Dimensional Highlights</span><span>Color Correction</span><span>Curl Shaping</span><span>Precision Cuts</span><span>Custom Glazes</span><span>Total Transformations</span>
+    <span>Lived-in Color</span><span>Dimensional Highlights</span><span>Color Correction</span><span>Curl Shaping</span><span>Precision Cuts</span><span>Custom Glazes</span><span>Total Transformations</span>
+  </div>
+</div>
 
-            <a href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6?g_st=ac" target="_blank" class="link-btn reveal flex items-center justify-between p-5 rounded-2xl group">
-                <div class="flex items-center gap-5">
-                    <div class="p-3 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-300 group-hover:border-zinc-400 group-hover:text-white transition-colors"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
-                    <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Studio Location</span>
-                </div>
-                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
-            </a>
-            
-            <a href="mailto:dellalouise39@gmail.com" class="link-btn reveal flex items-center justify-between p-5 rounded-2xl group">
-                <div class="flex items-center gap-5">
-                    <div class="p-3 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-300 group-hover:border-zinc-400 group-hover:text-white transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></div>
-                    <span class="font-light tracking-widest text-[13px] text-zinc-200 group-hover:text-white uppercase">Direct Inquiry</span>
-                </div>
-                <i data-lucide="arrow-right" class="w-4 h-4 text-zinc-600 transition-colors opacity-50 group-hover:opacity-100 transform group-hover:translate-x-1 duration-300"></i>
-            </a>
-        </main>
+<!-- ============ ARTIST ============ -->
+<section id="artist">
+  <div class="wrap about">
+    <div class="about-media rv">
+      <div class="frame"></div>
+      <div class="arch rv-img"><img data-speed="-0.06" src="assets/img/copper.webp" srcset="assets/img/copper-sm.webp 600w, assets/img/copper.webp 1080w" sizes="(min-width:960px) 520px, 90vw" alt="Dimensional copper color with soft lived-in highlights" loading="lazy" width="1080" height="1440"></div>
+      <div class="seal" aria-hidden="true">
+        <svg viewBox="0 0 120 120"><defs><path id="c" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text font-family="Jost" font-size="9.2" letter-spacing="3.1" fill="#d8bf8a"><textPath href="#c">BY APPOINTMENT ✦ CURLS &amp; COLORS ✦ TEXAS ✦</textPath></text></svg>
+        <img src="assets/img/crest-sm.webp" alt="">
+      </div>
+    </div>
+    <div class="about-copy">
+      <span class="eyebrow rv">The Artist</span>
+      <h2 class="h-display h2 rv d1">Hair, treated as <em class="gold-text">fine art.</em></h2>
+      <p class="lead rv d2">For more than two decades, Shondell Slaughter — known to her clients simply as <em>Della</em> — has turned hairdressing into a private, made-to-measure art.</p>
+      <p class="muted rv d3">From her chair at Main Street Parlor, she creates lived-in color, seamless dimension and precision shapes designed around one thing: <em>you</em>. Every formula is mixed for your hair alone, and every appointment gets her full, unhurried attention.</p>
+      <p class="signature rv d4">Della</p>
+      <div class="stats rv d4">
+        <div><b data-count="20">0</b><span>+ Years of craft</span></div>
+        <div><b>1:1</b><span>Private sessions</span></div>
+        <div><b>100%</b><span>Bespoke formulas</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <!-- PAGE 2: SERVICES & WORK (THE MAGAZINE FEED) -->
-        <main id="page-portfolio" class="flex-1 flex flex-col w-full page-hidden">
-            
-            <div class="reveal mb-12 flex flex-col items-center px-2">
-                <i data-lucide="quote" class="w-6 h-6 text-[#e6c875]/40 mb-4 animate-pulse-slow"></i>
-                <p class="text-[13px] leading-loose text-zinc-300 font-light text-center">
-                    With over two decades of refined expertise at Main Street Parlor, Shondell elevates hairdressing into an art form. Specializing in bespoke lived-in color, dimensional highlighting, and precision structural cuts.
-                </p>
-            </div>
+<!-- ============ SERVICES ============ -->
+<section id="services" class="services">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow c rv">Signature Services</span>
+      <h2 class="h-display h2 rv d1">The <em class="gold-text">Menu</em></h2>
+    </div>
+    <div class="svc-grid">
+      <article class="svc rv">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+        <span class="num">i.</span>
+        <h3>Bespoke Color &amp; Dimension</h3>
+        <p>Lived-in luxury color and seamless dimensional highlights, tailored to your skin tone, lifestyle and your hair’s architecture.</p>
+        <ul><li>Lived-in color</li><li>Balayage</li><li>Highlights</li></ul>
+        <a class="arrow-link svc-book" href="#book" data-book data-service="color"><span>Request this service</span> →</a>
+      </article>
+      <article class="svc rv d1">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor" opacity=".25"/></svg>
+        <span class="num">ii.</span>
+        <h3>Color Correction</h3>
+        <p>Banding, brassiness or a color gone wrong, restored with patience and chemistry to a flawless, natural flow.</p>
+        <ul><li>Banding repair</li><li>Tone correction</li><li>Color match</li></ul>
+        <a class="arrow-link svc-book" href="#book" data-book data-service="correction"><span>Request this service</span> →</a>
+      </article>
+      <article class="svc rv">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 20 20M8.1 15.9 20 4"/></svg>
+        <span class="num">iii.</span>
+        <h3>Structural &amp; Precision Cuts</h3>
+        <p>Sculpted bobs, textured pixies and refined men’s grooming, every shape cut to move beautifully on its own.</p>
+        <ul><li>Bobs &amp; pixies</li><li>Long layers</li><li>Men’s grooming</li></ul>
+        <a class="arrow-link svc-book" href="#book" data-book data-service="cut"><span>Request this service</span> →</a>
+      </article>
+      <article class="svc rv d1">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M7 3c4 3-4 6 0 9s-4 6 0 9M13 3c4 3-4 6 0 9s-4 6 0 9M19 3c4 3-4 6 0 9s-4 6 0 9"/></svg>
+        <span class="num">iv.</span>
+        <h3>Curls, Glazes &amp; Gloss</h3>
+        <p>Curl shaping that honors your natural pattern, finished with custom glazes that bring back shine and vitality.</p>
+        <ul><li>Curl shaping</li><li>Custom glaze</li><li>Gloss refresh</li></ul>
+        <a class="arrow-link svc-book" href="#book" data-book data-service="curls"><span>Request this service</span> →</a>
+      </article>
+    </div>
+    <p class="svc-note rv">Every service begins with a private consultation. Pricing is tailored to you.</p>
+  </div>
+</section>
 
-            <!-- Services Overview -->
-            <div class="reveal glass-card p-8 rounded-3xl mb-16 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-40 h-40 bg-[#e6c875]/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
-                <h3 class="font-serif text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#e6c875] to-[#ffffff] mb-8 text-center tracking-wide">Signature Services</h3>
-                
-                <div class="space-y-8 relative z-10">
-                    <div class="flex items-start gap-5">
-                        <div class="mt-1"><i data-lucide="sparkles" class="w-5 h-5 text-[#e6c875] opacity-80"></i></div>
-                        <div>
-                            <h4 class="text-zinc-100 font-medium tracking-widest text-[11px] uppercase mb-1.5">Bespoke Color & Dimension</h4>
-                            <p class="text-[11px] text-zinc-400 leading-relaxed font-light">Lived-in luxury color, total transformations, and seamless dimensional highlighting tailored to your hair's architecture.</p>
-                        </div>
-                    </div>
-                    <div class="w-full h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent"></div>
-                    <div class="flex items-start gap-5">
-                        <div class="mt-1"><i data-lucide="scissors" class="w-5 h-5 text-[#e6c875] opacity-80"></i></div>
-                        <div>
-                            <h4 class="text-zinc-100 font-medium tracking-widest text-[11px] uppercase mb-1.5">Structural & Precision Cuts</h4>
-                            <p class="text-[11px] text-zinc-400 leading-relaxed font-light">From master-level men's grooming to beautifully sculpted shapes that enhance your natural curl pattern.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h3 class="reveal font-serif text-3xl text-center text-zinc-200 mb-10 tracking-wide border-b border-white/10 pb-6">The Editorial</h3>
-            
-            <!-- MASSIVE VERTICAL SCROLL FEED -->
-            <div class="w-full flex flex-col gap-16 pb-12">
-                
-                <!-- Transformation 1: Color Match Mastery -->
-                <div class="reveal relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 group bg-zinc-900">
-                    <img src="16665.png" class="w-full h-auto min-h-[500px] object-cover gallery-img" alt="Result">
-                    
-                    <div class="absolute top-6 left-6 w-1/3 max-w-[130px] rounded-xl overflow-hidden border-2 border-white/30 shadow-[0_15px_30px_rgba(0,0,0,0.9)] z-10">
-                        <span class="absolute bottom-1 left-1 bg-black/80 text-white text-[7px] uppercase tracking-widest px-1.5 py-0.5 rounded backdrop-blur-md">Before</span>
-                        <img src="18128.jpg" class="w-full h-auto object-cover" alt="Before">
-                    </div>
-
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent pt-32 pb-8 px-6 text-right pointer-events-none">
-                        <h5 class="text-[14px] font-medium tracking-[0.3em] uppercase text-[#e6c875] drop-shadow-lg mb-2">Color Match Mastery</h5>
-                        <p class="text-[11px] text-zinc-300 font-light leading-relaxed max-w-[80%] ml-auto">A complete overhaul from faded blonde. Della formulated a custom cherry-wine glaze to flawlessly match the client's vibrant inspiration.</p>
-                    </div>
-                </div>
-
-                <!-- NEW Transformation 2: The Structural Chop -->
-                <div class="reveal relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 group bg-zinc-900">
-                    <img src="19123.jpg" class="w-full h-auto min-h-[500px] object-cover gallery-img" alt="Result">
-                    
-                    <div class="absolute top-6 left-6 w-1/3 max-w-[130px] rounded-xl overflow-hidden border-2 border-white/30 shadow-[0_15px_30px_rgba(0,0,0,0.9)] z-10">
-                        <span class="absolute bottom-1 left-1 bg-black/80 text-white text-[7px] uppercase tracking-widest px-1.5 py-0.5 rounded backdrop-blur-md">Before</span>
-                        <img src="19120.jpg" class="w-full h-auto object-cover" alt="Before">
-                    </div>
-
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent pt-32 pb-8 px-6 text-right pointer-events-none">
-                        <h5 class="text-[14px] font-medium tracking-[0.3em] uppercase text-[#e6c875] drop-shadow-lg mb-2">Structural Chop & Brightness</h5>
-                        <p class="text-[11px] text-zinc-300 font-light leading-relaxed max-w-[80%] ml-auto">A dramatic transformation from heavy, grown-out lengths into a chic, textured bob layered with dimensional brightened ribbons.</p>
-                    </div>
-                </div>
-
-                <!-- Transformation 3: Seamless Dimension -->
-                <div class="reveal relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 group bg-zinc-900">
-                    <img src="15197.jpg" class="w-full h-auto min-h-[500px] object-cover gallery-img" alt="Result">
-                    
-                    <div class="absolute top-6 left-6 w-1/3 max-w-[130px] rounded-xl overflow-hidden border-2 border-white/30 shadow-[0_15px_30px_rgba(0,0,0,0.9)] z-10">
-                        <span class="absolute bottom-1 left-1 bg-black/80 text-white text-[7px] uppercase tracking-widest px-1.5 py-0.5 rounded backdrop-blur-md">Before</span>
-                        <img src="15198.jpg" class="w-full h-auto object-cover" alt="Before">
-                    </div>
-
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent pt-32 pb-8 px-6 text-right pointer-events-none">
-                        <h5 class="text-[14px] font-medium tracking-[0.3em] uppercase text-[#e6c875] drop-shadow-lg mb-2">Seamless Dimension</h5>
-                        <p class="text-[11px] text-zinc-300 font-light leading-relaxed max-w-[80%] ml-auto">Banding correction resulting in a flawless, natural-looking flow of highlights.</p>
-                    </div>
-                </div>
-
-                <!-- Transformation 4: Vibrant Refresh -->
-                <div class="reveal relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 group bg-zinc-900">
-                    <img src="13739.jpg" class="w-full h-auto min-h-[500px] object-cover gallery-img" alt="Result">
-                    
-                    <div class="absolute top-6 left-6 w-1/3 max-w-[130px] rounded-xl overflow-hidden border-2 border-white/30 shadow-[0_15px_30px_rgba(0,0,0,0.9)] z-10">
-                        <span class="absolute bottom-1 left-1 bg-black/80 text-white text-[7px] uppercase tracking-widest px-1.5 py-0.5 rounded backdrop-blur-md">Before</span>
-                        <img src="13738.jpg" class="w-full h-auto object-cover" alt="Before">
-                    </div>
-
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent pt-32 pb-8 px-6 text-right pointer-events-none">
-                        <h5 class="text-[14px] font-medium tracking-[0.3em] uppercase text-[#e6c875] drop-shadow-lg mb-2">Vibrant Refresh</h5>
-                        <p class="text-[11px] text-zinc-300 font-light leading-relaxed max-w-[80%] ml-auto">Custom gloss and precision shaping to restore the hair's natural vitality and shine.</p>
-                    </div>
-                </div>
-
-                <!-- Recent Work (Massive Single Images) -->
-                <div class="w-full flex justify-center py-4 reveal">
-                    <span class="text-[9px] text-zinc-500 font-medium tracking-[0.4em] uppercase">Gallery Collection</span>
-                </div>
-
-                <div class="reveal relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
-                    <img src="dimensional-copper-hair-color.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-6 pointer-events-none">
-                        <span class="text-[10px] font-light tracking-[0.3em] uppercase text-[#e6c875]">Copper Dimension</span>
-                    </div>
-                </div>
-
-                <!-- The Fun Mid-Cut Photo -->
-                <div class="reveal relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
-                    <img src="19121.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-6 pointer-events-none">
-                        <span class="text-[10px] font-light tracking-[0.3em] uppercase text-[#e6c875]">In Process Joy</span>
-                    </div>
-                </div>
-
-                <div class="reveal rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
-                    <img src="13599.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
-                </div>
-
-                <div class="reveal rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
-                    <img src="13600.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
-                </div>
-                
-                <div class="reveal rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
-                    <img src="13601.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
-                </div>
-
-                <div class="reveal rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
-                    <img src="13602.jpg" class="w-full h-auto min-h-[400px] object-cover gallery-img">
-                </div>
-                
-                <div class="flex justify-center items-center gap-3 mt-4 mb-4 reveal">
-                    <div class="w-12 h-px bg-zinc-800"></div>
-                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#e6c875]/50"></i>
-                    <div class="w-12 h-px bg-zinc-800"></div>
-                </div>
-
-            </div>
-        </main>
-
-        <!-- PAGE 3: HAIR SCIENCE (THE NETFLIX TAB) -->
-        <main id="page-science" class="flex-1 flex flex-col w-full page-hidden">
-            
-            <div class="text-center reveal mb-8 mt-4">
-                <h2 class="text-3xl font-serif font-light text-white mb-2 leading-tight tracking-wide">The Science of <br> <span class="gold-gradient-text italic">Perfect Color</span></h2>
-            </div>
-
-            <!-- WHAT THEY GET (NETFLIX VIBE - Glassmorphism) -->
-            <div class="glass-card p-8 rounded-3xl mb-12 reveal relative overflow-hidden transition-transform duration-700 hover:-translate-y-1 group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-[#e6c875]/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none group-hover:bg-[#e6c875]/20 transition-colors duration-700"></div>
-                
-                <h3 class="text-[10px] tracking-[0.3em] uppercase text-zinc-400 mb-6 text-center font-medium">Inside The Series</h3>
-                
-                <div class="space-y-6 relative z-10">
-                    <div class="flex items-start gap-4">
-                        <i data-lucide="headphones" class="w-4 h-4 text-[#e6c875] shrink-0 mt-0.5 opacity-80"></i>
-                        <p class="text-xs text-zinc-400 font-light leading-relaxed"><strong class="text-zinc-200 font-medium">Episodes & Case Studies:</strong> Binge-read the stories behind my biggest color corrections and curl transformations.</p>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <i data-lucide="flask-conical" class="w-4 h-4 text-[#e6c875] shrink-0 mt-0.5 opacity-80"></i>
-                        <p class="text-xs text-zinc-400 font-light leading-relaxed"><strong class="text-zinc-200 font-medium">The Science of Repair:</strong> The honest truth about salon formulations, lifting banding, and protecting integrity.</p>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <i data-lucide="gem" class="w-4 h-4 text-[#e6c875] shrink-0 mt-0.5 opacity-80"></i>
-                        <p class="text-xs text-zinc-400 font-light leading-relaxed"><strong class="text-zinc-200 font-medium">VIP Booking Access:</strong> Subscribers get first-dibs when specialty color slots open for the next season.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AUTHORITY PROOF -->
-            <div class="mb-12 reveal">
-                <h4 class="text-[9px] font-medium tracking-[0.3em] uppercase text-[#e6c875] mb-4 text-center">Season 1: Currently Streaming</h4>
-                
-                <a href="https://substack.com/@dellalouise" target="_blank" class="relative overflow-hidden rounded-[2rem] border border-white/5 shadow-2xl block group cursor-pointer transition-all duration-500 hover:border-[#e6c875]/40">
-                    <img src="dimensional-copper-hair-color.jpg" alt="Episode 1" class="w-full h-[400px] object-cover filter brightness-[0.80] group-hover:scale-105 transition-transform duration-[1.5s] ease-out">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent p-8 flex flex-col justify-end">
-                        <div class="flex justify-between items-end">
-                            <div>
-                                <span class="inline-block border border-white/20 text-white text-[8px] font-light uppercase tracking-[0.2em] mb-4 px-2 py-1.5 rounded backdrop-blur-md">Episode 1</span>
-                                <span class="block text-zinc-200 font-serif text-2xl leading-tight group-hover:text-[#e6c875] transition-colors duration-500 max-w-[90%]">Reviving compromised texture into dimensional copper.</span>
-                            </div>
-                            <div class="bg-white/10 p-4 rounded-full backdrop-blur-md border border-white/10 opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                                <i data-lucide="play" class="w-5 h-5 text-white ml-0.5"></i>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <!-- CALL TO ACTION -->
-            <div class="w-full mt-auto reveal glass-card p-10 rounded-3xl text-center relative overflow-hidden">
-                <h2 class="font-serif text-2xl text-zinc-100 mb-2 relative z-10 tracking-wide">Ready for the next episode?</h2>
-                <p class="text-[11px] font-light text-zinc-400 mb-8 relative z-10">Join a community of clients who refuse to compromise on care.</p>
-                
-                <a href="https://substack.com/@dellalouise" target="_blank" class="block w-full bg-gradient-to-r from-[#e6c875] to-[#b8860b] text-black font-medium py-4 rounded-xl shadow-[0_10px_30px_rgba(184,134,11,0.2)] transition-transform active:scale-95 hover:brightness-110 flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.2em] relative z-10">
-                    <i data-lucide="mail-plus" class="w-4 h-4"></i>
-                    Subscribe to the Series
-                </a>
-            </div>
-            
-        </main>
-
+<!-- ============ TRANSFORMATIONS ============ -->
+<section id="transformations">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow rv">The Editorial</span>
+      <h2 class="h-display h2 rv d1">Transfor&shy;mations</h2>
+      <p class="lead muted rv d2">Drag across each portrait to reveal the before and after.</p>
     </div>
 
-    <!-- ELEGANT FOOTER -->
-    <footer class="w-full mt-auto border-t border-white/5 bg-black/60 backdrop-blur-xl pt-10 pb-12 px-6 z-10 relative">
-        <div class="max-w-md mx-auto text-center space-y-8 reveal">
-            <div class="flex justify-center items-center gap-3 text-[#e6c875]">
-                <div class="w-8 h-px bg-[#e6c875]/30"></div>
-                <span class="text-[10px] font-light tracking-[0.3em] uppercase">Texas</span>
-                <div class="w-8 h-px bg-[#e6c875]/30"></div>
-            </div>
-            <div class="flex flex-col items-center justify-center gap-3 border-y border-white/5 py-8">
-                <span class="text-zinc-400 text-[9px] uppercase tracking-[0.3em] font-light">Studio Access</span>
-                <span class="text-zinc-200 font-serif text-lg italic tracking-wide">Strictly By Appointment Only</span>
-            </div>
-            <p class="text-[9px] text-zinc-600 tracking-[0.2em] uppercase font-light pt-2">
-                &copy; <span id="year"></span> Shondell Slaughter.
-            </p>
+    <div class="ba-list">
+      <div class="ba-item">
+        <div class="ba rv" data-ba>
+          <img src="assets/img/color-match-after.webp" srcset="assets/img/color-match-after-sm.webp 600w, assets/img/color-match-after.webp 1080w" sizes="(min-width:960px) 560px, 92vw" alt="After: vibrant cherry-wine color" loading="lazy">
+          <img class="before" src="assets/img/color-match-before.webp" srcset="assets/img/color-match-before-sm.webp 600w, assets/img/color-match-before.webp 1080w" sizes="(min-width:960px) 560px, 92vw" alt="Before: faded blonde" loading="lazy">
+          <span class="lbl b">Before</span><span class="lbl a">After</span>
+          <div class="handle"></div>
+          <div class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></div>
+          <input type="range" min="0" max="100" value="50" aria-label="Before and after comparison: Color Match Mastery">
         </div>
-    </footer>
+        <div class="ba-copy rv d1">
+          <div class="idx">01</div>
+          <h3>Color Match <em>Mastery</em></h3>
+          <p>A complete overhaul from faded blonde. Della formulated a custom cherry-wine glaze to flawlessly match her client’s vibrant inspiration.</p>
+          <div class="hint">⟷ Drag to compare</div>
+        </div>
+      </div>
 
-    <!-- LIGHTBOX MODAL -->
-    <div id="lightbox" class="fixed inset-0 z-50 bg-black/98 hidden flex justify-center items-center opacity-0 transition-opacity duration-500 backdrop-blur-sm">
-        <button id="close-lightbox" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors">
-            <i data-lucide="x" class="w-8 h-8 font-light"></i>
-        </button>
-        <img id="lightbox-img" src="" class="max-w-[95%] max-h-[90vh] object-contain shadow-2xl scale-95 transition-transform duration-700">
+      <div class="ba-item">
+        <div class="ba rv" data-ba>
+          <img src="assets/img/bob-after.webp" srcset="assets/img/bob-after-sm.webp 600w, assets/img/bob-after.webp 1080w" sizes="(min-width:960px) 560px, 92vw" alt="After: textured bob with brightened ribbons" loading="lazy">
+          <img class="before" src="assets/img/bob-before.webp" srcset="assets/img/bob-before-sm.webp 600w, assets/img/bob-before.webp 1080w" sizes="(min-width:960px) 560px, 92vw" alt="Before: heavy grown-out lengths" loading="lazy">
+          <span class="lbl b">Before</span><span class="lbl a">After</span>
+          <div class="handle"></div>
+          <div class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></div>
+          <input type="range" min="0" max="100" value="50" aria-label="Before and after comparison: Structural Chop">
+        </div>
+        <div class="ba-copy rv d1">
+          <div class="idx">02</div>
+          <h3>Structural Chop <em>&amp; Brightness</em></h3>
+          <p>A dramatic change from heavy, grown-out lengths into a chic, textured bob layered with brightened dimensional ribbons.</p>
+          <div class="hint">⟷ Drag to compare</div>
+        </div>
+      </div>
+
+      <div class="ba-item">
+        <div class="ba rv" data-ba>
+          <img src="assets/img/dimension-after.webp" srcset="assets/img/dimension-after-sm.webp 600w, assets/img/dimension-after.webp 1080w" sizes="(min-width:960px) 560px, 92vw" alt="After: seamless blended blonde" loading="lazy">
+          <img class="before" src="assets/img/dimension-before.webp" srcset="assets/img/dimension-before-sm.webp 600w, assets/img/dimension-before.webp 1080w" sizes="(min-width:960px) 560px, 92vw" alt="Before: banded highlights in foils" loading="lazy">
+          <span class="lbl b">Before</span><span class="lbl a">After</span>
+          <div class="handle"></div>
+          <div class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></div>
+          <input type="range" min="0" max="100" value="50" aria-label="Before and after comparison: Seamless Dimension">
+        </div>
+        <div class="ba-copy rv d1">
+          <div class="idx">03</div>
+          <h3>Seamless <em>Dimension</em></h3>
+          <p>A precise banding correction, resulting in a flawless, natural-looking flow of highlights from root to end.</p>
+          <div class="hint">⟷ Drag to compare</div>
+        </div>
+      </div>
+
+      <div class="ba-item">
+        <div class="ba rv" data-ba>
+          <img src="assets/img/refresh-after.webp" srcset="assets/img/refresh-after-sm.webp 600w, assets/img/refresh-after.webp 1080w" sizes="(min-width:960px) 560px, 92vw" alt="After: glossy plum-toned layered cut" loading="lazy">
+          <img class="before" src="assets/img/refresh-before.webp" srcset="assets/img/refresh-before-sm.webp 600w, assets/img/refresh-before.webp 1080w" sizes="(min-width:960px) 560px, 92vw" alt="Before: dull blonde lengths" loading="lazy">
+          <span class="lbl b">Before</span><span class="lbl a">After</span>
+          <div class="handle"></div>
+          <div class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></div>
+          <input type="range" min="0" max="100" value="50" aria-label="Before and after comparison: Vibrant Refresh">
+        </div>
+        <div class="ba-copy rv d1">
+          <div class="idx">04</div>
+          <h3>Vibrant <em>Refresh</em></h3>
+          <p>A custom gloss and precision shaping to restore the hair’s natural vitality, movement and shine.</p>
+          <div class="hint">⟷ Drag to compare</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow c rv">The Collection</span>
+      <h2 class="h-display h2 rv d1">Recent <em class="gold-text">Work</em></h2>
+    </div>
+    <div class="gallery" id="gal">
+      <figure class="g-item rv" tabindex="0" data-full="assets/img/copper.webp"><img src="assets/img/copper-sm.webp" alt="Copper dimension" loading="lazy" width="600" height="800"><figcaption>Copper Dimension</figcaption></figure>
+      <figure class="g-item rv d1" tabindex="0" data-full="assets/img/silver-waves.webp"><img src="assets/img/silver-waves-sm.webp" alt="Silver blended waves" loading="lazy" width="600" height="800"><figcaption>Silver Waves</figcaption></figure>
+      <figure class="g-item rv d2" tabindex="0" data-full="assets/img/pixie.webp"><img src="assets/img/pixie-sm.webp" alt="Textured dimensional pixie" loading="lazy" width="600" height="800"><figcaption>Textured Pixie</figcaption></figure>
+      <figure class="g-item rv" tabindex="0" data-full="assets/img/curls-blonde.webp"><img src="assets/img/curls-blonde-sm.webp" alt="Soft blonde curls" loading="lazy" width="600" height="800"><figcaption>Honey Curls</figcaption></figure>
+      <figure class="g-item rv d1" tabindex="0" data-full="assets/img/in-the-chair.webp"><img src="assets/img/in-the-chair-sm.webp" alt="A happy client mid-appointment" loading="lazy" width="600" height="800"><figcaption>Joy in the Chair</figcaption></figure>
+      <figure class="g-item rv d2" tabindex="0" data-full="assets/img/smooth-bronde.webp"><img src="assets/img/smooth-bronde-sm.webp" alt="Smooth bronde lengths" loading="lazy" width="600" height="800"><figcaption>Smooth Bronde</figcaption></figure>
+      <figure class="g-item rv" tabindex="0" data-full="assets/img/color-match-after.webp"><img src="assets/img/color-match-after-sm.webp" alt="Cherry-wine color" loading="lazy" width="600" height="800"><figcaption>Cherry Wine</figcaption></figure>
+      <figure class="g-item rv d1" tabindex="0" data-full="assets/img/bob-after.webp"><img src="assets/img/bob-after-sm.webp" alt="Textured bob" loading="lazy" width="600" height="800"><figcaption>Ribboned Bob</figcaption></figure>
+      <figure class="g-item rv d2" tabindex="0" data-full="assets/img/refresh-after.webp"><img src="assets/img/refresh-after-sm.webp" alt="Glossy plum layers" loading="lazy" width="600" height="800"><figcaption>Plum Gloss</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow rv">The Experience</span>
+      <h2 class="h-display h2 rv d1">Your appointment, <em class="gold-text">unhurried.</em></h2>
+    </div>
+    <div class="steps">
+      <div class="step rv"><span class="bar"></span><h3>Consultation</h3><p>We talk through your hair history, your lifestyle and the inspiration you love.</p></div>
+      <div class="step rv d1"><span class="bar"></span><h3>Formulation</h3><p>Della mixes a custom formula for your hair’s texture, tone and integrity.</p></div>
+      <div class="step rv d2"><span class="bar"></span><h3>Artistry</h3><p>Color, cut and shape done with precision, one client at a time.</p></div>
+      <div class="step rv d3"><span class="bar"></span><h3>Aftercare</h3><p>You leave with a plan to keep your color rich and your hair healthy.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERIES (COMING SOON) ============ -->
+<section id="series">
+  <div class="wrap" style="padding-top:0">
+    <div class="journal rv">
+      <div class="journal-media">
+        <img src="assets/img/silver-waves-sm.webp" alt="" loading="lazy">
+        <span class="badge">Coming Soon</span>
+        <div class="wave" aria-hidden="true" id="wave"></div>
+      </div>
+      <div class="journal-copy">
+        <span class="eyebrow">The Transformation Series</span>
+        <h2 class="h-display">Stories behind <em class="gold-text">the chair.</em></h2>
+        <p class="muted">A new series from Della is on its way: the real stories behind her biggest color corrections and curl transformations.</p>
+        <ul>
+          <li>Episodes and case studies from real transformations</li>
+          <li>Honest talk about formulas, repair and hair health</li>
+          <li>First access when specialty appointments open</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://substack.com/@dellalouise" target="_blank" rel="noopener" data-out>Join the waitlist</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VISIT ============ -->
+<section id="visit" class="visit">
+  <div class="wrap">
+    <span class="eyebrow c rv" style="justify-content:center">Strictly by appointment</span>
+    <h2 class="h-display h2 rv d1">Your chair is <em class="gold-text">waiting.</em></h2>
+    <p class="lead muted rv d2" style="margin:0 auto">Book a private consultation with Della at Main Street Parlor.</p>
+    <div class="rv d3" style="margin-top:2.4rem"><a class="btn btn-gold" href="#book" data-book>Request an Appointment</a></div>
+    <div class="cards">
+      <a class="vcard rv" href="tel:+18174806160" data-out>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+        <small>Call</small><b>(817) 480-6160</b><em class="go">Tap to call</em>
+      </a>
+      <a class="vcard rv d1" href="sms:+18174806160" data-out>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/></svg>
+        <small>Text</small><b>Message Della</b><em class="go">Tap to text</em>
+      </a>
+      <a class="vcard rv d2" href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6" target="_blank" rel="noopener" data-out>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <small>Directions</small><b>Main Street Parlor</b><em class="go">Google Maps</em>
+      </a>
+      <a class="vcard rv d3" href="mailto:dellalouise39@gmail.com?subject=Appointment%20Inquiry%20%E2%80%94%20Curls%20%26%20Colors&amp;body=Hi%20Della%2C%0A%0AI%E2%80%99d%20love%20to%20book%20a%20consultation.%0A%0AName%3A%0APhone%3A%0AService%20I%E2%80%99m%20interested%20in%3A%0APreferred%20days%2Ftimes%3A%0A%0AThank%20you!" data-out>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        <small>Email</small><b>Write to Della</b><em class="go">Tap to email</em>
+      </a>
+    </div>
+    <a class="arrow-link rv" href="assets/shondell-slaughter.vcf" download style="margin-top:2.4rem"><span>Save Della to your contacts</span> ＋</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <img src="assets/img/crest-sm.webp" alt="" loading="lazy">
+  <div class="fname">Shondell Slaughter</div>
+  <div class="ftag">Curls &amp; Colors</div>
+  <div class="fline">Where Texas Radiance Begins · © <span id="yr"></span></div>
+</footer>
+
+<!-- mobile booking dock -->
+<div class="dock" id="dock">
+  <a class="btn btn-gold" href="#book" data-book>Book with Della</a>
+  <a class="btn btn-ghost call" href="tel:+18174806160" data-out aria-label="Call the studio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>
+</div>
+
+<div id="toast" role="status" aria-live="polite">
+  <img src="assets/img/crest-sm.webp" alt="">
+  <div>
+    <p>Welcome back. <small id="toast-msg">We kept your place. Ready when you are.</small></p>
+    <div class="t-actions">
+      <a href="#book" data-book>Book now</a>
+      <button type="button" id="toast-x">Keep browsing</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================= BOOKING ================= -->
+<div id="book" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <form class="bk" id="bk-form" name="appointment-request" novalidate role="dialog" aria-modal="true" aria-labelledby="bk-title">
+    <div class="bk-head">
+      <img src="assets/img/crest-sm.webp" alt="">
+      <div><b id="bk-title">Request an Appointment</b><small>With Della</small></div>
+      <button type="button" class="bk-x" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="bk-prog"><i id="bk-bar"></i></div>
+
+    <div class="bk-body" id="bk-body">
+      <!-- STEP 1 · SERVICE -->
+      <section class="bk-step on" data-step="1">
+        <span class="bk-count">Step 1 of 4</span>
+        <h3>What are we <em>creating?</em></h3>
+        <p class="bk-sub">Choose the service you’re dreaming of. Not sure? Pick a consultation and Della will guide you.</p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="service" value="Bespoke Color & Dimension" data-key="color"><span><b>Bespoke Color &amp; Dimension</b><small>Lived-in color, balayage, highlights</small></span></label>
+          <label class="opt"><input type="radio" name="service" value="Color Correction" data-key="correction"><span><b>Color Correction</b><small>Banding, brassiness, color match</small></span></label>
+          <label class="opt"><input type="radio" name="service" value="Structural & Precision Cut" data-key="cut"><span><b>Structural &amp; Precision Cut</b><small>Bobs, pixies, layers, men’s grooming</small></span></label>
+          <label class="opt"><input type="radio" name="service" value="Curls, Glazes & Gloss" data-key="curls"><span><b>Curls, Glazes &amp; Gloss</b><small>Curl shaping, custom glaze, gloss refresh</small></span></label>
+          <label class="opt"><input type="radio" name="service" value="Consultation (not sure yet)" data-key="consult"><span><b>Consultation</b><small>Let’s talk about it first</small></span></label>
+        </div>
+        <span class="bk-err" data-err="service"></span>
+        <span class="bk-label">Have you seen Della before?</span>
+        <div class="opts two">
+          <label class="opt center"><input type="radio" name="clientType" value="New client"><span><b>I’m new</b></span></label>
+          <label class="opt center"><input type="radio" name="clientType" value="Returning client"><span><b>Returning</b></span></label>
+        </div>
+        <span class="bk-err" data-err="clientType"></span>
+      </section>
+
+      <!-- STEP 2 · TIMING -->
+      <section class="bk-step" data-step="2">
+        <span class="bk-count">Step 2 of 4</span>
+        <h3>When works <em>for you?</em></h3>
+        <p class="bk-sub">Share two dates you’d love. Della will confirm the one that fits her book.</p>
+        <div class="fld date"><input type="date" name="firstChoiceDate" id="d1" required><label for="d1">First choice date</label><span class="err"></span></div>
+        <div class="fld date"><input type="date" name="alternativeChoiceDate" id="d2" required><label for="d2">Second choice date</label><span class="err"></span></div>
+        <span class="bk-label">Preferred time of day</span>
+        <div class="opts three">
+          <label class="opt center"><input type="radio" name="preferredTime" value="Morning"><span><b>Morning</b></span></label>
+          <label class="opt center"><input type="radio" name="preferredTime" value="Mid-Day"><span><b>Mid-Day</b></span></label>
+          <label class="opt center"><input type="radio" name="preferredTime" value="Late Afternoon"><span><b>Late Afternoon</b></span></label>
+        </div>
+        <span class="bk-err" data-err="preferredTime"></span>
+      </section>
+
+      <!-- STEP 3 · DETAILS -->
+      <section class="bk-step" data-step="3">
+        <span class="bk-count">Step 3 of 4</span>
+        <h3>A little about <em>you.</em></h3>
+        <p class="bk-sub">So Della can reach you to confirm.</p>
+        <div class="row2">
+          <div class="fld"><input type="text" name="firstName" id="fn" placeholder=" " autocomplete="given-name" required><label for="fn">First name</label><span class="err"></span></div>
+          <div class="fld"><input type="text" name="lastName" id="ln" placeholder=" " autocomplete="family-name" required><label for="ln">Last name</label><span class="err"></span></div>
+        </div>
+        <div class="fld"><input type="tel" name="phone" id="ph" placeholder=" " autocomplete="tel" inputmode="tel" required><label for="ph">Mobile number</label><span class="err"></span></div>
+        <div class="fld"><input type="email" name="email" id="em" placeholder=" " autocomplete="email" inputmode="email" required><label for="em">Email address</label><span class="err"></span></div>
+        <span class="bk-label">Best way to confirm</span>
+        <div class="opts three">
+          <label class="opt center"><input type="radio" name="contactPreference" value="Text" checked><span><b>Text</b></span></label>
+          <label class="opt center"><input type="radio" name="contactPreference" value="Call"><span><b>Call</b></span></label>
+          <label class="opt center"><input type="radio" name="contactPreference" value="Email"><span><b>Email</b></span></label>
+        </div>
+        <div class="fld" style="margin-top:1.4rem"><textarea name="notes" id="nt" placeholder=" " rows="3"></textarea><label for="nt">Your hair story (optional)</label></div>
+        <p class="bk-fine" style="margin-top:.5rem">Current color, past chemical services, or the look you’re after. Inspiration photos are welcome once Della reaches out.</p>
+        <div class="fld"><input type="text" name="referredBy" id="rf" placeholder=" "><label for="rf">Referred by (optional)</label></div>
+        <div class="hp" aria-hidden="true"><label>Leave empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+      </section>
+
+      <!-- STEP 4 · REVIEW -->
+      <section class="bk-step" data-step="4">
+        <span class="bk-count">Step 4 of 4</span>
+        <h3>Everything <em>look right?</em></h3>
+        <p class="bk-sub">Review your request before sending it to Della.</p>
+        <dl class="bk-review" id="bk-review"></dl>
+        <p class="bk-fine">This is a request, not a confirmed booking. Della personally reviews every request and will reach out to confirm your date and time.</p>
+        <span class="bk-err" id="bk-send-err"></span>
+      </section>
+
+      <!-- DONE -->
+      <section class="bk-step" data-step="5">
+        <div class="bk-done">
+          <div class="seal-ok"><svg viewBox="0 0 120 120" fill="none" stroke="#d8bf8a" stroke-width="1.5"><circle cx="60" cy="60" r="54"/><path d="M40 61l14 14 27-30"/></svg></div>
+          <span class="eyebrow" style="justify-content:center">Request received</span>
+          <h3 id="bk-done-title">Thank you.</h3>
+          <p class="bk-sub" id="bk-done-msg">Della will personally review your request and reach out to confirm your appointment.</p>
+          <div class="bk-alt" id="bk-alt" hidden>
+            <p>We couldn’t reach the booking system just now. Send your request to Della directly instead. It’s already written for you:</p>
+            <div class="row2">
+              <a class="btn btn-gold" id="bk-sms" href="#">Send by text</a>
+              <a class="btn btn-ghost" id="bk-mail" href="#">Send by email</a>
+            </div>
+          </div>
+          <div class="btns">
+            <button type="button" class="btn btn-ghost" data-close>Back to the site</button>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <script>
-        lucide.createIcons();
-        document.getElementById('year').textContent = new Date().getFullYear();
+    <div class="bk-foot" id="bk-foot">
+      <button type="button" class="btn btn-ghost" id="bk-back" hidden>Back</button>
+      <button type="button" class="btn btn-gold" id="bk-next"><span class="spin"></span><span id="bk-next-txt">Continue</span></button>
+    </div>
+  </form>
+</div>
 
-        // -------------------------
-        // SCROLL REVEAL LOGIC
-        // -------------------------
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
-        
-        const revealObserver = new IntersectionObserver(function(entries, observer) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, revealOptions);
+<!-- lightbox -->
+<div id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <img alt="">
+  <div class="lb-cap"></div>
+  <button class="x" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <button class="prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="m15 18-6-6 6-6"/></svg></button>
+  <button class="next" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="m9 18 6-6-6-6"/></svg></button>
+</div>
 
-        revealElements.forEach(el => revealObserver.observe(el));
+<script>
+(() => {
+  const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  $('#yr').textContent = new Date().getFullYear();
 
-        // -------------------------
-        // AUDIO LOGIC
-        // -------------------------
-        const audioBtn = document.getElementById('audio-toggle');
-        const audioIcon = document.getElementById('audio-icon');
-        const audioText = document.getElementById('audio-text');
-        const bgMusic = document.getElementById('bg-music');
-        let isPlaying = false;
+  /* ---------- music with gentle fades ---------- */
+  const music = $('#music'), soundBtn = $('#sound');
+  let fadeT;
+  const fadeTo = (target, ms, done) => {
+    clearInterval(fadeT);
+    const start = music.volume, t0 = performance.now();
+    fadeT = setInterval(() => {
+      const k = Math.min(1, (performance.now() - t0) / ms);
+      music.volume = start + (target - start) * k;
+      if (k === 1) { clearInterval(fadeT); done && done(); }
+    }, 30);
+  };
+  const setSound = on => {
+    soundBtn.classList.toggle('on', on);
+    soundBtn.setAttribute('aria-pressed', on);
+    if (on) { music.volume = 0; music.play().then(() => fadeTo(.4, 2200)).catch(() => setSound(false)); }
+    else if (!music.paused) fadeTo(0, 900, () => music.pause());
+  };
+  soundBtn.addEventListener('click', () => setSound(!soundBtn.classList.contains('on')));
+  document.addEventListener('visibilitychange', () => { if (document.hidden && !music.paused) music.pause(); else if (!document.hidden && soundBtn.classList.contains('on')) music.play().catch(()=>{}); });
 
-        audioBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                bgMusic.pause();
-                audioIcon.setAttribute('data-lucide', 'volume-x');
-                audioText.textContent = "Atmosphere";
-                audioBtn.classList.remove('border-[#e6c875]', 'text-[#e6c875]');
-                audioBtn.classList.add('border-zinc-700/50', 'text-zinc-400');
-            } else {
-                bgMusic.volume = 0.4;
-                bgMusic.play().catch(e => console.log("Audio play failed:", e));
-                audioIcon.setAttribute('data-lucide', 'volume-2');
-                audioText.textContent = "Playing";
-                audioBtn.classList.remove('border-zinc-700/50', 'text-zinc-400');
-                audioBtn.classList.add('border-[#e6c875]/50', 'text-[#e6c875]');
-            }
-            lucide.createIcons();
-            isPlaying = !isPlaying;
-        });
+  /* ---------- intro ---------- */
+  const intro = $('#intro');
+  const enter = withSound => {
+    if (intro.classList.contains('gone')) return;
+    intro.classList.add('gone');
+    document.body.classList.remove('locked');
+    document.body.classList.add('ready');
+    if (withSound) setSound(true);
+    try { sessionStorage.setItem('ss-entered', '1'); } catch (e) {}
+  };
+  $$('[data-enter]').forEach(b => b.addEventListener('click', () => enter(b.dataset.enter === 'sound')));
+  let seen = false; try { seen = sessionStorage.getItem('ss-entered'); } catch (e) {}
+  if (seen || reduce || location.hash) { intro.style.transition = 'none'; enter(false); }
+  addEventListener('wheel', () => enter(false), { once: true, passive: true });
+  addEventListener('keydown', e => { if (e.key === 'Escape' || e.key === 'Enter') enter(false); }, { once: true });
 
-        // -------------------------
-        // THREE-PAGE TOGGLE LOGIC
-        // -------------------------
-        const tabs = [
-            { btn: document.getElementById('nav-links'), page: document.getElementById('page-links') },
-            { btn: document.getElementById('nav-portfolio'), page: document.getElementById('page-portfolio') },
-            { btn: document.getElementById('nav-science'), page: document.getElementById('page-science') }
-        ];
+  /* ---------- nav: scrolled state, progress, active link ---------- */
+  const nav = $('#nav'), prog = $('#progress'), dock = $('#dock'), hero = $('.hero');
+  let ticking = false;
+  const onScroll = () => {
+    const y = scrollY, h = document.documentElement.scrollHeight - innerHeight;
+    nav.classList.toggle('scrolled', y > 40);
+    prog.style.transform = `scaleX(${h > 0 ? y / h : 0})`;
+    dock.classList.toggle('show', y > hero.offsetHeight * .7 && y < h - 300);
+    if (!reduce) $$('[data-speed]').forEach(el => {
+      const r = el.parentElement.getBoundingClientRect();
+      el.style.transform = `translate3d(0,${(r.top + r.height / 2 - innerHeight / 2) * parseFloat(el.dataset.speed) - r.height * .08}px,0)`;
+    });
+    ticking = false;
+  };
+  addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(onScroll); ticking = true; } }, { passive: true });
+  onScroll();
 
-        function triggerAnimations(container) {
-            const tabReveals = container.querySelectorAll('.reveal');
-            tabReveals.forEach(el => {
-                el.classList.remove('active'); 
-                setTimeout(() => { el.classList.add('active'); }, 50); 
-            });
-        }
+  const links = $$('.nav-links a');
+  const sectionIO = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  $$('main section[id]').forEach(s => sectionIO.observe(s));
 
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.querySelectorAll('#page-links .reveal').forEach(el => el.classList.add('active'));
-                document.querySelectorAll('header .reveal, footer .reveal').forEach(el => el.classList.add('active'));
-            }, 100);
+  /* ---------- mobile menu ---------- */
+  const burger = $('#burger'), menu = $('#menu');
+  const toggleMenu = open => {
+    document.documentElement.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open);
+    menu.setAttribute('aria-hidden', !open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  burger.addEventListener('click', () => toggleMenu(!document.documentElement.classList.contains('menu-open')));
+  $$('#menu a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
 
-            const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('tab') === 'science') {
-                tabs.forEach(t => {
-                    t.btn.className = "flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors";
-                    t.page.classList.add('page-hidden');
-                });
-                tabs[2].btn.className = "flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-[#e6c875] border-b-[1px] border-[#e6c875] transition-colors";
-                tabs[2].page.classList.remove('page-hidden');
-                triggerAnimations(tabs[2].page);
-            }
-        });
+  /* ---------- reveal on scroll ---------- */
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    $$('.rv-img', e.target).forEach(x => x.classList.add('in'));
+    io.unobserve(e.target);
+  }), { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+  $$('.rv').forEach(el => io.observe(el));
 
-        tabs.forEach(tab => {
-            tab.btn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                tabs.forEach(t => {
-                    t.btn.className = "flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-zinc-500 border-b-[1px] border-transparent hover:text-zinc-300 transition-colors";
-                    t.page.classList.add('page-hidden');
-                });
-                tab.btn.className = "flex-1 pb-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-[#e6c875] border-b-[1px] border-[#e6c875] transition-colors";
-                tab.page.classList.remove('page-hidden');
-                triggerAnimations(tab.page);
-            });
-        });
+  /* ---------- count-up ---------- */
+  $$('[data-count]').forEach(el => {
+    new IntersectionObserver(([e], o) => {
+      if (!e.isIntersecting) return; o.disconnect();
+      const end = +el.dataset.count, t0 = performance.now();
+      const tick = t => { const k = Math.min(1, (t - t0) / 1800); el.textContent = Math.round(end * (1 - Math.pow(1 - k, 4))); if (k < 1) requestAnimationFrame(tick); };
+      reduce ? el.textContent = end : requestAnimationFrame(tick);
+    }, { threshold: .6 }).observe(el);
+  });
 
-        // -------------------------
-        // LIGHTBOX LOGIC
-        // -------------------------
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const closeBtn = document.getElementById('close-lightbox');
-        const allGalleryImages = document.querySelectorAll('.gallery-img');
+  /* ---------- service card spotlight ---------- */
+  $$('.svc').forEach(c => c.addEventListener('pointermove', e => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px');
+  }));
 
-        allGalleryImages.forEach(img => {
-            img.addEventListener('click', (e) => {
-                lightboxImg.src = e.target.src; 
-                lightbox.classList.remove('hidden'); 
-                setTimeout(() => {
-                    lightbox.classList.remove('opacity-0');
-                    lightboxImg.classList.remove('scale-95');
-                    lightboxImg.classList.add('scale-100');
-                }, 10);
-            });
-        });
+  /* ---------- before / after sliders ---------- */
+  $$('[data-ba]').forEach(ba => {
+    const input = $('input', ba);
+    const set = p => { p = Math.max(0, Math.min(100, p)); ba.style.setProperty('--pos', p + '%'); input.value = p; };
+    const fromEvent = e => { const r = ba.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); };
+    let drag = false, sx = 0, sy = 0, decided = false;
+    ba.addEventListener('pointerdown', e => { drag = true; decided = e.pointerType === 'mouse'; sx = e.clientX; sy = e.clientY; if (decided) { ba.setPointerCapture(e.pointerId); fromEvent(e); } });
+    ba.addEventListener('pointermove', e => {
+      if (!drag) return;
+      if (!decided) {
+        const dx = Math.abs(e.clientX - sx), dy = Math.abs(e.clientY - sy);
+        if (dx < 6 && dy < 6) return;
+        if (dy > dx) { drag = false; return; }        // vertical swipe → let page scroll
+        decided = true; ba.setPointerCapture(e.pointerId);
+      }
+      fromEvent(e);
+    });
+    const end = () => { drag = false; };
+    ba.addEventListener('pointerup', end); ba.addEventListener('pointercancel', end);
+    ba.addEventListener('click', e => { if (e.pointerType !== 'mouse') fromEvent(e); });
+    input.addEventListener('input', () => set(+input.value));
+    ba.tabIndex = 0;
+    ba.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') set(+input.value - 5); if (e.key === 'ArrowRight') set(+input.value + 5); });
+    // a gentle "peek" hint the first time each slider appears
+    if (!reduce) new IntersectionObserver(([en], o) => {
+      if (!en.isIntersecting) return; o.disconnect();
+      const t0 = performance.now();
+      const anim = t => { const k = (t - t0) / 2200; if (k >= 1 || drag) { if (!drag) set(50); return; }
+        set(50 + Math.sin(k * Math.PI * 2) * 22 * (1 - k)); requestAnimationFrame(anim); };
+      setTimeout(() => requestAnimationFrame(anim), 700);
+    }, { threshold: .55 }).observe(ba);
+  });
 
-        const closeLightbox = () => {
-            lightbox.classList.add('opacity-0');
-            lightboxImg.classList.remove('scale-100');
-            lightboxImg.classList.add('scale-95');
-            setTimeout(() => { lightbox.classList.add('hidden'); lightboxImg.src = ''; }, 500);
-        };
+  /* ---------- lightbox ---------- */
+  const lb = $('#lb'), lbImg = $('img', lb), lbCap = $('.lb-cap', lb), items = $$('.g-item');
+  let cur = 0;
+  const show = i => {
+    cur = (i + items.length) % items.length;
+    lbImg.style.opacity = 0;
+    const src = items[cur].dataset.full;
+    const pre = new Image(); pre.onload = () => { lbImg.src = src; lbImg.alt = $('img', items[cur]).alt; lbImg.style.opacity = 1; }; pre.src = src;
+    lbCap.textContent = $('figcaption', items[cur]).textContent + `  ·  ${cur + 1} / ${items.length}`;
+  };
+  const open = i => { show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; $('.x', lb).focus({ preventScroll: true }); };
+  const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; items[cur].focus({ preventScroll: true }); };
+  items.forEach((it, i) => { it.addEventListener('click', () => open(i)); it.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } }); });
+  $('.x', lb).addEventListener('click', close);
+  $('.prev', lb).addEventListener('click', () => show(cur - 1));
+  $('.next', lb).addEventListener('click', () => show(cur + 1));
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  addEventListener('keydown', e => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') show(cur - 1); if (e.key === 'ArrowRight') show(cur + 1); });
+  let tx = null;
+  lb.addEventListener('touchstart', e => tx = e.touches[0].clientX, { passive: true });
+  lb.addEventListener('touchend', e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); tx = null; });
 
-        closeBtn.addEventListener('click', closeLightbox);
-        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-    </script>
+  /* ---------- welcome back (after calling, texting, maps, email, booking) ---------- */
+  const toast = $('#toast'), toastMsg = $('#toast-msg');
+  const msgs = {
+    tel: 'Thank you for calling Della. Everything is right where you left it.',
+    sms: 'Thank you for texting Della. Everything is right where you left it.',
+    maps: 'See you at Main Street Parlor. We kept your place on the page.',
+    mailto: 'Thank you for writing to Della. We kept your place on the page.',
+    web: 'We kept your place. Ready when you are.'
+  };
+  let outbound = null, toastT;
+  $$('[data-out]').forEach(a => a.addEventListener('click', () => {
+    const h = a.getAttribute('href');
+    outbound = { kind: h.startsWith('tel:') ? 'tel' : h.startsWith('sms:') ? 'sms' : h.startsWith('mailto:') ? 'mailto' : h.includes('maps') ? 'maps' : 'web', t: Date.now() };
+    hideToast();
+  }));
+  const hideToast = () => { toast.classList.remove('show'); clearTimeout(toastT); };
+  const welcomeBack = () => {
+    if (!outbound || Date.now() - outbound.t < 1200) return;
+    toastMsg.textContent = msgs[outbound.kind];
+    outbound = null;
+    toast.classList.add('show');
+    toastT = setTimeout(hideToast, 10000);
+  };
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) welcomeBack(); });
+  addEventListener('focus', welcomeBack);
+  addEventListener('pageshow', e => { if (e.persisted) welcomeBack(); });
+  $('#toast-x').addEventListener('click', hideToast);
+
+  /* ---------- lock-screen / control-center music info ---------- */
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: 'Studio Atmosphere', artist: 'Shondell Slaughter', album: 'Curls & Colors',
+      artwork: [{ src: 'assets/img/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }]
+    });
+    navigator.mediaSession.setActionHandler('play', () => setSound(true));
+    navigator.mediaSession.setActionHandler('pause', () => setSound(false));
+  }
+
+
+  /* ================= BOOKING FORM ================= */
+  // Same Google Apps Script endpoint + field names as the original appointment page,
+  // so requests keep landing in the same Google Sheet.
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzP28IDrGIOyBU9YDwEZGwRZf1JKg0PE_uJj_J_OA8JkGYiWQGjgtS_HFimAoPO_SfJA/exec';
+  const STUDIO_PHONE = '+18174806160', STUDIO_EMAIL = 'dellalouise39@gmail.com';
+  const book = $('#book'), form = $('#bk-form'), body = $('#bk-body'), bar = $('#bk-bar');
+  const nextBtn = $('#bk-next'), nextTxt = $('#bk-next-txt'), backBtn = $('#bk-back'), foot = $('#bk-foot');
+  const DRAFT = 'ss-booking-draft';
+  let step = 1, lastFocus = null;
+
+  // dates: no past days, second choice not before today
+  const iso = d => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+  const today = iso(new Date());
+  $('#d1').min = today; $('#d2').min = today;
+  $('#d1').addEventListener('change', () => { $('#d2').min = $('#d1').value || today; });
+
+  // phone formatting (US)
+  $('#ph').addEventListener('input', e => {
+    let d = e.target.value.replace(/\D/g, '');
+    if (d.length === 11 && d[0] === '1') d = d.slice(1);
+    d = d.slice(0, 10);
+    e.target.value = d.length > 6 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : d.length > 3 ? `(${d.slice(0,3)}) ${d.slice(3)}` : d;
+  });
+
+  // draft: remember answers if they leave and come back
+  const saveDraft = () => { try { const o = {}; new FormData(form).forEach((v, k) => { if (k !== 'website') o[k] = v; }); localStorage.setItem(DRAFT, JSON.stringify(o)); } catch (e) {} };
+  const loadDraft = () => { try { const o = JSON.parse(localStorage.getItem(DRAFT) || '{}');
+    Object.entries(o).forEach(([k, v]) => { $$(`[name="${k}"]`, form).forEach(el => { if (el.type === 'radio') el.checked = el.value === v; else el.value = v; }); }); } catch (e) {} };
+  form.addEventListener('input', saveDraft); form.addEventListener('change', saveDraft);
+
+  const openBook = serviceKey => {
+    if (book.classList.contains('open')) return;
+    lastFocus = document.activeElement;
+    if (step === 5) resetForm();
+    loadDraft();
+    if (serviceKey) { const r = $(`input[data-key="${serviceKey}"]`, form); if (r) r.checked = true; }
+    book.classList.add('open'); book.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    hideToast && hideToast();
+    setTimeout(() => $('.bk-step.on input, .bk-step.on button', form)?.focus({ preventScroll: true }), 500);
+  };
+  const closeBook = () => {
+    book.classList.remove('open'); book.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (location.hash === '#book') history.replaceState(null, '', location.pathname + location.search);
+    lastFocus && lastFocus.focus({ preventScroll: true });
+  };
+  $$('[data-book]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openBook(a.dataset.service); }));
+  $$('[data-close]', book).forEach(b => b.addEventListener('click', closeBook));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && book.classList.contains('open')) closeBook(); });
+  // shareable link: shondellslaughter.com/#book opens the form straight away
+  const hashOpen = () => { if (location.hash === '#book') openBook(); };
+  addEventListener('hashchange', hashOpen);
+
+  const go = (n, dir = 1) => {
+    $$('.bk-step', form).forEach(s => s.classList.remove('on', 'back'));
+    const el = $(`.bk-step[data-step="${n}"]`, form);
+    el.classList.add('on'); if (dir < 0) el.classList.add('back');
+    step = n; body.scrollTop = 0;
+    bar.style.width = (Math.min(n, 4) / 4 * 100) + '%';
+    backBtn.hidden = n === 1 || n === 5;
+    foot.hidden = n === 5;
+    nextTxt.textContent = n === 4 ? 'Send my request' : 'Continue';
+    if (n === 4) buildReview();
+  };
+
+  const setErr = (name, msg) => {
+    const el = $(`[name="${name}"]`, form), fld = el.closest('.fld');
+    if (fld) { fld.classList.toggle('bad', !!msg); const er = $('.err', fld); if (er) er.textContent = msg || ''; }
+    else { const e = $(`[data-err="${name}"]`, form); if (e) e.textContent = msg || ''; }
+    return !msg;
+  };
+  const val = n => (new FormData(form).get(n) || '').toString().trim();
+  const validate = n => {
+    let ok = true, first = null;
+    const need = (name, msg, test = v => !!v) => { const good = test(val(name)); setErr(name, good ? '' : msg); if (!good) { ok = false; first = first || name; } };
+    if (n === 1) { need('service', 'Please choose a service.'); need('clientType', 'Let Della know if you’re new or returning.'); }
+    if (n === 2) {
+      need('firstChoiceDate', 'Pick your first choice date.', v => v && v >= today);
+      need('alternativeChoiceDate', 'Pick a second date, in case the first is booked.', v => v && v >= today && v !== val('firstChoiceDate'));
+      if (val('alternativeChoiceDate') && val('alternativeChoiceDate') === val('firstChoiceDate')) setErr('alternativeChoiceDate', 'Choose a different day than your first choice.');
+      need('preferredTime', 'Choose a time of day.');
+    }
+    if (n === 3) {
+      need('firstName', 'Your first name, please.'); need('lastName', 'Your last name, please.');
+      need('phone', 'Enter a 10-digit mobile number.', v => v.replace(/\D/g, '').length === 10);
+      need('email', 'Enter a valid email address.', v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v));
+    }
+    if (!ok && first) { const el = $(`[name="${first}"]`, form); el.closest('.fld, .opts')?.scrollIntoView({ block: 'center', behavior: 'smooth' }); if (el.type !== 'radio') el.focus({ preventScroll: true }); }
+    return ok;
+  };
+  form.addEventListener('change', e => { if (e.target.name) setErr(e.target.name, ''); });
+
+  const fmtDate = v => v ? new Date(v + 'T12:00').toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' }) : '—';
+  const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const buildReview = () => {
+    const rows = [
+      ['Service', val('service'), 1], ['Client', val('clientType'), 1],
+      ['First choice', fmtDate(val('firstChoiceDate')), 2], ['Second choice', fmtDate(val('alternativeChoiceDate')), 2],
+      ['Time', val('preferredTime'), 2], ['Name', `${val('firstName')} ${val('lastName')}`, 3],
+      ['Mobile', val('phone'), 3], ['Email', val('email'), 3], ['Confirm by', val('contactPreference'), 3]
+    ];
+    if (val('notes')) rows.push(['Hair story', val('notes'), 3]);
+    if (val('referredBy')) rows.push(['Referred by', val('referredBy'), 3]);
+    $('#bk-review').innerHTML = rows.map(([k, v, st]) => `<div><dt>${k}</dt><dd>${esc(v)}<button type="button" data-edit="${st}" aria-label="Edit ${k}">Edit</button></dd></div>`).join('');
+    $$('[data-edit]', form).forEach(b => b.addEventListener('click', () => go(+b.dataset.edit, -1)));
+  };
+
+  const summaryText = () => `Hi Della! I'd like to request an appointment.\n\nService: ${val('service')} (${val('clientType')})\n1st choice: ${fmtDate(val('firstChoiceDate'))}\n2nd choice: ${fmtDate(val('alternativeChoiceDate'))}\nTime: ${val('preferredTime')}\n\nName: ${val('firstName')} ${val('lastName')}\nMobile: ${val('phone')}\nEmail: ${val('email')}\nBest to confirm by: ${val('contactPreference')}` +
+    (val('notes') ? `\nHair story: ${val('notes')}` : '') + (val('referredBy') ? `\nReferred by: ${val('referredBy')}` : '');
+
+  const resetForm = () => { form.reset(); $$('.fld', form).forEach(f => f.classList.remove('bad')); $$('.err,.bk-err', form).forEach(e => e.textContent = ''); $('#bk-alt').hidden = true; go(1); };
+
+  const send = async () => {
+    if (val('website')) { go(5); return; }               // honeypot: quietly ignore bots
+    const data = new FormData(form);
+    data.delete('website');
+    data.append('submittedAt', new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+    data.append('source', 'shondellslaughter.com');
+    nextBtn.disabled = true; nextBtn.classList.add('sending'); nextTxt.textContent = 'Sending…';
+    const ctrl = new AbortController(), to = setTimeout(() => ctrl.abort(), 15000);
+    let delivered = false;
+    try { await fetch(SCRIPT_URL, { method: 'POST', body: data, mode: 'no-cors', signal: ctrl.signal }); delivered = true; }
+    catch (e) { delivered = false; }
+    clearTimeout(to);
+    nextBtn.disabled = false; nextBtn.classList.remove('sending');
+    const name = val('firstName');
+    $('#bk-done-title').innerHTML = `Thank you, <em>${esc(name)}.</em>`;
+    const how = { Text: 'text you', Call: 'call you', Email: 'email you' }[val('contactPreference')] || 'reach out';
+    $('#bk-done-msg').textContent = delivered
+      ? `Della will personally review your request and ${how} to confirm your ${val('service').toLowerCase()} appointment.`
+      : 'Your request is ready. One more tap to send it to Della.';
+    const msg = summaryText();
+    $('#bk-sms').href = `sms:${STUDIO_PHONE}${/iPhone|iPad|iPod/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(msg)}`;
+    $('#bk-mail').href = `mailto:${STUDIO_EMAIL}?subject=${encodeURIComponent('Appointment Request — ' + name + ' ' + val('lastName'))}&body=${encodeURIComponent(msg)}`;
+    $('#bk-alt').hidden = delivered;
+    if (delivered) try { localStorage.removeItem(DRAFT); } catch (e) {}
+    go(5);
+  };
+
+  nextBtn.addEventListener('click', () => {
+    if (step < 4) { if (validate(step)) go(step + 1); }
+    else if (step === 4) send();
+  });
+  backBtn.addEventListener('click', () => go(step - 1, -1));
+  form.addEventListener('submit', e => e.preventDefault());
+  // Enter key moves forward (except in the notes box)
+  form.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'BUTTON') { e.preventDefault(); nextBtn.click(); } });
+  hashOpen();
+
+  /* ---------- podcast waveform ---------- */
+  const wave = $('#wave');
+  for (let i = 0; i < 48; i++) { const b = document.createElement('i'); b.style.animationDelay = (-Math.random() * 1.6).toFixed(2) + 's'; b.style.animationDuration = (1 + Math.random()).toFixed(2) + 's'; wave.appendChild(b); }
+
+  /* ---------- cursor glow ---------- */
+  const glow = $('#glow');
+  if (matchMedia('(pointer:fine)').matches && !reduce) addEventListener('pointermove', e => { glow.style.transform = `translate(${e.clientX}px,${e.clientY}px)`; }, { passive: true });
+
+  /* ---------- gold dust in hero ---------- */
+  const cv = $('#dust'), ctx = cv.getContext('2d');
+  let W, H, parts = [], running = true;
+  const resize = () => { const d = Math.min(devicePixelRatio || 1, 2); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); };
+  const mk = () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.6 + .3, vy: -(Math.random() * .25 + .05), vx: (Math.random() - .5) * .15, a: Math.random() * .6 + .2, tw: Math.random() * Math.PI * 2 });
+  resize(); addEventListener('resize', resize);
+  parts = Array.from({ length: innerWidth < 700 ? 45 : 90 }, mk);
+  new IntersectionObserver(([e]) => running = e.isIntersecting).observe(cv);
+  const draw = () => {
+    if (running) {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of parts) {
+        p.x += p.vx; p.y += p.vy; p.tw += .03;
+        if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; }
+        const a = p.a * (.6 + .4 * Math.sin(p.tw));
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283);
+        ctx.fillStyle = `rgba(241,223,180,${a})`; ctx.shadowBlur = 8; ctx.shadowColor = 'rgba(216,191,138,.8)'; ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  };
+  if (!reduce) draw();
+})();
+</script>
 </body>
 </html>
