@@ -1,2 +1,4 @@
 User-agent: *
 Disallow: /book/
+
+Sitemap: https://shondellslaughter.com/sitemap.xml

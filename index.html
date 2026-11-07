@@ -3,14 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Shondell Slaughter | Curls &amp; Colors — Luxury Hair Artistry in Texas</title>
-<meta name="description" content="Shondell “Della” Slaughter — bespoke lived-in color, dimensional highlights, color correction and precision curl shaping at Main Street Parlor, Texas. Strictly by appointment.">
+<title>Shondell Slaughter | Hair Color &amp; Curl Specialist in Joshua, TX</title>
+<meta name="description" content="Balayage, highlights, color correction, precision cuts and curl shaping by Shondell “Della” Slaughter at Main Street Parlor in Joshua, TX. By appointment.">
+<link rel="canonical" href="https://shondellslaughter.com/">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#0b0a09">
 <link rel="icon" type="image/png" href="assets/img/favicon.png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Shondell Slaughter | Curls & Colors">
-<meta property="og:description" content="Bespoke color, dimension and curl artistry. Where Texas radiance begins. Strictly by appointment.">
+<meta property="og:title" content="Shondell Slaughter | Curls & Colors · Joshua, TX">
+<meta property="og:site_name" content="Shondell Slaughter — Curls & Colors">
+<meta property="og:locale" content="en_US">
+<meta property="og:description" content="Bespoke color, color correction and curl artistry at Main Street Parlor in Joshua, Texas. Strictly by appointment.">
 <meta property="og:image" content="https://shondellslaughter.com/assets/img/og.jpg">
 <meta property="og:url" content="https://shondellslaughter.com/">
 <meta name="twitter:card" content="summary_large_image">
@@ -24,15 +28,50 @@
 {
   "@context": "https://schema.org",
   "@type": "HairSalon",
+  "@id": "https://shondellslaughter.com/#salon",
   "name": "Shondell Slaughter — Curls & Colors",
-  "alternateName": "Della Curls and Colors",
+  "alternateName": ["Della Curls and Colors", "Shondell Slaughter Hair"],
+  "description": "Hair colorist and curl specialist offering balayage, highlights, color correction, precision cuts and curl shaping at Main Street Parlor in Joshua, Texas. By appointment.",
   "image": "https://shondellslaughter.com/assets/img/og.jpg",
+  "logo": "https://shondellslaughter.com/assets/img/crest.webp",
   "url": "https://shondellslaughter.com/",
   "telephone": "+1-817-480-6160",
   "email": "dellalouise39@gmail.com",
   "slogan": "Where Texas Radiance Begins",
-  "address": { "@type": "PostalAddress", "addressRegion": "TX", "addressCountry": "US" },
-  "hasMap": "https://maps.app.goo.gl/2SY98mmXWBfeyjyt6"
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "101 N Main St",
+    "addressLocality": "Joshua",
+    "addressRegion": "TX",
+    "postalCode": "76058",
+    "addressCountry": "US"
+  },
+  "hasMap": "https://maps.app.goo.gl/2SY98mmXWBfeyjyt6",
+  "areaServed": [
+    {"@type": "City", "name": "Joshua, TX"},
+    {"@type": "City", "name": "Burleson, TX"},
+    {"@type": "City", "name": "Cleburne, TX"},
+    {"@type": "City", "name": "Crowley, TX"},
+    {"@type": "City", "name": "Fort Worth, TX"}
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Shondell Slaughter",
+    "alternateName": "Della",
+    "jobTitle": "Hair Colorist & Curl Specialist",
+    "sameAs": ["https://substack.com/@dellalouise"]
+  },
+  "sameAs": ["https://substack.com/@dellalouise"],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Signature Services",
+    "itemListElement": [
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Bespoke Color & Dimension", "description": "Lived-in color, balayage and highlights."}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Color Correction", "description": "Banding repair, tone correction and color matching."}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Structural & Precision Cuts", "description": "Bobs, pixies, long layers and men's grooming."}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Curls, Glazes & Gloss", "description": "Curl shaping, custom glaze and gloss refresh."}}
+    ]
+  }
 }
 </script>
 
@@ -100,7 +139,7 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 #intro .crest-wrap{position:relative;display:block;width:min(46vw,210px);margin:0 auto;-webkit-mask:url(assets/img/crest-sm.webp) 0 0/100% 100% no-repeat;mask:url(assets/img/crest-sm.webp) 0 0/100% 100% no-repeat}
 #intro .crest-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,240,200,.75) 50%,transparent 65%);transform:translateX(-130%);animation:shine 2.4s var(--ease) 1.4s forwards}
 @keyframes shine{to{transform:translateX(130%)}}
-#intro h1{margin-top:1.6rem;font-size:clamp(1.9rem,6vw,3rem);opacity:0;animation:up 1.4s var(--ease) 1s forwards}
+#intro .intro-name{margin-top:1.6rem;font-size:clamp(1.9rem,6vw,3rem);opacity:0;animation:up 1.4s var(--ease) 1s forwards}
 #intro p{margin-top:.4rem;opacity:0;animation:up 1.4s var(--ease) 1.25s forwards}
 .intro-actions{margin-top:2.4rem;display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center;opacity:0;animation:up 1.4s var(--ease) 1.7s forwards}
 @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
@@ -285,6 +324,8 @@ footer{border-top:1px solid var(--line);padding:4rem var(--pad) calc(6.5rem + en
 footer img{width:90px;margin:0 auto 1.2rem;opacity:.9}
 footer .fname{font-family:var(--serif);font-size:1.8rem;color:var(--ivory);font-weight:300}
 footer .ftag{font-family:var(--script);color:var(--gold);font-size:1.8rem;line-height:1.2}
+footer .faddr{margin-top:1.2rem;font-style:normal;font-size:13px;letter-spacing:.06em;color:var(--muted)}
+footer .faddr a{color:var(--ink)}
 footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
 
 /* mobile sticky booking */
@@ -453,8 +494,8 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
 <div id="intro" role="dialog" aria-label="Welcome">
   <div>
     <span class="crest-wrap"><img class="crest" src="assets/img/crest-sm.webp" alt="Della — Curls and Colors crest" width="320" height="408"></span>
-    <h1 class="h-display">Shondell <em class="gold-text">Slaughter</em></h1>
-    <p class="eyebrow" style="justify-content:center">Curls &amp; Colors · Texas</p>
+    <p class="h-display intro-name">Shondell <em class="gold-text">Slaughter</em></p>
+    <p class="eyebrow" style="justify-content:center">Joshua · Texas</p>
     <div class="intro-actions">
       <button class="btn btn-gold" data-enter="sound">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
@@ -516,7 +557,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
       <span class="line"><span class="gold-text">Slaughter</span></span>
     </h1>
     <p class="tag">Curls &amp; Colors</p>
-    <p class="sub">Where Texas Radiance Begins</p>
+    <p class="sub">Color &amp; Curls · Joshua, TX</p>
     <div class="cta">
       <a class="btn btn-gold" href="#book" data-book>Request an Appointment</a>
       <a class="btn btn-ghost" href="#transformations">See the Transformations</a>
@@ -547,7 +588,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
       <span class="eyebrow rv">The Artist</span>
       <h2 class="h-display h2 rv d1">Hair, treated as <em class="gold-text">fine art.</em></h2>
       <p class="lead rv d2">For more than two decades, Shondell Slaughter — known to her clients simply as <em>Della</em> — has turned hairdressing into a private, made-to-measure art.</p>
-      <p class="muted rv d3">From her chair at Main Street Parlor, she creates lived-in color, seamless dimension and precision shapes designed around one thing: <em>you</em>. Every formula is mixed for your hair alone, and every appointment gets her full, unhurried attention.</p>
+      <p class="muted rv d3">From her chair at Main Street Parlor in Joshua, Texas, she creates lived-in color, seamless dimension and precision shapes designed around one thing: <em>you</em>. Every formula is mixed for your hair alone, and every appointment gets her full, unhurried attention.</p>
       <p class="signature rv d4">Della</p>
       <div class="stats rv d4">
         <div><b data-count="20">0</b><span>+ Years of craft</span></div>
@@ -562,7 +603,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
 <section id="services" class="services">
   <div class="wrap">
     <div class="sec-head center">
-      <span class="eyebrow c rv">Signature Services</span>
+      <span class="eyebrow c rv">Signature Services · Joshua, TX</span>
       <h2 class="h-display h2 rv d1">The <em class="gold-text">Menu</em></h2>
     </div>
     <div class="svc-grid">
@@ -599,7 +640,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
         <a class="arrow-link svc-book" href="#book" data-book data-service="curls"><span>Request this service</span> →</a>
       </article>
     </div>
-    <p class="svc-note rv">Every service begins with a private consultation. Pricing is tailored to you.</p>
+    <p class="svc-note rv">Every service begins with a private consultation. Pricing is tailored to you. Welcoming guests from Joshua, Burleson, Cleburne, Crowley and Fort Worth.</p>
   </div>
 </section>
 
@@ -726,7 +767,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
   <div class="wrap" style="padding-top:0">
     <div class="journal rv">
       <div class="journal-media">
-        <img src="assets/img/silver-waves-sm.webp" alt="" loading="lazy">
+        <img src="assets/img/silver-waves-sm.webp" alt="Soft silver waves, a preview of the Transformation Series" loading="lazy">
         <span class="badge">Coming Soon</span>
         <div class="wave" aria-hidden="true" id="wave"></div>
       </div>
@@ -750,7 +791,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
   <div class="wrap">
     <span class="eyebrow c rv" style="justify-content:center">Strictly by appointment</span>
     <h2 class="h-display h2 rv d1">Your chair is <em class="gold-text">waiting.</em></h2>
-    <p class="lead muted rv d2" style="margin:0 auto">Book a private consultation with Della at Main Street Parlor.</p>
+    <p class="lead muted rv d2" style="margin:0 auto">Book a private consultation with Della at Main Street Parlor, 101 N Main St, Joshua, TX 76058.</p>
     <div class="rv d3" style="margin-top:2.4rem"><a class="btn btn-gold" href="#book" data-book>Request an Appointment</a></div>
     <div class="cards">
       <a class="vcard rv" href="tel:+18174806160" data-out>
@@ -763,7 +804,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
       </a>
       <a class="vcard rv d2" href="https://maps.app.goo.gl/2SY98mmXWBfeyjyt6" target="_blank" rel="noopener" data-out>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <small>Directions</small><b>Main Street Parlor</b><em class="go">Google Maps</em>
+        <small>Directions</small><b>Main Street Parlor</b><em class="go">101 N Main St, Joshua</em>
       </a>
       <a class="vcard rv d3" href="mailto:dellalouise39@gmail.com?subject=Appointment%20Inquiry%20%E2%80%94%20Curls%20%26%20Colors&amp;body=Hi%20Della%2C%0A%0AI%E2%80%99d%20love%20to%20book%20a%20consultation.%0A%0AName%3A%0APhone%3A%0AService%20I%E2%80%99m%20interested%20in%3A%0APreferred%20days%2Ftimes%3A%0A%0AThank%20you!" data-out>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
@@ -779,6 +820,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
   <img src="assets/img/crest-sm.webp" alt="" loading="lazy">
   <div class="fname">Shondell Slaughter</div>
   <div class="ftag">Curls &amp; Colors</div>
+  <address class="faddr">Main Street Parlor · 101 N Main St, Joshua, TX 76058 · <a href="tel:+18174806160">(817) 480-6160</a></address>
   <div class="fline">Where Texas Radiance Begins · © <span id="yr"></span></div>
 </footer>
 
