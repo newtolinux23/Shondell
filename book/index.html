@@ -150,7 +150,7 @@ a.btn{text-decoration:none;color:inherit}
 
 /* tab bar */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--sheet) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--rule);padding:6px 8px calc(8px + env(safe-area-inset-bottom))}
-.tabs nav{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);align-items:end}
+.tabs nav{max-width:600px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);align-items:end}
 .tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;color:var(--soft);padding:6px 0;min-height:52px}
 .tabs button svg{width:23px;height:23px}
 .tabs button.on{color:var(--ink);font-weight:500}
@@ -292,6 +292,32 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .payhelp .pi span{color:var(--soft)}
 #a-msg{color:var(--bad);font-size:14px;text-align:center;min-height:1.2em}
 .lockline{display:flex;gap:8px;align-items:center;justify-content:center;font-size:12.5px;color:var(--soft);margin-top:8px}
+/* calendar */
+.week{display:grid;grid-template-columns:auto repeat(7,1fr) auto;gap:4px;align-items:stretch;margin:6px 0 4px}
+.week .nav{width:34px;border-radius:12px;color:var(--soft);font-size:20px}
+.week .d{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 0 7px;border-radius:14px;border:1px solid var(--rule);background:var(--sheet);font-size:11px;color:var(--soft);min-width:0}
+.week .d b{font-family:var(--display);font-size:1.35rem;font-weight:500;color:var(--ink);line-height:1.1}
+.week .d i{width:6px;height:6px;border-radius:50%;background:transparent;margin-top:2px}
+.week .d.has i{background:var(--gold)}
+.week .d.today{border-color:var(--gold)}
+.week .d.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.week .d.on b{color:var(--paper)}
+.week .d.on.has i{background:var(--gold-hi)}
+.appt .tm{flex:none;width:66px;font-variant-numeric:tabular-nums;font-size:14px;line-height:1.25}
+.appt .tm small{display:block;color:var(--soft);font-size:12px}
+.appt.off{opacity:.55}
+.appt.off .main b{text-decoration:line-through}
+.toggle{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--rule);border-radius:12px;background:var(--sheet);font-size:15px;cursor:pointer}
+.fg > label.toggle{display:flex;text-transform:none;letter-spacing:normal;font-size:15px;color:var(--ink);font-weight:400;margin-bottom:0}
+.toggle b{font-weight:500}
+.toggle input{width:22px;height:22px;accent-color:var(--ink);flex:none}
+.toggle small{display:block;color:var(--soft);font-size:13px}
+.tpl{border:1px solid var(--rule);border-radius:14px;padding:12px;background:var(--sheet);display:grid;gap:8px}
+.tpl + .tpl{margin-top:10px}
+.tpl h4{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.tpl textarea.in{min-height:150px}
+.ph{display:flex;flex-wrap:wrap;gap:6px;font-size:12.5px;color:var(--soft)}
+.ph code{background:var(--gold-bg);color:var(--ink);padding:1px 7px;border-radius:6px;font-size:12.5px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -339,6 +365,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 <div class="tabs">
   <nav aria-label="Sections">
     <button data-tab="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Today</button>
+    <button data-tab="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Calendar</button>
     <button data-tab="clients"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg>Clients</button>
     <button class="plus" id="plus" aria-label="New sale, visit or expense"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
     <button data-tab="money"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Money</button>
@@ -408,10 +435,63 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
   </div>
 </section>
 
+<!-- appointment -->
+<section class="sheet" id="asheet" aria-label="Appointment">
+  <div class="sheet-in">
+    <div class="sheet-top"><button class="btn small" data-x="asheet">Close</button><h2 id="ap-title">New appointment</h2></div>
+    <div id="ap-form">
+      <div id="ap-ai"></div>
+      <div class="fg"><label for="ap-client">Client</label>
+        <div id="ap-picked"></div>
+        <div id="ap-pick"><input class="in" id="ap-client" placeholder="Search a client or type a new name" autocomplete="off"><div id="ap-sugg"></div></div>
+      </div>
+      <div class="fg grid2">
+        <div><label class="lbl" for="ap-email">Email</label><input class="in" id="ap-email" type="email" inputmode="email" placeholder="For confirmations" autocomplete="off"></div>
+        <div><label class="lbl" for="ap-phone">Phone</label><input class="in" id="ap-phone" inputmode="tel" placeholder="(817) …" autocomplete="off"></div>
+      </div>
+      <div class="fg grid2">
+        <div><label class="lbl" for="ap-date">Date</label><input class="in" id="ap-date" type="date"></div>
+        <div><label class="lbl" for="ap-time">Time</label><input class="in" id="ap-time" type="time" step="900"></div>
+      </div>
+      <div class="fg"><span class="lbl">How long</span><div class="chips" id="ap-len"></div></div>
+      <div class="fg"><span class="lbl">Services</span><div class="chips" id="ap-services"></div>
+        <input class="in" id="ap-service-other" placeholder="Other service" style="margin-top:8px" autocomplete="off"></div>
+      <div class="fg"><label for="ap-notes">Notes (only you see these)</label><textarea class="in" id="ap-notes" placeholder="Bring inspo pics, deposit paid, running late…"></textarea></div>
+      <div class="fg"><label class="toggle"><input type="checkbox" id="ap-notify" checked><span><b>Email the client</b><small id="ap-notify-hint">Confirmation now, reminder 24 hours before</small></span></label></div>
+      <div class="fg" id="ap-status"></div>
+      <div class="fg actions" id="ap-more"></div>
+      <div class="sheet-foot"><button class="btn gold" id="ap-save">Book it</button></div>
+    </div>
+    <div id="ap-done" style="display:none"><div class="paid">
+      <div class="ok">✓</div><b id="ap-done-t" style="font-size:2.2rem"></b><p id="ap-done-p"></p>
+      <div class="col" id="ap-done-btns"></div></div></div>
+  </div>
+</section>
+
+<!-- email templates -->
+<section class="sheet" id="msheet" aria-label="Client emails">
+  <div class="sheet-in">
+    <div class="sheet-top"><button class="btn small" data-x="msheet">Cancel</button><h2>Client emails</h2><button class="btn small gold" id="m-save">Save</button></div>
+    <div id="m-state"></div>
+    <div class="fg"><label class="toggle"><input type="checkbox" id="m-rem"><span><b>Send 24-hour reminders</b><small>Every client with an email gets one the day before</small></span></label></div>
+    <div class="fg grid2">
+      <div><label class="lbl" for="m-salon">Sign emails as</label><input class="in" id="m-salon" placeholder="Shondell Slaughter"></div>
+      <div><label class="lbl" for="m-reply">Replies go to</label><input class="in" id="m-reply" type="email" inputmode="email" placeholder="her email"></div>
+      <div><label class="lbl" for="m-phone">Her phone</label><input class="in" id="m-phone" inputmode="tel" placeholder="(817) …"></div>
+      <div><label class="lbl" for="m-addr">Salon address</label><input class="in" id="m-addr" placeholder="Suite, street, city"></div>
+    </div>
+    <div class="fg"><span class="lbl">Messages</span>
+      <div class="ph" style="margin-bottom:10px">Fill-ins: <code>{first}</code><code>{name}</code><code>{when}</code><code>{day}</code><code>{time}</code><code>{service}</code><code>{address}</code><code>{phone}</code><code>{salon}</code></div>
+      <div id="m-tpls"></div>
+      <button class="link" id="m-reset" style="margin-top:10px">Put back the original wording</button>
+    </div>
+  </div>
+</section>
 
 <!-- action menu -->
 <div class="acts" id="acts"><div class="menu" role="menu">
   <b>What would you like to do?</b>
+  <button data-a="appt" role="menuitem"><span>📅</span><span><b>Book an appointment</b><small>Client gets a confirmation and a reminder the day before</small></span></button>
   <button data-a="sale" role="menuitem"><span>💳</span><span><b>Check out a client</b><small>Ring up services, products, tip and payment</small></span></button>
   <button data-a="visit" role="menuitem"><span>🎨</span><span><b>Log a visit &amp; formula</b><small>Formula, notes and photos</small></span></button>
   <button data-a="expense" role="menuitem"><span>🧾</span><span><b>Add an expense</b><small>Rent, color, supplies, classes…</small></span></button>
@@ -481,6 +561,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
         <div><label class="lbl" for="s-zellename">Name Zelle shows</label><input class="in" id="s-zellename" placeholder="Shondell Slaughter" autocomplete="off"></div></div></div>
     <div class="fg"><label for="s-square">Square Application ID (optional)</label><input class="in" id="s-square" placeholder="sq0idp-…" autocomplete="off">
       <p class="fine" style="margin-top:6px">When this is filled in, choosing <b>Card</b> at checkout opens the Square app on Android with the total ready to tap.</p></div>
+    <div class="fg"><span class="lbl">Appointments</span><button class="btn small" id="s-mail">Client emails &amp; reminders</button></div>
     <div class="fg card"><span class="lbl">Account</span><p id="s-account" style="font-size:14.5px">…</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn small" onclick="window.__changePassword && window.__changePassword()">Change password</button><button class="btn small" data-a-out>Sign out</button></div></div>
     <div class="sheet-foot"><button class="btn gold" id="s-save">Save</button></div>
   </div>
@@ -629,7 +710,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
       }
       cache[col] = out;
     };
-    await Promise.all(['clients', 'visits', 'expenses'].map(pull));
+    await Promise.all(['clients', 'visits', 'expenses'].map(pull).concat(loadAppts().catch(e => console.error(e))));
     const { data: st } = await sb.from('book_settings').select('data').eq('book_id', BOOK).maybeSingle();
     settings = st ? st.data : null; loaded = true;
     ['clients', 'visits', 'expenses'].forEach(emit); emitSet();
@@ -643,10 +724,45 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
       });
     });
     ch.on('postgres_changes', { event: '*', schema: 'public', table: 'book_settings', filter: 'book_id=eq.' + BOOK }, p => { settings = p.new && p.new.data; emitSet(); });
+    ch.on('postgres_changes', { event: '*', schema: 'public', table: 'book_appointments', filter: 'book_id=eq.' + BOOK }, p => {
+      if (p.eventType === 'DELETE') appts.delete(p.old.id); else appts.set(p.new.id, p.new);
+      emitA();
+    });
     ch.subscribe();
     // refresh when the phone wakes the app back up
     document.addEventListener('visibilitychange', () => { if (!document.hidden) loadAll().catch(() => {}); });
   }
+
+  /* ---------- appointments + client emails ---------- */
+  const appts = new Map(), apptSubs = [];
+  const emitA = () => { const list = [...appts.values()]; apptSubs.forEach(f => { try { f(list); } catch (e) { console.error(e); } }); };
+  async function loadAppts() {
+    const since = new Date(Date.now() - 180 * 864e5).toISOString();
+    const out = new Map(); let from = 0;
+    for (;;) {
+      const { data, error } = await sb.from('book_appointments').select('*').eq('book_id', BOOK).gte('starts_at', since).order('starts_at').range(from, from + 999);
+      if (error) throw error;
+      data.forEach(r => out.set(r.id, r)); if (data.length < 1000) break; from += 1000;
+    }
+    appts.clear(); out.forEach((v, k) => appts.set(k, v)); emitA();
+  }
+  let mailReady = null;
+  window.__appts = {
+    on(fn) { apptSubs.push(fn); if (loaded) setTimeout(() => fn([...appts.values()]), 0); },
+    async save(r) {
+      const { data, error } = await sb.from('book_appointments').upsert({ ...r, book_id: BOOK }).select().single();
+      if (error) fail(error); appts.set(data.id, data); emitA(); return data;
+    },
+    async remove(id) { const { error } = await sb.from('book_appointments').delete().eq('id', id); if (error) fail(error); appts.delete(id); emitA(); },
+    async mail(body) {
+      const { data, error } = await sb.functions.invoke('book-mail', { body });
+      if (error) return { ok: false, error: 'Email service unreachable' };
+      return data || { ok: false };
+    },
+    async ready() { if (mailReady === null) { const r = await this.mail({ action: 'ping' }).catch(() => ({})); mailReady = !!(r && r.ready); } return mailReady; },
+    async log(id) { const { data } = await sb.from('book_email_log').select('kind,ok,error,to_email,created_at').eq('appointment_id', id).order('created_at', { ascending: false }).limit(10); return data || []; },
+    uuid
+  };
 
   /* ---------- photos: private bucket, short-lived signed links ---------- */
   const urlCache = new Map();
@@ -746,7 +862,7 @@ const REBOOK = [['—', 0], ['4 wks', 4], ['6 wks', 6], ['8 wks', 8], ['10 wks',
 /* ------------ state ------------ */
 let db = null, assets = null, sample = null, downloads = null, user = null;
 let canWrite = true;
-const S = { clients: new Map(), visits: [], expenses: [], settings: null, loaded: { c: false, v: false }, tab: 'home', client: null, q: '', period: 'month', seg: 'overview', chat: [] };
+const S = { clients: new Map(), visits: [], expenses: [], settings: null, loaded: { c: false, v: false }, tab: 'home', client: null, q: '', period: 'month', seg: 'overview', chat: [], appts: [], calDay: isoDay(), mailReady: null };
 
 /* ------------ ui helpers ------------ */
 const toast = (t, ms = 2600) => { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), ms); };
@@ -797,7 +913,7 @@ const render = () => {
   $$('.tabs [data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === S.tab && !S.client));
   if (!db) { view.innerHTML = `<div class="lock"><h2 style="font-size:1.6rem;color:var(--ink)">Sign in to open the book</h2><p style="margin-top:8px">Sign in to open the book.</p></div>`; return; }
   if (S.client) return renderClient(S.client);
-  ({ home: renderHome, clients: renderClients, money: renderMoney, ask: renderAsk })[S.tab]();
+  ({ home: renderHome, cal: renderCal, clients: renderClients, money: renderMoney, ask: renderAsk })[S.tab]();
 };
 
 const visitRow = v => `<button class="item" ${v.clientId ? `data-open-client="${esc(v.clientId)}"` : ''}>
@@ -822,6 +938,9 @@ function renderHome() {
   <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="home-q" placeholder="Find a client or a formula (e.g. 6NB)" value="${esc(S.q)}" aria-label="Search clients and formulas"></div>
   <div id="home-results"></div>
+  ${(() => { const ap = S.appts.filter(a => apDay(a) === today && a.status !== 'cancelled').sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+    return `<div class="sec"><div class="sec-h"><h2>Appointments today</h2><span><button class="link" id="home-cal">Calendar</button></span></div>
+    <div class="list">${ap.length ? ap.map(apptRow).join('') : `<div class="empty">No appointments today. ${canWrite ? '<button class="link" id="home-book">Book one</button>' : ''}</div>`}</div></div>`; })()}
   <div class="sec"><div class="sec-h"><h2>Today</h2><span class="num">${todays.length} visit${todays.length === 1 ? '' : 's'} · ${money(tTot)} with tips</span></div>
     <div class="list">${todays.length ? todays.map(visitRow).join('') : `<div class="empty">No visits logged today yet.</div>`}</div></div>
   <div class="sec"><div class="sec-h"><h2>Due to rebook</h2><span>${due.length ? 'Tap to text them' : ''}</span></div>
@@ -833,6 +952,8 @@ function renderHome() {
   <div class="sec"><div class="sec-h"><h2>Recent visits</h2></div>
     <div class="list">${recent.length ? recent.map(visitRow).join('') : exampleBlock()}</div></div>`;
   $('#talk-go').onclick = talkFill;
+  $('#home-cal').onclick = () => { S.tab = 'cal'; S.calDay = today; render(); scrollTo(0, 0); };
+  if ($('#home-book')) $('#home-book').onclick = () => openAppt({ date: today });
   if ($('#qa-sale')) { $('#qa-sale').onclick = () => openRegister(); $('#qa-visit').onclick = () => openVisit(); $('#qa-exp').onclick = () => openExpense(); }
   $('#talk-manual').onclick = () => openVisit();
   const q = $('#home-q'); q.oninput = () => { S.q = q.value; renderSearch(); };
@@ -879,15 +1000,19 @@ function renderClient(id) {
     <div class="tile"><small>Average</small><b class="num">${money(Math.round(st.avg))}</b></div><div class="tile"><small>Last visit</small><b style="font-size:1.4rem">${st.last ? esc(niceDay(st.last.date)) : '—'}</b>${st.last ? `<span>${daysBetween(st.last.date, isoDay())} days ago</span>` : ''}</div></div>
   <div class="actions">
     <button class="btn gold" id="cv-new">+ New visit</button>
+    ${canWrite ? '<button class="btn" id="cv-book">Book appointment</button>' : ''}
     ${st.last && (st.last.formula || []).length ? '<button class="btn" id="cv-repeat">Repeat last formula</button>' : ''}
     ${d ? `<a class="btn" href="sms:+1${d}">Text</a><a class="btn" href="tel:+1${d}">Call</a>` : ''}
     <button class="btn" id="cv-edit">Edit details</button>
   </div>
   ${c.hair || c.notes || c.email ? `<div class="card"><dl class="kv">${c.hair ? `<dt>Hair</dt><dd>${esc(c.hair)}</dd>` : ''}${c.notes ? `<dt>Notes</dt><dd>${esc(c.notes)}</dd>` : ''}${c.email ? `<dt>Email</dt><dd>${esc(c.email)}</dd>` : ''}</dl></div>` : ''}
+  ${(() => { const up = S.appts.filter(a => a.client_id === id && a.status === 'booked' && a.ends_at >= new Date().toISOString()).sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+    return up.length ? `<div class="sec"><div class="sec-h"><h2>Upcoming</h2></div><div class="list">${up.map(a => apptRow(a).replace('<span class="tm"><b>', `<span class="tm"><small>${esc(parseDay(apDay(a)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }))}</small><b>`)).join('')}</div></div>` : ''; })()}
   <div class="sec"><div class="sec-h"><h2>Formula history</h2><span>Newest first</span></div>
   ${vs.length ? vs.map(visitCard).join('') : '<div class="list"><div class="empty">No visits yet.</div></div>'}</div>`;
   $('#back').onclick = () => { S.client = null; render(); scrollTo(0, 0); };
   $('#cv-new').onclick = () => openVisit({ clientId: id });
+  if ($('#cv-book')) $('#cv-book').onclick = () => openAppt({ clientId: id });
   const rp = $('#cv-repeat'); if (rp) rp.onclick = () => openVisit({ clientId: id, formula: st.last.formula, services: st.last.services, price: st.last.price, rebookWeeks: st.last.rebookWeeks, repeat: true });
   $('#cv-edit').onclick = () => editClient(id);
   wireVisitCards();
@@ -958,11 +1083,11 @@ async function exportCSV() {
 /* ------------ ASK YOUR BOOK ------------ */
 function renderAsk() {
   view.innerHTML = `<div class="sec-h" style="margin-top:8px"><h2 style="font-size:1.8rem">Ask your book</h2></div>
-  <p style="color:var(--soft);font-size:14.5px">Ask anything about your clients, formulas or income. Claude looks it up in your book.</p>
+  <p style="color:var(--soft);font-size:14.5px">Ask about your clients, formulas or income, or tell it to book, move or cancel an appointment. Tap the 🎤 on your keyboard to talk.</p>
   ${sample ? '' : '<div class="ai-note">Talking and asking turn on once the AI key is added to the book’s server. Everything else works now.</div>'}
-  <div class="ideas">${['What formula did I use on Maria last time?', 'How much should I save for taxes?', 'What did I spend on supplies this month?', 'Who hasn’t been in for 3 months?'].map(t => `<button class="chip" data-idea="${esc(t)}">${esc(t)}</button>`).join('')}</div>
+  <div class="ideas">${['Who’s on my calendar tomorrow?', 'Book Maria Friday at 2 for a root touch-up', 'Move my 3:00 today to 4:30', 'What formula did I use on Maria last time?', 'How much should I save for taxes?'].map(t => `<button class="chip" data-idea="${esc(t)}">${esc(t)}</button>`).join('')}</div>
   <div class="chat" id="chat">${S.chat.map(m => `<div class="msg ${m.role === 'user' ? 'me' : 'ai'}">${esc(m.content)}</div>`).join('')}</div>
-  <form class="ask-bar" id="ask-f"><input class="in" id="ask-in" placeholder="Ask about a client or formula…" aria-label="Question" autocomplete="off"><button class="btn gold" ${sample ? '' : 'disabled'}>Ask</button></form>`;
+  <form class="ask-bar" id="ask-f"><input class="in" id="ask-in" placeholder="Ask, or say “book Tasha Friday at 10”…" aria-label="Question" autocomplete="off"><button class="btn gold" ${sample ? '' : 'disabled'}>Ask</button></form>`;
   $$('[data-idea]').forEach(b => b.onclick = () => { $('#ask-in').value = b.dataset.idea; $('#ask-f').requestSubmit(); });
   $('#ask-f').onsubmit = e => { e.preventDefault(); const t = $('#ask-in').value.trim(); if (t && sample) askBook(t); };
 }
@@ -978,12 +1103,27 @@ const toolDefs = () => [
   { name: 'tax_estimate', description: 'Federal tax estimate for a year: income, expenses, profit, self-employment tax, income tax, total, take-home, plus a full-year projection for the current year.', inputSchema: { type: 'object', properties: { year: { type: 'number' } } },
     execute: ({ year }) => { const M = yearMoney(year || new Date().getFullYear()); const r = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, Math.round(v)])); return { gross: Math.round(M.gross), tips: Math.round(M.tips), expenses: Math.round(M.expenses), paidToIRS: M.paid, soFar: r(M.est), fullYearProjection: M.projected ? r(M.proj) : null, filingStatus: SET().filingStatus, note: 'Estimate only, 2026 IRS figures, Texas has no state income tax.' }; } },
   { name: 'income', description: 'Totals between two dates (YYYY-MM-DD, inclusive): service income, tips, visit count, by payment method.', inputSchema: { type: 'object', properties: { from: { type: 'string' }, to: { type: 'string' } }, required: ['from', 'to'] },
-    execute: ({ from, to }) => { const vs = S.visits.filter(v => v.date >= from && v.date <= to); const by = {}; vs.forEach(v => { const k = v.payment || 'Not set'; by[k] = (by[k] || 0) + vIncome(v); }); return { visits: vs.length, services: vs.reduce((a, v) => a + vRevenue(v), 0), tips: vs.reduce((a, v) => a + (+v.tip || 0), 0), byPayment: by }; } }
+    execute: ({ from, to }) => { const vs = S.visits.filter(v => v.date >= from && v.date <= to); const by = {}; vs.forEach(v => { const k = v.payment || 'Not set'; by[k] = (by[k] || 0) + vIncome(v); }); return { visits: vs.length, services: vs.reduce((a, v) => a + vRevenue(v), 0), tips: vs.reduce((a, v) => a + (+v.tip || 0), 0), byPayment: by }; } },
+  { name: 'list_appointments', description: 'Appointments on her calendar between two dates (YYYY-MM-DD, inclusive): id, client, date, start and end time, services, status, whether the client has an email, and whether a confirmation/reminder was sent.', inputSchema: { type: 'object', properties: { from: { type: 'string' }, to: { type: 'string' } }, required: ['from', 'to'] },
+    execute: ({ from, to }) => S.appts.filter(a => apDay(a) >= from && apDay(a) <= to).sort((a, b) => a.starts_at.localeCompare(b.starts_at)).slice(0, 100).map(apInfo) },
+  ...(canWrite ? [
+  { name: 'book_appointment', description: 'Book a new appointment. Use clientId from find_clients when it is an existing client; otherwise give clientName and a new client is created. time is 24-hour HH:MM. minutes defaults to 60. The client is emailed a confirmation automatically when she has an email.', inputSchema: { type: 'object', properties: { clientId: { type: 'string' }, clientName: { type: 'string' }, date: { type: 'string' }, time: { type: 'string' }, minutes: { type: 'number' }, services: { type: 'array', items: { type: 'string' } }, notes: { type: 'string' }, email: { type: 'string' }, phone: { type: 'string' } }, required: ['date', 'time'] },
+    execute: async p => { const r = await saveAppt({ ...p, notify: true }); return apResult(r); } },
+  { name: 'move_appointment', description: 'Move an existing appointment (id from list_appointments) to a new date and/or time (24-hour HH:MM), optionally a new length in minutes. The client is emailed about the change.', inputSchema: { type: 'object', properties: { id: { type: 'string' }, date: { type: 'string' }, time: { type: 'string' }, minutes: { type: 'number' } }, required: ['id'] },
+    execute: async ({ id, date, time, minutes }) => { const a = S.appts.find(x => x.id === id); if (!a) return { error: 'No appointment with that id' };
+      const r = await saveAppt({ id, clientId: a.client_id, clientName: a.data.clientName, email: a.data.email, phone: a.data.phone, services: a.data.services, notes: a.data.notes, notify: a.notify, date: date || apDay(a), time: time || hm(a.starts_at), minutes: minutes || Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4) });
+      return apResult(r); } },
+  { name: 'cancel_appointment', description: 'Cancel an appointment (id from list_appointments). The client gets a cancellation email when she has an email. Only use when Della clearly asked to cancel that specific appointment.', inputSchema: { type: 'object', properties: { id: { type: 'string' } }, required: ['id'] },
+    execute: async ({ id }) => apResult(await cancelAppt(id)) }] : [])
 ];
+const apInfo = a => ({ id: a.id, client: apName(a), date: apDay(a), start: hm(a.starts_at), end: hm(a.ends_at), services: (a.data || {}).services, status: a.status, notes: (a.data || {}).notes, hasEmail: validEmail(apEmail(a)), confirmationSent: !!a.confirm_sent_at, reminderSent: !!a.reminder_sent_at });
+const apResult = r => r ? { saved: apInfo(r.appt), doubleBookedWith: (r.clash || []).map(apInfo), clientEmailed: !!r.sent,
+  emailNote: r.sent ? 'Email sent.' : r.reason === 'manual' ? 'Automatic email is not connected yet: tell Della to open the appointment in the Calendar tab and tap Email her or Text her.' : r.reason === 'no email' ? 'No email on file for this client, so nothing was sent.' : r.reason || '' } : { error: 'Not saved' };
 async function askBook(q) {
-  S.chat.push({ role: 'user', content: q }); renderAsk();
+  S.chat.push({ role: 'user', content: q }); renderAsk(); S.asking = true;
   const bubble = document.createElement('div'); bubble.className = 'msg ai'; bubble.textContent = 'Looking in your book…'; $('#chat').appendChild(bubble); bubble.scrollIntoView({ block: 'end', behavior: 'smooth' });
-  const sys = `You are the private assistant inside Della's salon client book. Della (Shondell Slaughter) is a hair colorist who rents a booth in Texas (self-employed). Tax numbers are estimates, not tax advice. Today is ${isoDay()}. Use the tools to look up her real data; never invent clients, formulas or numbers. If nothing is found, say so. Answer briefly and warmly in plain text (no markdown), with dollar amounts and dates written naturally. When listing formulas, give zone, brand, shade, developer, ratio and time.`;
+  const sys = `You are the private assistant inside Della's salon client book. Della (Shondell Slaughter) is a hair colorist who rents a booth in Texas (self-employed). Tax numbers are estimates, not tax advice. Today is ${new Date().toLocaleDateString('en-US', { weekday: 'long' })} ${isoDay()}, and it is ${clock(new Date())} now.
+You also run her calendar: you can list, book, move and cancel appointments. Resolve words like "Friday" or "tomorrow at 2" to real dates (an hour with no am/pm between 7 and 11 is morning, 12 to 6 is afternoon). Before booking, look the client up with find_clients and use her clientId when it is clearly the same person; if two clients could match, ask which one. To move or cancel, find the appointment with list_appointments first. Never cancel unless she clearly asked. After a change, confirm in one short sentence what you did, when, and whether the client was emailed; mention any double booking. Use the tools to look up her real data; never invent clients, formulas or numbers. If nothing is found, say so. Answer briefly and warmly in plain text (no markdown), with dollar amounts and dates written naturally. When listing formulas, give zone, brand, shade, developer, ratio and time.`;
   const convo = S.chat.slice(-8).map((m, i, arr) => ({ role: m.role, content: i === 0 && m.role === 'user' ? sys + '\n\nQuestion: ' + m.content : m.content }));
   if (convo[0].role !== 'user') convo.shift();
   try {
@@ -992,7 +1132,7 @@ async function askBook(q) {
   } catch (e) {
     bubble.textContent = e.code === 'rate_limited' ? 'Too many questions in a row. Try again in a minute.' : e.code === 'not_granted' ? 'Claude access wasn’t allowed for this page.' : 'Couldn’t answer just now. Try again.';
     S.chat.pop();
-  }
+  } finally { S.asking = false; }
 }
 
 /* ------------ TALK TO FILL ------------ */
@@ -1399,6 +1539,257 @@ function exportExpenses(es) {
     .concat(es.map(e => [e.date, catLabel(e.category), (EXP_CATS.find(c => c[0] === e.category) || [])[2], e.vendor, +e.amount || 0, e.miles || '', expDeduct(e).toFixed(2), e.payment, e.note])));
 }
 
+/* ---------- CALENDAR ---------- */
+const DEFAULT_TPL = {
+  confirm: { subject: "You're booked, {first}! {day} at {time}", body: "Hi {first},\n\nYou're all set for {service} on {when}.\n\n{address}\n\nNeed to change anything? Just reply to this email or text me at {phone}.\n\nSee you soon,\n{salon}" },
+  change: { subject: 'Your appointment moved to {day} at {time}', body: "Hi {first},\n\nYour appointment has been updated. Your new time is {when} for {service}.\n\n{address}\n\nIf this doesn't work for you, reply to this email or text me at {phone}.\n\n{salon}" },
+  cancel: { subject: 'Your appointment on {day} is cancelled', body: "Hi {first},\n\nYour appointment on {when} has been cancelled.\n\nWhenever you're ready to rebook, just reply to this email or text me at {phone}.\n\n{salon}" },
+  reminder: { subject: 'Reminder: see you tomorrow at {time}', body: "Hi {first},\n\nJust a reminder of your {service} appointment {when}.\n\n{address}\n\nIf something came up, please let me know as soon as you can at {phone}.\n\nSee you soon,\n{salon}" }
+};
+const TPL_NAMES = { confirm: 'When she books someone', change: 'When she moves an appointment', cancel: 'When she cancels', reminder: '24 hours before' };
+const MAIL = () => { const m = SET().mail || {}; return { salon: m.salon || 'Shondell Slaughter', replyTo: m.replyTo || '', phone: m.phone || '', address: m.address || '', reminders: m.reminders !== false, tz: m.tz || 'America/Chicago', templates: { ...DEFAULT_TPL, ...(m.templates || {}) } }; };
+const LENGTHS = [['30m', 30], ['45m', 45], ['1h', 60], ['1½h', 90], ['2h', 120], ['2½h', 150], ['3h', 180], ['4h', 240], ['5h', 300]];
+const validEmail = e => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(e || '').trim());
+const apDay = a => isoDay(new Date(a.starts_at));
+const clock = d => new Date(d).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+const apName = a => (a.client_id && S.clients.get(a.client_id) || {}).name || (a.data || {}).clientName || 'Client';
+const apEmail = a => (a.data || {}).email || (a.client_id && S.clients.get(a.client_id) || {}).email || '';
+const apPhone = a => (a.data || {}).phone || (a.client_id && S.clients.get(a.client_id) || {}).phone || '';
+const apLive = () => S.appts.filter(a => a.status !== 'cancelled');
+const longDay = s => parseDay(s).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+const atLocal = (day, hm) => new Date(`${day}T${hm || '09:00'}:00`);
+const hm = d => { const x = new Date(d); return String(x.getHours()).padStart(2, '0') + ':' + String(x.getMinutes()).padStart(2, '0'); };
+function fillTpl(t, a) {
+  const m = MAIL(), d = new Date(a.starts_at), name = apName(a);
+  const day = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }), time = clock(d);
+  const v = { first: name.split(/\s+/)[0] || 'there', name, day, date: day, time, when: `${day} at ${time}`, service: ((a.data || {}).services || []).join(' + ') || 'your appointment', salon: m.salon, address: m.address, phone: m.phone };
+  return t.replace(/\{(\w+)\}/g, (x, k) => (k in v ? v[k] : x)).replace(/\n{3,}/g, '\n\n').trim();
+}
+const mailtoFor = (a, kind) => { const t = MAIL().templates[kind]; return `mailto:${encodeURIComponent(apEmail(a))}?subject=${encodeURIComponent(fillTpl(t.subject, a))}&body=${encodeURIComponent(fillTpl(t.body, a))}`; };
+const smsFor = (a, kind) => { const d = digits(apPhone(a)); if (!d) return ''; const first = apName(a).split(/\s+/)[0], when = `${new Date(a.starts_at).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} at ${clock(a.starts_at)}`;
+  const txt = kind === 'cancel' ? `Hi ${first}, your appointment on ${when} is cancelled. Text me whenever you want to rebook! – ${MAIL().salon}` : kind === 'change' ? `Hi ${first}! Your appointment moved to ${when}. See you then! – ${MAIL().salon}` : kind === 'reminder' ? `Hi ${first}! Reminder: I'll see you ${when}. – ${MAIL().salon}` : `Hi ${first}! You're booked ${when}. See you then! – ${MAIL().salon}`;
+  return `sms:+1${d}${/iPhone|iPad/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(txt)}`; };
+
+const durLabel = m => { if (m < 60) return m + 'm'; const h = Math.floor(m / 60), r = m % 60; return r === 0 ? h + 'h' : r === 30 ? h + '½h' : `${h}h ${r}m`; };
+const apptRow = a => {
+  const off = a.status === 'cancelled' || a.status === 'no_show', em = apEmail(a);
+  const pill = a.status === 'cancelled' ? '<span class="pill bad">Cancelled</span>' : a.status === 'no_show' ? '<span class="pill bad">No-show</span>' : a.status === 'done' ? '<span class="pill ok">Done</span>'
+    : a.reminder_sent_at ? '<span class="pill ok">Reminded</span>' : a.confirm_sent_at ? '<span class="pill ok">Confirmed</span>' : !a.notify || !em ? '<span class="pill">No email</span>' : '';
+  return `<button class="item appt ${off ? 'off' : ''}" data-appt="${esc(a.id)}"><span class="tm"><b>${esc(clock(a.starts_at))}</b><small>${esc(durLabel(Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4)))}</small></span>
+    <span class="main"><b>${esc(apName(a))}</b><small>${esc(((a.data || {}).services || []).join(', ') || 'Appointment')}</small></span><span class="end">${pill}</span></button>`;
+};
+function weekStart(day) { const d = parseDay(day); d.setDate(d.getDate() - d.getDay()); return isoDay(d); }
+function renderCal() {
+  const sel = S.calDay, ws = weekStart(sel), today = isoDay();
+  const days = Array.from({ length: 7 }, (_, i) => { const d = parseDay(ws); d.setDate(d.getDate() + i); return isoDay(d); });
+  const live = apLive(), count = d => live.filter(a => apDay(a) === d).length;
+  const list = S.appts.filter(a => apDay(a) === sel).sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+  const now = new Date().toISOString(), soon = live.filter(a => a.status === 'booked' && a.starts_at >= now && apDay(a) !== sel).sort((a, b) => a.starts_at.localeCompare(b.starts_at)).slice(0, 8);
+  const booked = list.filter(a => a.status !== 'cancelled');
+  view.innerHTML = `<div class="sec-h" style="margin-top:8px"><h2 style="font-size:1.8rem">Calendar</h2><span><button class="link" id="cal-today">Today</button> · <button class="link" id="cal-mail">Client emails</button></span></div>
+  <div class="week"><button class="nav" id="cal-prev" aria-label="Previous week">‹</button>${days.map(d => `<button class="d ${d === sel ? 'on' : ''} ${d === today ? 'today' : ''} ${count(d) ? 'has' : ''}" data-day="${d}" aria-label="${esc(longDay(d))}"><span>${parseDay(d).toLocaleDateString('en-US', { weekday: 'short' }).slice(0, 2)}</span><b>${parseDay(d).getDate()}</b><i></i></button>`).join('')}<button class="nav" id="cal-next" aria-label="Next week">›</button></div>
+  <div class="sec" style="margin-top:14px"><div class="sec-h"><h2>${esc(sel === today ? 'Today' : longDay(sel))}</h2><span class="num">${booked.length ? `${booked.length} booked` : ''}</span></div>
+    <div class="list">${list.length ? list.map(apptRow).join('') : '<div class="empty">Nothing booked this day.</div>'}</div>
+    ${canWrite ? '<div class="actions"><button class="btn gold" id="cal-new">+ Book an appointment</button></div>' : ''}</div>
+  ${soon.length ? `<div class="sec"><div class="sec-h"><h2>Coming up</h2></div><div class="list">${soon.map(a => apptRow(a).replace('<span class="tm"><b>', `<span class="tm"><small>${esc(parseDay(apDay(a)).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }))}</small><b>`)).join('')}</div></div>` : ''}
+  ${S.mailReady === false ? '<div class="ai-note" style="margin-top:18px"><b>Automatic emails aren’t connected yet.</b> Until they are, saving an appointment gives you an Email and a Text button with the message already written. 24-hour reminders start as soon as email is connected.</div>' : ''}`;
+  $$('[data-day]').forEach(b => b.onclick = () => { S.calDay = b.dataset.day; renderCal(); });
+  const shift = n => { const d = parseDay(sel); d.setDate(d.getDate() + n); S.calDay = isoDay(d); renderCal(); };
+  $('#cal-prev').onclick = () => shift(-7); $('#cal-next').onclick = () => shift(7);
+  $('#cal-today').onclick = () => { S.calDay = today; renderCal(); };
+  $('#cal-mail').onclick = openMailSettings;
+  const nb = $('#cal-new'); if (nb) nb.onclick = () => openAppt({ date: sel });
+}
+view.addEventListener('click', e => { const b = e.target.closest('[data-appt]'); if (b) openAppt({ id: b.dataset.appt }); });
+
+/* appointment form */
+const A = { id: null, clientId: null, len: 60, services: new Set(), orig: null, saving: false };
+function apPickClient(id) {
+  A.clientId = id; const c = id && S.clients.get(id);
+  $('#ap-picked').innerHTML = c ? `<div class="picked"><span class="av" style="width:34px;height:34px;font-size:1rem">${esc(initials(c.name))}</span><b>${esc(c.name)}</b>${c.allergies ? '<span class="pill bad">Allergy</span>' : ''}<button type="button" class="link" id="ap-change">Change</button></div>` : '';
+  $('#ap-pick').style.display = c ? 'none' : '';
+  if (c) { if (!$('#ap-email').value) $('#ap-email').value = c.email || ''; if (!$('#ap-phone').value) $('#ap-phone').value = fmtPhone(c.phone); }
+  const ch = $('#ap-change'); if (ch) ch.onclick = () => { apPickClient(null); $('#ap-email').value = ''; $('#ap-phone').value = ''; $('#ap-client').value = ''; $('#ap-client').focus(); };
+  apHint();
+}
+function apSugg() {
+  const raw = $('#ap-client').value.trim(), q = norm(raw), box = $('#ap-sugg');
+  if (!q) { box.innerHTML = ''; return; }
+  const qd = q.replace(/\D/g, ''), m = [...S.clients.entries()].filter(([, c]) => norm(c.name).includes(q) || (qd && digits(c.phone).includes(qd))).slice(0, 6);
+  box.innerHTML = m.length ? `<div class="sugg">${m.map(([id, c]) => `<button type="button" data-cid="${esc(id)}">${esc(c.name)}<small>${esc(fmtPhone(c.phone))}</small></button>`).join('')}</div>` : `<p class="fine" style="margin-top:6px">New client: <b>${esc(raw)}</b>. She’ll be added to your clients when you save.</p>`;
+  $$('[data-cid]', box).forEach(b => b.onclick = () => { box.innerHTML = ''; apPickClient(b.dataset.cid); });
+}
+$('#ap-client').addEventListener('input', apSugg);
+function apHint() {
+  const has = validEmail($('#ap-email').value), on = $('#ap-notify').checked;
+  $('#ap-notify-hint').textContent = !has ? 'Add an email above to send a confirmation and reminder' : !on ? 'No emails for this appointment' : S.mailReady ? 'Confirmation now, reminder 24 hours before' : 'Opens your email with the message written for you';
+}
+$('#ap-email').addEventListener('input', apHint); $('#ap-notify').addEventListener('change', apHint);
+function apDraw() {
+  chipRow($('#ap-len'), LENGTHS, v => +v === A.len, v => { A.len = +v; });
+  const names = [...new Set((SET().menu || []).map(m => m.name).filter(Boolean).concat(SERVICES))].slice(0, 24);
+  const extra = [...A.services].filter(s => !names.includes(s));
+  chipRow($('#ap-services'), names.concat(extra).map(n => [n, n]), v => A.services.has(v), v => { A.services.has(v) ? A.services.delete(v) : A.services.add(v); });
+}
+function openAppt(p = {}) {
+  if (!canWrite && !p.id) { toast('You can view this book but not change it.'); return; }
+  const a = p.id ? S.appts.find(x => x.id === p.id) : null;
+  A.id = a ? a.id : null; A.orig = a; A.services = new Set(a ? (a.data.services || []) : (p.services || []));
+  A.len = a ? Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4) : (+p.minutes || 60);
+  if (!LENGTHS.some(l => l[1] === A.len)) LENGTHS.push([durLabel(A.len), A.len]);
+  $('#ap-title').textContent = a ? (a.status === 'cancelled' ? 'Cancelled appointment' : 'Appointment') : 'New appointment';
+  $('#ap-client').value = a ? '' : (p.clientName || ''); $('#ap-sugg').innerHTML = '';
+  $('#ap-email').value = a ? (a.data.email || '') : (p.email || ''); $('#ap-phone').value = a ? fmtPhone(a.data.phone || '') : (p.phone || '');
+  $('#ap-date').value = a ? apDay(a) : (p.date || isoDay()); $('#ap-time').value = a ? hm(a.starts_at) : (p.time || '10:00');
+  $('#ap-notes').value = a ? (a.data.notes || '') : (p.notes || ''); $('#ap-service-other').value = '';
+  $('#ap-notify').checked = a ? a.notify : true;
+  $('#ap-ai').innerHTML = '';
+  apPickClient(a ? (a.client_id && S.clients.has(a.client_id) ? a.client_id : null) : (p.clientId && S.clients.has(p.clientId) ? p.clientId : null));
+  if (a && !A.clientId) $('#ap-client').value = a.data.clientName || '';
+  if (!A.clientId && $('#ap-client').value) apSugg();
+  apDraw(); apHint();
+  $('#ap-save').textContent = a ? 'Save changes' : 'Book it';
+  // status + more actions for an existing appointment
+  $('#ap-status').innerHTML = ''; $('#ap-more').innerHTML = '';
+  if (a) {
+    const st = [];
+    if (a.confirm_sent_at) st.push(`Confirmation emailed ${new Date(a.confirm_sent_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`);
+    if (a.reminder_sent_at) st.push(`Reminder handled ${new Date(a.reminder_sent_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`);
+    $('#ap-status').innerHTML = st.length ? `<div class="card" style="font-size:14px">${st.map(esc).join('<br>')}</div>` : '';
+    window.__appts.log(a.id).then(l => { const bad = l.find(x => !x.ok); if (bad && A.id === a.id) $('#ap-status').insertAdjacentHTML('beforeend', `<div class="alert" style="margin-top:8px"><b>Last email didn’t send:</b> ${esc(bad.error || '')}</div>`); });
+    if (canWrite) {
+      const b = [];
+      if (a.status === 'booked') b.push('<button class="btn small gold" data-ap="checkout">Check out</button>', '<button class="btn small" data-ap="done">Mark done</button>', '<button class="btn small" data-ap="noshow">No-show</button>', '<button class="btn small danger" data-ap="cancel">Cancel appointment</button>');
+      else b.push('<button class="btn small" data-ap="rebook">Book again</button>');
+      if (apEmail(a)) b.push(`<a class="btn small" href="${esc(mailtoFor(a, a.status === 'cancelled' ? 'cancel' : 'confirm'))}">Email her</a>`);
+      if (digits(apPhone(a))) b.push(`<a class="btn small" href="${esc(smsFor(a, a.status === 'cancelled' ? 'cancel' : 'reminder'))}">Text her</a>`);
+      b.push('<button class="btn small danger" data-ap="delete">Delete</button>');
+      $('#ap-more').innerHTML = b.join('');
+    }
+  }
+  $('#ap-form').style.display = ''; $('#ap-done').style.display = 'none';
+  $('#ap-save').parentElement.style.display = canWrite ? '' : 'none';
+  openSheet('asheet');
+}
+$('#ap-more').addEventListener('click', async e => {
+  const b = e.target.closest('[data-ap]'); if (!b) return; const a = A.orig; if (!a) return;
+  const act = b.dataset.ap;
+  if (act === 'checkout') { closeSheet('asheet'); await window.__appts.save({ id: a.id, status: 'done' }).catch(() => {}); openRegister(a.client_id ? { clientId: a.client_id } : {}); return; }
+  if (act === 'done' || act === 'noshow') { try { await window.__appts.save({ id: a.id, status: act === 'done' ? 'done' : 'no_show' }); closeSheet('asheet'); toast(act === 'done' ? 'Marked done ✓' : 'Marked as no-show'); } catch (err) { toast('Couldn’t save: ' + err.message); } return; }
+  if (act === 'rebook') { closeSheet('asheet'); setTimeout(() => openAppt({ clientId: a.client_id, clientName: a.data.clientName, email: a.data.email, phone: a.data.phone, services: a.data.services, minutes: Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4), date: isoDay() }), 350); return; }
+  if (act === 'cancel') {
+    if (!await ask('Cancel this appointment?', `${apName(a)} · ${longDay(apDay(a))} at ${clock(a.starts_at)}.${a.notify && apEmail(a) ? ' She’ll get a cancellation email.' : ''}`, 'Cancel it')) return;
+    const r = await cancelAppt(a.id); showDone(r); return;
+  }
+  if (act === 'delete') {
+    if (!await ask('Delete this appointment?', 'It disappears from the calendar. No email is sent. Use “Cancel appointment” if she should be told.')) return;
+    try { await window.__appts.remove(a.id); closeSheet('asheet'); toast('Appointment deleted'); } catch (err) { toast('Couldn’t delete: ' + err.message); }
+  }
+});
+
+/* shared by the form and by Claude in "Ask" */
+async function saveAppt(d, { confirmOverlap } = {}) {
+  let clientId = d.clientId && S.clients.has(d.clientId) ? d.clientId : null;
+  const name = (clientId ? S.clients.get(clientId).name : (d.clientName || '').trim());
+  if (!name) throw new Error('Who is the appointment for?');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d.date || '') || !/^\d{2}:\d{2}$/.test(d.time || '')) throw new Error('Pick a date and time.');
+  const start = atLocal(d.date, d.time), end = new Date(start.getTime() + (+d.minutes || 60) * 6e4);
+  const email = String(d.email || '').trim(), phone = fmtPhone(String(d.phone || '').trim());
+  if (email && !validEmail(email)) throw new Error('That email address doesn’t look right.');
+  const clash = apLive().filter(a => a.id !== d.id && a.status === 'booked' && new Date(a.starts_at) < end && new Date(a.ends_at) > start);
+  if (clash.length && confirmOverlap && !await confirmOverlap(clash)) return null;
+  // new client, or fill in a missing email/phone on the client card
+  if (!clientId) {
+    const same = [...S.clients.entries()].find(([, c]) => norm(c.name) === norm(name));
+    if (same) clientId = same[0];
+    else { const ref = db.collection('clients').doc(); await ref.set({ name, phone, allergies: '', email, birthday: '', hair: '', notes: '', createdAt: new Date().toISOString() }); clientId = ref.id; }
+  }
+  const c = S.clients.get(clientId) || {};
+  if (clientId && S.clients.has(clientId) && ((email && !c.email) || (phone && !c.phone))) await db.collection('clients').doc(clientId).update({ ...(email && !c.email ? { email } : {}), ...(phone && !c.phone ? { phone } : {}) }).catch(() => {});
+  const prev = d.id ? S.appts.find(a => a.id === d.id) : null;
+  const row = { id: d.id || window.__appts.uuid(), client_id: clientId, starts_at: start.toISOString(), ends_at: end.toISOString(), status: prev ? (prev.status === 'cancelled' ? 'booked' : prev.status) : 'booked', notify: d.notify !== false,
+    data: { ...(prev ? prev.data : {}), clientName: name, email: email || c.email || '', phone: phone || c.phone || '', services: d.services || [], notes: d.notes || '' } };
+  const saved = await window.__appts.save(row);
+  const moved = prev && (prev.starts_at !== saved.starts_at || prev.status === 'cancelled');
+  const kind = !prev || prev.status === 'cancelled' ? 'confirm' : moved ? 'change' : null;
+  return { appt: saved, ...(await notifyClient(saved, kind)), clash };
+}
+async function notifyClient(a, kind) {
+  if (!kind) return { kind, sent: false };
+  if (!a.notify || !validEmail(apEmail(a))) return { kind, sent: false, reason: a.notify ? 'no email' : 'emails off' };
+  if (!S.mailReady) return { kind, sent: false, reason: 'manual' };
+  const r = await window.__appts.mail({ action: 'notify', id: a.id, kind });
+  return { kind, sent: !!r.ok, reason: r.ok ? '' : (r.error || 'not sent') };
+}
+async function cancelAppt(id) {
+  const a = S.appts.find(x => x.id === id); if (!a) throw new Error('Appointment not found');
+  const saved = await window.__appts.save({ id, status: 'cancelled' });
+  return { appt: saved, ...(await notifyClient(saved, 'cancel')) };
+}
+function showDone(r) {
+  if (!r) return; const a = r.appt, first = apName(a).split(/\s+/)[0];
+  const head = r.kind === 'cancel' ? 'Cancelled' : r.kind === 'change' ? 'Moved' : r.kind === 'confirm' ? 'Booked' : 'Saved';
+  if (r.sent || !r.kind || r.reason === 'emails off') { closeSheet('asheet'); toast(`${head} ✓${r.sent ? ` ${first} got an email` : ''}`); return; }
+  $('#ap-form').style.display = 'none'; $('#ap-done').style.display = '';
+  $('#ap-done-t').textContent = head;
+  $('#ap-done-p').textContent = `${apName(a)} · ${longDay(apDay(a))} at ${clock(a.starts_at)}`;
+  const em = validEmail(apEmail(a)), sm = smsFor(a, r.kind);
+  $('#ap-done-btns').innerHTML = `${r.reason && r.reason !== 'manual' && r.reason !== 'no email' ? `<div class="alert">The email didn’t go out: ${esc(r.reason)}</div>` : ''}
+    ${em || sm ? `<p class="fine" style="margin:0">Let ${esc(first)} know. The message is already written.</p>` : `<p class="fine" style="margin:0">No email or phone for ${esc(first)}, so nothing was sent.</p>`}
+    ${em ? `<a class="btn gold" href="${esc(mailtoFor(a, r.kind))}">Email ${esc(first)}</a>` : ''}${sm ? `<a class="btn ${em ? '' : 'gold'}" href="${esc(sm)}">Text ${esc(first)}</a>` : ''}
+    <button class="btn" data-x2>Done</button>`;
+  $('[data-x2]').onclick = () => closeSheet('asheet');
+  if (!$('#asheet').classList.contains('open')) openSheet('asheet');
+}
+$('#ap-save').addEventListener('click', async () => {
+  if (A.saving) return;
+  const other = $('#ap-service-other').value.trim(); if (other) A.services.add(other);
+  const d = { id: A.id, clientId: A.clientId, clientName: A.clientId ? '' : $('#ap-client').value, email: $('#ap-email').value, phone: $('#ap-phone').value, date: $('#ap-date').value, time: $('#ap-time').value, minutes: A.len, services: [...A.services], notes: $('#ap-notes').value.trim(), notify: $('#ap-notify').checked };
+  const btn = $('#ap-save'); A.saving = true; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving…';
+  try {
+    const r = await saveAppt(d, { confirmOverlap: clash => ask('Double booking?', `${clash.map(a => `${apName(a)} at ${clock(a.starts_at)}`).join(', ')} is already booked then.`, 'Book anyway') });
+    if (r) { S.calDay = apDay(r.appt); showDone(r); if (S.tab === 'cal' || S.tab === 'home') render(); }
+  } catch (e) { toast(e.message || 'Couldn’t save'); }
+  finally { A.saving = false; btn.disabled = false; btn.textContent = A.id ? 'Save changes' : 'Book it'; }
+});
+
+/* email templates */
+let draftMail = null;
+function openMailSettings() {
+  if (!canWrite) { toast('You can view this book but not change it.'); return; }
+  draftMail = JSON.parse(JSON.stringify(MAIL()));
+  $('#m-rem').checked = draftMail.reminders; $('#m-salon').value = draftMail.salon; $('#m-reply').value = draftMail.replyTo; $('#m-phone').value = draftMail.phone; $('#m-addr').value = draftMail.address;
+  drawTpls(); drawMailState(); openSheet('msheet');
+}
+function drawTpls() {
+  $('#m-tpls').innerHTML = Object.keys(DEFAULT_TPL).map(k => `<div class="tpl"><h4>${esc(TPL_NAMES[k])}</h4>
+    <input class="in" data-tk="${k}" data-f="subject" value="${esc(draftMail.templates[k].subject)}" aria-label="${esc(TPL_NAMES[k])} subject">
+    <textarea class="in" data-tk="${k}" data-f="body" aria-label="${esc(TPL_NAMES[k])} message">${esc(draftMail.templates[k].body)}</textarea>
+    ${S.mailReady ? `<button class="link" data-test="${k}" style="justify-self:start">Send me a test</button>` : ''}</div>`).join('');
+  $$('[data-tk]').forEach(i => i.oninput = () => { draftMail.templates[i.dataset.tk][i.dataset.f] = i.value; });
+  $$('[data-test]').forEach(b => b.onclick = async () => {
+    await saveMail(false); b.textContent = 'Sending…';
+    const r = await window.__appts.mail({ action: 'test', kind: b.dataset.test, to: draftMail.replyTo || undefined });
+    b.textContent = 'Send me a test'; toast(r.ok ? `Test sent to ${r.to}` : `Didn’t send: ${r.error || 'unknown error'}`, 4000);
+  });
+}
+function drawMailState() {
+  $('#m-state').innerHTML = S.mailReady ? '<div class="callout" style="margin-top:14px"><b>Emails send automatically ✓</b><span>Confirmations go out when she books, moves or cancels. Reminders go out about 24 hours before.</span></div>'
+    : '<div class="callout warnbox" style="margin-top:14px"><b>Automatic email isn’t connected yet.</b><span>Until it is, each appointment gives her an Email button with this wording filled in, sent from her own email. Reminders start once it’s connected.</span></div>';
+}
+$('#m-reset').addEventListener('click', () => { draftMail.templates = JSON.parse(JSON.stringify(DEFAULT_TPL)); drawTpls(); });
+async function saveMail(close = true) {
+  const reply = $('#m-reply').value.trim();
+  if (reply && !validEmail(reply)) { toast('The “Replies go to” email doesn’t look right.'); return false; }
+  Object.assign(draftMail, { reminders: $('#m-rem').checked, salon: $('#m-salon').value.trim() || 'Shondell Slaughter', replyTo: reply, phone: $('#m-phone').value.trim(), address: $('#m-addr').value.trim() });
+  Object.keys(DEFAULT_TPL).forEach(k => { const t = draftMail.templates[k]; if (!t.subject.trim()) t.subject = DEFAULT_TPL[k].subject; if (!t.body.trim()) t.body = DEFAULT_TPL[k].body; });
+  await saveSettings({ mail: draftMail });
+  if (close) { closeSheet('msheet'); toast('Email settings saved ✓'); }
+  return true;
+}
+$('#m-save').addEventListener('click', () => saveMail(true));
+$('#s-mail').addEventListener('click', () => { closeSheet('ssheet'); openMailSettings(); });
+
 /* ---------- ACTION MENU (+) ---------- */
 function openActions() {
   if (!canWrite) { toast('You can view this book but not change it.'); return; }
@@ -1407,6 +1798,7 @@ function openActions() {
 $('#acts').addEventListener('click', e => {
   const b = e.target.closest('[data-a]'); $('#acts').classList.remove('open'); if (!b) return;
   const a = b.dataset.a, cid = S.client;
+  if (a === 'appt') openAppt(cid ? { clientId: cid, date: S.tab === 'cal' ? S.calDay : isoDay() } : { date: S.tab === 'cal' ? S.calDay : isoDay() });
   if (a === 'sale') openRegister(cid ? { clientId: cid } : {});
   if (a === 'visit') openVisit(cid ? { clientId: cid } : {});
   if (a === 'expense') openExpense();
@@ -1690,6 +2082,10 @@ render();
   }, () => {});
   db.doc('settings/main').onSnapshot(d => { S.settings = d.exists ? d.data() : null; }, () => {});
   setTimeout(squareReturn, 400);
+  if (window.__appts) {
+    window.__appts.on(list => { S.appts = list; refresh(); });
+    window.__appts.ready().then(r => { S.mailReady = r; if (S.tab === 'cal') refresh(); });
+  }
   db.collection('visits').orderBy('date', 'desc').limit(1000).onSnapshot(snap => {
     S.visits = snap.docs.map(d => ({ ...d.data(), _id: d.id })).sort((a, b) => (b.date || '').localeCompare(a.date || '') || (b.createdAt || '').localeCompare(a.createdAt || ''));
     if (!snap.metadata.fromCache) S.loaded.v = true; ready(); refresh();
@@ -1699,6 +2095,7 @@ render();
 function refresh() {
   const a = document.activeElement;
   if (a && view.contains(a) && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { if (S.tab === 'home') renderSearch(); return; }
+  if (S.tab === 'ask' && S.asking) return;
   render();
 }
 })();
