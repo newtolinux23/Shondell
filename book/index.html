@@ -1869,6 +1869,11 @@ function drawPayHelp() {
     info = `<b>Zelle ${money(t.total)} to</b><span><b style="font-size:1rem">${esc(st.zelleName || '')}</b><br>${esc(st.zelleContact)}</span><button type="button" class="btn small" id="r-zcopy" style="margin-top:6px">Copy</button>`;
   } else if (R.payment === 'Card' && st.squareAppId && isAndroid) {
     info = `<b>Square</b><span>Tapping Complete sale opens Square with ${money(t.total)} ready for the card.</span>`;
+  } else if (['Venmo', 'Cash App', 'Zelle'].includes(R.payment)) {
+    const what = R.payment === 'Venmo' ? 'Venmo username' : R.payment === 'Cash App' ? 'Cash App $cashtag' : 'Zelle email or phone';
+    box.innerHTML = `<div class="payhelp"><div class="pi"><b>Show a pay code here</b><span>Add your ${what} once and this spot shows ${R.payment === 'Zelle' ? 'where to send it' : 'a QR code the client scans to pay'} ${money(t.total)}.</span><button type="button" class="btn small" id="r-payset" style="margin-top:8px">Add it now</button></div></div>`;
+    $('#r-payset').onclick = () => { openSettings(); setTimeout(() => { const v = $('#s-' + (R.payment === 'Venmo' ? 'venmo' : R.payment === 'Cash App' ? 'cashtag' : 'zelle')); if (v) { v.scrollIntoView({ block: 'center' }); v.focus(); } }, 400); };
+    return;
   }
   if (!info) { box.innerHTML = ''; return; }
   box.innerHTML = `<div class="payhelp">${qr ? '<div class="qr" id="r-qr" aria-label="Payment QR code"></div>' : ''}<div class="pi">${info}${R.payment !== 'Card' ? '<p class="fine" style="margin-top:6px">Check that the money arrived before tapping Complete sale.</p>' : ''}</div></div>`;
@@ -2055,6 +2060,7 @@ $('#s-save').addEventListener('click', async () => {
   if ($('#s-square')) draftSet.squareAppId = $('#s-square').value.trim();
   [['#s-venmo', 'venmoHandle'], ['#s-cashtag', 'cashtag'], ['#s-zelle', 'zelleContact'], ['#s-zellename', 'zelleName']].forEach(([id, k]) => { if ($(id)) draftSet[k] = $(id).value.trim(); });
   await saveSettings(draftSet); closeSheet('ssheet'); toast('Prices saved ✓'); render();
+  if ($('#rsheet').classList.contains('open')) drawPayHelp();
 });
 
 /* ------------ nav ------------ */
