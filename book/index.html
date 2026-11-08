@@ -319,6 +319,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
       <button class="btn" onclick="location.reload()">I confirmed it</button>
     </div>
     <div data-s="newpass">
+      <p class="sub" style="margin:0">Choose a new password for your book.</p>
       <input class="in" id="a-newpass" type="password" autocomplete="new-password" placeholder="New password (8+ characters)" aria-label="New password">
       <button class="btn gold" id="a-newpass-save">Save new password</button>
     </div>
@@ -480,7 +481,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
         <div><label class="lbl" for="s-zellename">Name Zelle shows</label><input class="in" id="s-zellename" placeholder="Shondell Slaughter" autocomplete="off"></div></div></div>
     <div class="fg"><label for="s-square">Square Application ID (optional)</label><input class="in" id="s-square" placeholder="sq0idp-…" autocomplete="off">
       <p class="fine" style="margin-top:6px">When this is filled in, choosing <b>Card</b> at checkout opens the Square app on Android with the total ready to tap.</p></div>
-    <div class="fg card"><span class="lbl">Account</span><p id="s-account" style="font-size:14.5px">…</p><button class="btn small" data-a-out style="margin-top:10px">Sign out</button></div>
+    <div class="fg card"><span class="lbl">Account</span><p id="s-account" style="font-size:14.5px">…</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn small" onclick="window.__changePassword && window.__changePassword()">Change password</button><button class="btn small" data-a-out>Sign out</button></div></div>
     <div class="sheet-foot"><button class="btn gold" id="s-save">Save</button></div>
   </div>
 </section>
@@ -498,6 +499,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 (() => {
   const SB_URL = 'https://yxpjitdqqodfyqxvwglv.supabase.co';
   const SB_KEY = 'sb_publishable_jibRZ8TZlJvnEJGABG_Vbg_GGYHUhcg';   // public by design; Row Level Security protects the data
+  let recovering = /type=recovery/.test(location.hash) || /type=recovery/.test(location.search);
   const sb = window.supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
   window.__sb = sb;
   const $ = s => document.querySelector(s);
@@ -537,8 +539,12 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
   };
   $('#a-newpass-save').onclick = async () => {
     const p = $('#a-newpass').value; if (p.length < 8) { msg('Use at least 8 characters.'); return; }
+    const b = $('#a-newpass-save'); busy(b, true, 'Saving…');
     const { error } = await sb.auth.updateUser({ password: p });
-    if (error) msg(niceErr(error)); else afterLogin();
+    busy(b, false, 'Save new password');
+    if (error) return msg(niceErr(error));
+    recovering = false; history.replaceState(null, '', location.pathname);
+    msg(''); afterLogin();
   };
   $('#a-join').onclick = async () => {
     const b = $('#a-join'); busy(b, true, 'Checking…');
@@ -550,6 +556,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
   function $$(s) { return [...document.querySelectorAll(s)]; }
 
   async function afterLogin() {
+    if (recovering) return show('newpass');
     const { data: { session } } = await sb.auth.getSession();
     if (!session) return show('login');
     ME = session.user;
@@ -560,12 +567,14 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
     auth.hidden = true;
     resolveReady();
   }
-  sb.auth.onAuthStateChange((ev) => { if (ev === 'PASSWORD_RECOVERY') show('newpass'); });
+  sb.auth.onAuthStateChange((ev) => { if (ev === 'PASSWORD_RECOVERY') { recovering = true; auth.hidden = false; show('newpass'); } });
   (async () => {
     const { data: { session } } = await sb.auth.getSession();
-    if (/type=recovery/.test(location.hash)) return show('newpass');
+    if (recovering) return show('newpass');
     if (session) afterLogin(); else show('login');
   })();
+  // signed-in "Change password" from settings
+  window.__changePassword = () => { recovering = true; auth.hidden = false; show('newpass'); };
 
   /* ---------- data layer (same shape the app already uses) ---------- */
   const TABLE = { clients: 'book_clients', visits: 'book_visits', expenses: 'book_expenses' };
