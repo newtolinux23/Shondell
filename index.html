@@ -432,6 +432,26 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
 .bk-alt{margin-top:1.4rem;padding:1.2rem;border:1px dashed rgba(216,191,138,.35);border-radius:14px;text-align:left}
 .bk-alt p{font-size:14.5px;color:var(--ink);margin-bottom:.9rem}
 .bk-alt .row2 .btn{padding:.95em .5em;font-size:11px}
+/* share / QR */
+.share-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);transition:border-color .4s,color .4s}
+.share-btn:hover{border-color:rgba(216,191,138,.6);color:var(--gold)}
+.share-btn svg{width:18px;height:18px}
+#share{position:fixed;inset:0;z-index:97;display:grid;place-items:center;padding:1.2rem;background:rgba(5,4,3,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility 0s .5s}
+#share.open{opacity:1;visibility:visible;transition:opacity .5s var(--ease)}
+.sh-card{position:relative;width:min(400px,100%);max-height:100%;overflow-y:auto;background:var(--bg);border:1px solid var(--line);border-radius:24px;padding:2rem 1.5rem 1.6rem;text-align:center;transform:translateY(24px) scale(.97);transition:transform .7s var(--ease)}
+#share.open .sh-card{transform:none}
+.sh-card .x{position:absolute;top:.9rem;right:.9rem;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--ivory)}
+.sh-card .x svg{width:18px}
+.sh-card h2{font-size:clamp(1.9rem,7vw,2.4rem);margin:.6rem 0 .3rem}
+.sh-card .sub{color:var(--muted);font-size:15px}
+.sh-qr{margin:1.4rem auto 1rem;width:min(260px,72vw);aspect-ratio:1;background:#fff;border-radius:18px;padding:10px;box-shadow:0 0 0 1px rgba(216,191,138,.5),0 30px 60px -20px rgba(0,0,0,.8),0 0 60px -10px rgba(216,191,138,.35)}
+.sh-qr img{width:100%;height:100%;image-rendering:pixelated}
+.sh-url{font-family:var(--serif);font-size:1.25rem;color:var(--gold-hi);letter-spacing:.02em}
+.sh-tip{font-size:12.5px;color:var(--dim);margin-top:.3rem}
+.sh-actions{display:grid;gap:.6rem;margin-top:1.4rem}
+.sh-actions .row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.sh-actions .btn{padding:1em .8em}
+.foot-share{margin:1.4rem auto 0}
 /* lightbox */
 #lb{position:fixed;inset:0;z-index:95;background:rgba(6,5,4,.96);display:grid;place-items:center;opacity:0;visibility:hidden;transition:opacity .5s,visibility 0s .5s;touch-action:pan-y}
 #lb.open{opacity:1;visibility:visible;transition:opacity .5s}
@@ -527,6 +547,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
     <button class="sound" id="sound" aria-pressed="false" aria-label="Toggle background music">
       <span class="eq" aria-hidden="true"><i style="height:5px"></i><i style="height:11px"></i><i style="height:7px"></i><i style="height:13px"></i></span><span class="lbl-txt">Sound</span>
     </button>
+    <button class="share-btn" data-share aria-label="Share the website with a QR code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 17h3v4M20 20v1"/></svg></button>
     <a class="btn btn-gold btn-book" href="#book" data-book>Book</a>
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
   </div>
@@ -542,6 +563,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
   <div class="menu-foot">
     <span class="eyebrow">Strictly by appointment</span>
     <a href="tel:+18174806160" data-out>Call (817) 480-6160</a>
+    <button type="button" data-share style="text-align:left;color:var(--gold);margin-top:.6rem">Share this site with a QR code</button>
   </div>
 </div>
 
@@ -821,6 +843,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
   <div class="fname">Shondell Slaughter</div>
   <div class="ftag">Curls &amp; Colors</div>
   <address class="faddr">Main Street Parlor · 101 N Main St, Joshua, TX 76058 · <a href="tel:+18174806160">(817) 480-6160</a></address>
+  <button type="button" class="btn btn-ghost foot-share" data-share><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 17h3v4M20 20v1"/></svg>Share this site</button>
   <div class="fline">Where Texas Radiance Begins · © <span id="yr"></span></div>
 </footer>
 
@@ -950,6 +973,26 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
       <button type="button" class="btn btn-gold" id="bk-next"><span class="spin"></span><span id="bk-next-txt">Continue</span></button>
     </div>
   </form>
+</div>
+
+<!-- share with QR -->
+<div id="share" role="dialog" aria-modal="true" aria-labelledby="sh-title" aria-hidden="true">
+  <div class="sh-card">
+    <button type="button" class="x" data-share-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <span class="eyebrow" style="justify-content:center">Share the studio</span>
+    <h2 class="h-display" id="sh-title">Scan to <em class="gold-text">visit</em></h2>
+    <p class="sub">Point a phone camera at the code to open the site.</p>
+    <div class="sh-qr"><img src="assets/img/qr-site.png" alt="QR code that opens shondellslaughter.com" width="1148" height="1148"></div>
+    <div class="sh-url">shondellslaughter.com</div>
+    <p class="sh-tip">Tip: turn your screen brightness up for faster scanning.</p>
+    <div class="sh-actions">
+      <button type="button" class="btn btn-gold" id="sh-native">Send the link</button>
+      <div class="row">
+        <button type="button" class="btn btn-ghost" id="sh-copy">Copy link</button>
+        <a class="btn btn-ghost" href="assets/img/qr-site.png" download="Shondell-Slaughter-QR.png">Save QR</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- lightbox -->
@@ -1306,6 +1349,39 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
   // Enter key moves forward (except in the notes box)
   form.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'BUTTON') { e.preventDefault(); nextBtn.click(); } });
   hashOpen();
+
+  /* ---------- share the site with a QR code ---------- */
+  const share = $('#share'), SITE = 'https://shondellslaughter.com/';
+  let shareFrom = null;
+  const openShare = () => {
+    shareFrom = document.activeElement;
+    if (document.documentElement.classList.contains('menu-open')) toggleMenu(false);
+    share.classList.add('open'); share.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => $('.x', share).focus({ preventScroll: true }), 300);
+  };
+  const closeShare = () => {
+    share.classList.remove('open'); share.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (location.hash === '#share') history.replaceState(null, '', location.pathname + location.search);
+    shareFrom && shareFrom.focus({ preventScroll: true });
+  };
+  $$('[data-share]').forEach(b => b.addEventListener('click', openShare));
+  $$('[data-share-close]').forEach(b => b.addEventListener('click', closeShare));
+  share.addEventListener('click', e => { if (e.target === share) closeShare(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && share.classList.contains('open')) closeShare(); });
+  const nativeBtn = $('#sh-native');
+  if (navigator.share) nativeBtn.addEventListener('click', () => navigator.share({ title: 'Shondell Slaughter | Curls & Colors', text: 'Luxury color, curls and cuts by Della in Joshua, TX.', url: SITE }).catch(() => {}));
+  else nativeBtn.hidden = true;
+  $('#sh-copy').addEventListener('click', async () => {
+    const b = $('#sh-copy');
+    try { await navigator.clipboard.writeText(SITE); b.textContent = 'Copied ✓'; }
+    catch (e) { b.textContent = SITE.replace('https://', ''); }
+    setTimeout(() => { b.textContent = 'Copy link'; }, 2200);
+  });
+  // shondellslaughter.com/#share opens the code straight away
+  const shareHash = () => { if (location.hash === '#share') openShare(); };
+  addEventListener('hashchange', shareHash); setTimeout(shareHash, 50);
 
   /* ---------- podcast waveform ---------- */
   const wave = $('#wave');
