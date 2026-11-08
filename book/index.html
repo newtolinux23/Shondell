@@ -611,6 +611,8 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
     const { data, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname } });
     busy(b, false, 'Create account');
     if (error) return msg(niceErr(error));
+    // Supabase answers "success" for an email that already has an account, but sends nothing
+    if (data.user && Array.isArray(data.user.identities) && !data.user.identities.length) return msg('That email already has an account. Tap “Sign in”, or “Forgot password?” if you need a new one.');
     if (!data.session) { show('check'); $('#a-check-email').textContent = email; } else afterLogin();
   };
   $('#a-forgot').onclick = async () => {
