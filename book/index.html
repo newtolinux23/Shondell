@@ -964,7 +964,7 @@ function renderHome() {
     <input id="home-q" placeholder="Find a client or a formula (e.g. 6NB)" value="${esc(S.q)}" aria-label="Search clients and formulas"></div>
   <div id="home-results"></div>
   ${(() => { const ap = S.appts.filter(a => apDay(a) === today && a.status !== 'cancelled').sort((a, b) => a.starts_at.localeCompare(b.starts_at));
-    return `<div class="sec"><div class="sec-h"><h2>Appointments today</h2><span><button class="link" id="home-cal">Calendar</button></span></div>
+    return `<div class="sec"><div class="sec-h"><h2>Appointments today</h2><span><button class="link" id="home-qr">Website QR</button> · <button class="link" id="home-cal">Calendar</button></span></div>
     <div class="list">${ap.length ? ap.map(apptRow).join('') : `<div class="empty">No appointments today. ${canWrite ? '<button class="link" id="home-book">Book one</button>' : ''}</div>`}</div></div>`; })()}
   <div class="sec"><div class="sec-h"><h2>Today</h2><span class="num">${todays.length} visit${todays.length === 1 ? '' : 's'} · ${money(tTot)} with tips</span></div>
     <div class="list">${todays.length ? todays.map(visitRow).join('') : `<div class="empty">No visits logged today yet.</div>`}</div></div>
@@ -977,6 +977,7 @@ function renderHome() {
   <div class="sec"><div class="sec-h"><h2>Recent visits</h2></div>
     <div class="list">${recent.length ? recent.map(visitRow).join('') : exampleBlock()}</div></div>`;
   $('#talk-go').onclick = talkFill;
+  $('#home-qr').onclick = () => openSiteQR('site');
   $('#home-cal').onclick = () => { S.tab = 'cal'; S.calDay = today; render(); scrollTo(0, 0); };
   if ($('#home-book')) $('#home-book').onclick = () => openAppt({ date: today });
   if ($('#qa-sale')) { $('#qa-sale').onclick = () => openRegister(); $('#qa-visit').onclick = () => openVisit(); $('#qa-exp').onclick = () => openExpense(); }
