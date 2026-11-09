@@ -315,6 +315,8 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .appt .tm{flex:none;width:66px;font-variant-numeric:tabular-nums;font-size:14px;line-height:1.25}
 .appt .tm small{display:block;color:var(--soft);font-size:12px}
 .appt.off{opacity:.55}
+.appt.reqrow{border-style:dashed;border-color:var(--gold);background:var(--gold-bg)}
+.pill.req{background:var(--gold);color:#fff}
 .appt.off .main b{text-decoration:line-through}
 .toggle{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--rule);border-radius:12px;background:var(--sheet);font-size:15px;cursor:pointer}
 .fg > label.toggle{display:flex;text-transform:none;letter-spacing:normal;font-size:15px;color:var(--ink);font-weight:400;margin-bottom:0}
@@ -963,7 +965,10 @@ function renderHome() {
   <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="home-q" placeholder="Find a client or a formula (e.g. 6NB)" value="${esc(S.q)}" aria-label="Search clients and formulas"></div>
   <div id="home-results"></div>
-  ${(() => { const ap = S.appts.filter(a => apDay(a) === today && a.status !== 'cancelled').sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+  ${(() => { const rq = apRequests(); return rq.length ? `<div class="sec"><div class="sec-h"><h2>Booking requests</h2><span class="num">${rq.length} new</span></div>
+    <div class="list">${rq.map(a => apptRow(a).replace('<span class="tm"><b>', `<span class="tm"><small>${esc(fmtD(apDay(a)))}</small><b>`)).join('')}</div>
+    <p class="fine" style="margin-top:6px">From your website. Tap one to pick the exact time and accept, or decline.</p></div>` : ''; })()}
+  ${(() => { const ap = S.appts.filter(a => apDay(a) === today && a.status !== 'cancelled' && a.status !== 'declined' && a.status !== 'requested').sort((a, b) => a.starts_at.localeCompare(b.starts_at));
     return `<div class="sec"><div class="sec-h"><h2>Appointments today</h2><span><button class="link" id="home-qr">Website QR</button> · <button class="link" id="home-cal">Calendar</button></span></div>
     <div class="list">${ap.length ? ap.map(apptRow).join('') : `<div class="empty">No appointments today. ${canWrite ? '<button class="link" id="home-book">Book one</button>' : ''}</div>`}</div></div>`; })()}
   <div class="sec"><div class="sec-h"><h2>Today</h2><span class="num">${todays.length} visit${todays.length === 1 ? '' : 's'} · ${money(tTot)} with tips</span></div>
@@ -1570,9 +1575,11 @@ const DEFAULT_TPL = {
   confirm: { subject: "You're booked, {first}! {day} at {time}", body: "Hi {first},\n\nYou're all set for {service} on {when}.\n\n{address}\n\nNeed to change anything? Just reply to this email or text me at {phone}.\n\nSee you soon,\n{salon}" },
   change: { subject: 'Your appointment moved to {day} at {time}', body: "Hi {first},\n\nYour appointment has been updated. Your new time is {when} for {service}.\n\n{address}\n\nIf this doesn't work for you, reply to this email or text me at {phone}.\n\n{salon}" },
   cancel: { subject: 'Your appointment on {day} is cancelled', body: "Hi {first},\n\nYour appointment on {when} has been cancelled.\n\nWhenever you're ready to rebook, just reply to this email or text me at {phone}.\n\n{salon}" },
+  received: { subject: 'Got your request, {first}!', body: "Hi {first},\n\nThank you for reaching out! I received your request for {service}.\n\nI'll check my book and get back to you shortly to confirm your exact day and time.\n\nTalk soon,\n{salon}" },
+  decline: { subject: 'About your appointment request', body: "Hi {first},\n\nThank you so much for your request. Unfortunately I don't have an opening that fits the dates you picked.\n\nPlease reply to this email or text me at {phone} with a few other days that work for you, and I'll do my best to fit you in.\n\n{salon}" },
   reminder: { subject: 'Reminder: see you tomorrow at {time}', body: "Hi {first},\n\nJust a reminder of your {service} appointment {when}.\n\n{address}\n\nIf something came up, please let me know as soon as you can at {phone}.\n\nSee you soon,\n{salon}" }
 };
-const TPL_NAMES = { confirm: 'When she books someone', change: 'When she moves an appointment', cancel: 'When she cancels', reminder: '24 hours before' };
+const TPL_NAMES = { confirm: 'When she books someone (or accepts a request)', change: 'When she moves an appointment', cancel: 'When she cancels', received: 'Website request received', decline: 'When she declines a request', reminder: '24 hours before' };
 const MAIL = () => { const m = SET().mail || {}; return { salon: m.salon || 'Shondell Slaughter', replyTo: m.replyTo || '', phone: m.phone || '', address: m.address || '', reminders: m.reminders !== false, tz: m.tz || 'America/Chicago', templates: { ...DEFAULT_TPL, ...(m.templates || {}) } }; };
 const LENGTHS = [['30m', 30], ['45m', 45], ['1h', 60], ['1½h', 90], ['2h', 120], ['2½h', 150], ['3h', 180], ['4h', 240], ['5h', 300]];
 const validEmail = e => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(e || '').trim());
@@ -1581,7 +1588,9 @@ const clock = d => new Date(d).toLocaleTimeString('en-US', { hour: 'numeric', mi
 const apName = a => (a.client_id && S.clients.get(a.client_id) || {}).name || (a.data || {}).clientName || 'Client';
 const apEmail = a => (a.data || {}).email || (a.client_id && S.clients.get(a.client_id) || {}).email || '';
 const apPhone = a => (a.data || {}).phone || (a.client_id && S.clients.get(a.client_id) || {}).phone || '';
-const apLive = () => S.appts.filter(a => a.status !== 'cancelled');
+const apLive = () => S.appts.filter(a => a.status !== 'cancelled' && a.status !== 'declined');
+const apRequests = () => S.appts.filter(a => a.status === 'requested').sort((a, b) => a.created_at.localeCompare(b.created_at));
+const fmtD = d => d ? parseDay(d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : '';
 const longDay = s => parseDay(s).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 const atLocal = (day, hm) => new Date(`${day}T${hm || '09:00'}:00`);
 const hm = d => { const x = new Date(d); return String(x.getHours()).padStart(2, '0') + ':' + String(x.getMinutes()).padStart(2, '0'); };
@@ -1593,15 +1602,15 @@ function fillTpl(t, a) {
 }
 const mailtoFor = (a, kind) => { const t = MAIL().templates[kind]; return `mailto:${encodeURIComponent(apEmail(a))}?subject=${encodeURIComponent(fillTpl(t.subject, a))}&body=${encodeURIComponent(fillTpl(t.body, a))}`; };
 const smsFor = (a, kind) => { const d = digits(apPhone(a)); if (!d) return ''; const first = apName(a).split(/\s+/)[0], when = `${new Date(a.starts_at).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} at ${clock(a.starts_at)}`;
-  const txt = kind === 'cancel' ? `Hi ${first}, your appointment on ${when} is cancelled. Text me whenever you want to rebook! – ${MAIL().salon}` : kind === 'change' ? `Hi ${first}! Your appointment moved to ${when}. See you then! – ${MAIL().salon}` : kind === 'reminder' ? `Hi ${first}! Reminder: I'll see you ${when}. – ${MAIL().salon}` : `Hi ${first}! You're booked ${when}. See you then! – ${MAIL().salon}`;
+  const txt = kind === 'decline' ? `Hi ${first}, thank you for your request! I don't have an opening on those days. Could you send me a few other days that work for you? – ${MAIL().salon}` : kind === 'cancel' ? `Hi ${first}, your appointment on ${when} is cancelled. Text me whenever you want to rebook! – ${MAIL().salon}` : kind === 'change' ? `Hi ${first}! Your appointment moved to ${when}. See you then! – ${MAIL().salon}` : kind === 'reminder' ? `Hi ${first}! Reminder: I'll see you ${when}. – ${MAIL().salon}` : `Hi ${first}! You're booked ${when}. See you then! – ${MAIL().salon}`;
   return `sms:+1${d}${/iPhone|iPad/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(txt)}`; };
 
 const durLabel = m => { if (m < 60) return m + 'm'; const h = Math.floor(m / 60), r = m % 60; return r === 0 ? h + 'h' : r === 30 ? h + '½h' : `${h}h ${r}m`; };
 const apptRow = a => {
-  const off = a.status === 'cancelled' || a.status === 'no_show', em = apEmail(a);
-  const pill = a.status === 'cancelled' ? '<span class="pill bad">Cancelled</span>' : a.status === 'no_show' ? '<span class="pill bad">No-show</span>' : a.status === 'done' ? '<span class="pill ok">Done</span>'
+  const off = a.status === 'cancelled' || a.status === 'no_show' || a.status === 'declined', em = apEmail(a);
+  const pill = a.status === 'requested' ? '<span class="pill req">Request</span>' : a.status === 'declined' ? '<span class="pill bad">Declined</span>' : a.status === 'cancelled' ? '<span class="pill bad">Cancelled</span>' : a.status === 'no_show' ? '<span class="pill bad">No-show</span>' : a.status === 'done' ? '<span class="pill ok">Done</span>'
     : a.reminder_sent_at ? '<span class="pill ok">Reminded</span>' : a.confirm_sent_at ? '<span class="pill ok">Confirmed</span>' : !a.notify || !em ? '<span class="pill">No email</span>' : '';
-  return `<button class="item appt ${off ? 'off' : ''}" data-appt="${esc(a.id)}"><span class="tm"><b>${esc(clock(a.starts_at))}</b><small>${esc(durLabel(Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4)))}</small></span>
+  return `<button class="item appt ${off ? 'off' : ''} ${a.status === 'requested' ? 'reqrow' : ''}" data-appt="${esc(a.id)}"><span class="tm"><b>${esc(clock(a.starts_at))}</b><small>${esc(durLabel(Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4)))}</small></span>
     <span class="main"><b>${esc(apName(a))}</b><small>${esc(((a.data || {}).services || []).join(', ') || 'Appointment')}</small></span><span class="end">${pill}</span></button>`;
 };
 function weekStart(day) { const d = parseDay(day); d.setDate(d.getDate() - d.getDay()); return isoDay(d); }
@@ -1611,7 +1620,7 @@ function renderCal() {
   const live = apLive(), count = d => live.filter(a => apDay(a) === d).length;
   const list = S.appts.filter(a => apDay(a) === sel).sort((a, b) => a.starts_at.localeCompare(b.starts_at));
   const now = new Date().toISOString(), soon = live.filter(a => a.status === 'booked' && a.starts_at >= now && apDay(a) !== sel).sort((a, b) => a.starts_at.localeCompare(b.starts_at)).slice(0, 8);
-  const booked = list.filter(a => a.status !== 'cancelled');
+  const booked = list.filter(a => a.status === 'booked' || a.status === 'done');
   view.innerHTML = `<div class="sec-h" style="margin-top:8px"><h2 style="font-size:1.8rem">Calendar</h2><span><button class="link" id="cal-today">Today</button> · <button class="link" id="cal-mail">Client emails</button></span></div>
   <div class="week"><button class="nav" id="cal-prev" aria-label="Previous week">‹</button>${days.map(d => `<button class="d ${d === sel ? 'on' : ''} ${d === today ? 'today' : ''} ${count(d) ? 'has' : ''}" data-day="${d}" aria-label="${esc(longDay(d))}"><span>${parseDay(d).toLocaleDateString('en-US', { weekday: 'short' }).slice(0, 2)}</span><b>${parseDay(d).getDate()}</b><i></i></button>`).join('')}<button class="nav" id="cal-next" aria-label="Next week">›</button></div>
   <div class="sec" style="margin-top:14px"><div class="sec-h"><h2>${esc(sel === today ? 'Today' : longDay(sel))}</h2><span class="num">${booked.length ? `${booked.length} booked` : ''}</span></div>
@@ -1663,7 +1672,7 @@ function openAppt(p = {}) {
   A.id = a ? a.id : null; A.orig = a; A.services = new Set(a ? (a.data.services || []) : (p.services || []));
   A.len = a ? Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4) : (+p.minutes || 60);
   if (!LENGTHS.some(l => l[1] === A.len)) LENGTHS.push([durLabel(A.len), A.len]);
-  $('#ap-title').textContent = a ? (a.status === 'cancelled' ? 'Cancelled appointment' : 'Appointment') : 'New appointment';
+  $('#ap-title').textContent = a ? (a.status === 'requested' ? 'Booking request' : a.status === 'declined' ? 'Declined request' : a.status === 'cancelled' ? 'Cancelled appointment' : 'Appointment') : 'New appointment';
   $('#ap-client').value = a ? '' : (p.clientName || ''); $('#ap-sugg').innerHTML = '';
   $('#ap-email').value = a ? (a.data.email || '') : (p.email || ''); $('#ap-phone').value = a ? fmtPhone(a.data.phone || '') : (p.phone || '');
   $('#ap-date').value = a ? apDay(a) : (p.date || isoDay()); $('#ap-time').value = a ? hm(a.starts_at) : (p.time || '10:00');
@@ -1674,9 +1683,17 @@ function openAppt(p = {}) {
   if (a && !A.clientId) $('#ap-client').value = a.data.clientName || '';
   if (!A.clientId && $('#ap-client').value) apSugg();
   apDraw(); apHint();
-  $('#ap-save').textContent = a ? 'Save changes' : 'Book it';
+  $('#ap-save').textContent = !a ? 'Book it' : a.status === 'requested' ? 'Accept & book this time' : a.status === 'declined' ? 'Book it after all' : 'Save changes';
   // status + more actions for an existing appointment
   $('#ap-status').innerHTML = ''; $('#ap-more').innerHTML = '';
+  if (a && a.data.request) {
+    const q = a.data.request;
+    $('#ap-ai').innerHTML = `<div class="callout" style="margin:10px 0 4px"><b>${a.status === 'requested' ? 'Requested on your website' : 'Website request'}</b><span>
+      ${esc(((a.data.services || [])[0]) || '')}${q.clientType ? ` · ${esc(q.clientType)}` : ''}<br>
+      Asked for <b>${esc(fmtD(q.firstChoice))}</b>${q.secondChoice ? ` or <b>${esc(fmtD(q.secondChoice))}</b>` : ''}${q.preferredTime ? `, ${esc(q.preferredTime.toLowerCase())}` : ''}<br>
+      Prefers to confirm by ${esc((q.contactPreference || 'text').toLowerCase())}${q.referredBy ? ` · Referred by ${esc(q.referredBy)}` : ''}
+      ${a.status === 'requested' ? '<br><small>Set the exact date, time and length below, then accept.</small>' : ''}</span></div>`;
+  }
   if (a) {
     const st = [];
     if (a.confirm_sent_at) st.push(`Confirmation emailed ${new Date(a.confirm_sent_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`);
@@ -1685,8 +1702,9 @@ function openAppt(p = {}) {
     window.__appts.log(a.id).then(l => { const bad = l.find(x => !x.ok); if (bad && A.id === a.id) $('#ap-status').insertAdjacentHTML('beforeend', `<div class="alert" style="margin-top:8px"><b>Last email didn’t send:</b> ${esc(bad.error || '')}</div>`); });
     if (canWrite) {
       const b = [];
+      if (a.status === 'requested') b.push('<button class="btn small danger" data-ap="decline">Decline</button>');
       if (a.status === 'booked') b.push('<button class="btn small gold" data-ap="checkout">Check out</button>', '<button class="btn small" data-ap="done">Mark done</button>', '<button class="btn small" data-ap="noshow">No-show</button>', '<button class="btn small danger" data-ap="cancel">Cancel appointment</button>');
-      else b.push('<button class="btn small" data-ap="rebook">Book again</button>');
+      else if (a.status !== 'requested' && a.status !== 'declined') b.push('<button class="btn small" data-ap="rebook">Book again</button>');
       if (apEmail(a)) b.push(`<a class="btn small" href="${esc(mailtoFor(a, a.status === 'cancelled' ? 'cancel' : 'confirm'))}">Email her</a>`);
       if (digits(apPhone(a))) b.push(`<a class="btn small" href="${esc(smsFor(a, a.status === 'cancelled' ? 'cancel' : 'reminder'))}">Text her</a>`);
       b.push('<button class="btn small danger" data-ap="delete">Delete</button>');
@@ -1706,6 +1724,11 @@ $('#ap-more').addEventListener('click', async e => {
   if (act === 'cancel') {
     if (!await ask('Cancel this appointment?', `${apName(a)} · ${longDay(apDay(a))} at ${clock(a.starts_at)}.${a.notify && apEmail(a) ? ' She’ll get a cancellation email.' : ''}`, 'Cancel it')) return;
     const r = await cancelAppt(a.id); showDone(r); return;
+  }
+  if (act === 'decline') {
+    if (!await ask('Decline this request?', `${apName(a)}${a.notify && apEmail(a) ? ' gets a polite email asking for other days.' : '.'}`, 'Decline')) return;
+    try { const saved = await window.__appts.save({ id: a.id, status: 'declined' }); const r = await notifyClient(saved, 'decline'); showDone({ appt: saved, ...r }); } catch (err) { toast('Couldn’t save: ' + err.message); }
+    return;
   }
   if (act === 'delete') {
     if (!await ask('Delete this appointment?', 'It disappears from the calendar. No email is sent. Use “Cancel appointment” if she should be told.')) return;
@@ -1733,11 +1756,12 @@ async function saveAppt(d, { confirmOverlap } = {}) {
   const c = S.clients.get(clientId) || {};
   if (clientId && S.clients.has(clientId) && ((email && !c.email) || (phone && !c.phone))) await db.collection('clients').doc(clientId).update({ ...(email && !c.email ? { email } : {}), ...(phone && !c.phone ? { phone } : {}) }).catch(() => {});
   const prev = d.id ? S.appts.find(a => a.id === d.id) : null;
-  const row = { id: d.id || window.__appts.uuid(), client_id: clientId, starts_at: start.toISOString(), ends_at: end.toISOString(), status: prev ? (prev.status === 'cancelled' ? 'booked' : prev.status) : 'booked', notify: d.notify !== false,
+  const wasOpen = prev && ['cancelled', 'requested', 'declined'].includes(prev.status);
+  const row = { id: d.id || window.__appts.uuid(), client_id: clientId, starts_at: start.toISOString(), ends_at: end.toISOString(), status: d.status || (!prev || wasOpen ? 'booked' : prev.status), notify: d.notify !== false,
     data: { ...(prev ? prev.data : {}), clientName: name, email: email || c.email || '', phone: phone || c.phone || '', services: d.services || [], notes: d.notes || '' } };
   const saved = await window.__appts.save(row);
-  const moved = prev && (prev.starts_at !== saved.starts_at || prev.status === 'cancelled');
-  const kind = !prev || prev.status === 'cancelled' ? 'confirm' : moved ? 'change' : null;
+  const moved = prev && prev.starts_at !== saved.starts_at;
+  const kind = saved.status !== 'booked' ? null : !prev || wasOpen ? 'confirm' : moved ? 'change' : null;
   return { appt: saved, ...(await notifyClient(saved, kind)), clash };
 }
 async function notifyClient(a, kind) {
@@ -1754,7 +1778,7 @@ async function cancelAppt(id) {
 }
 function showDone(r) {
   if (!r) return; const a = r.appt, first = apName(a).split(/\s+/)[0];
-  const head = r.kind === 'cancel' ? 'Cancelled' : r.kind === 'change' ? 'Moved' : r.kind === 'confirm' ? 'Booked' : 'Saved';
+  const head = r.kind === 'decline' ? 'Declined' : r.kind === 'cancel' ? 'Cancelled' : r.kind === 'change' ? 'Moved' : r.kind === 'confirm' ? 'Booked' : 'Saved';
   if (r.sent || !r.kind || r.reason === 'emails off') { closeSheet('asheet'); toast(`${head} ✓${r.sent ? ` ${first} got an email` : ''}`); return; }
   $('#ap-form').style.display = 'none'; $('#ap-done').style.display = '';
   $('#ap-done-t').textContent = head;

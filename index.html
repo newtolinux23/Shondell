@@ -1201,9 +1201,8 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
 
 
   /* ================= BOOKING FORM ================= */
-  // Same Google Apps Script endpoint + field names as the original appointment page,
-  // so requests keep landing in the same Google Sheet.
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzP28IDrGIOyBU9YDwEZGwRZf1JKg0PE_uJj_J_OA8JkGYiWQGjgtS_HFimAoPO_SfJA/exec';
+  // Requests go straight onto Della's Client Book calendar as "Request" (she accepts, moves or declines in the app).
+  const REQUEST_URL = 'https://yxpjitdqqodfyqxvwglv.supabase.co/functions/v1/book-mail';
   const STUDIO_PHONE = '+18174806160', STUDIO_EMAIL = 'dellalouise39@gmail.com';
   const book = $('#book'), form = $('#bk-form'), body = $('#bk-body'), bar = $('#bk-bar');
   const nextBtn = $('#bk-next'), nextTxt = $('#bk-next-txt'), backBtn = $('#bk-back'), foot = $('#bk-foot');
@@ -1315,15 +1314,16 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
 
   const send = async () => {
     if (val('website')) { go(5); return; }               // honeypot: quietly ignore bots
-    const data = new FormData(form);
-    data.delete('website');
-    data.append('submittedAt', new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
-    data.append('source', 'shondellslaughter.com');
+    const data = Object.fromEntries(new FormData(form));
+    delete data.website;
     nextBtn.disabled = true; nextBtn.classList.add('sending'); nextTxt.textContent = 'Sending…';
     const ctrl = new AbortController(), to = setTimeout(() => ctrl.abort(), 15000);
-    let delivered = false;
-    try { await fetch(SCRIPT_URL, { method: 'POST', body: data, mode: 'no-cors', signal: ctrl.signal }); delivered = true; }
-    catch (e) { delivered = false; }
+    let delivered = false, why = '';
+    try {
+      const r = await fetch(REQUEST_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'request', ...data }), signal: ctrl.signal });
+      const out = await r.json().catch(() => ({}));
+      delivered = r.ok && !!out.ok; why = out.error || '';
+    } catch (e) { delivered = false; }
     clearTimeout(to);
     nextBtn.disabled = false; nextBtn.classList.remove('sending');
     const name = val('firstName');
@@ -1331,7 +1331,7 @@ footer .fline{margin-top:1.6rem;font-size:11px;letter-spacing:.3em;text-transfor
     const how = { Text: 'text you', Call: 'call you', Email: 'email you' }[val('contactPreference')] || 'reach out';
     $('#bk-done-msg').textContent = delivered
       ? `Della will personally review your request and ${how} to confirm your ${val('service').toLowerCase()} appointment.`
-      : 'Your request is ready. One more tap to send it to Della.';
+      : (why ? why + ' ' : '') + 'Your request is ready. One more tap to send it to Della.';
     const msg = summaryText();
     $('#bk-sms').href = `sms:${STUDIO_PHONE}${/iPhone|iPad|iPod/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(msg)}`;
     $('#bk-mail').href = `mailto:${STUDIO_EMAIL}?subject=${encodeURIComponent('Appointment Request — ' + name + ' ' + val('lastName'))}&body=${encodeURIComponent(msg)}`;
