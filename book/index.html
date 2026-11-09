@@ -285,6 +285,15 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 #auth [data-s]{display:none;gap:10px}
 #auth[data-step="login"] [data-s~="login"],#auth[data-step="join"] [data-s~="join"],#auth[data-step="check"] [data-s~="check"],#auth[data-step="newpass"] [data-s~="newpass"]{display:grid}
 .payhelp{display:flex;gap:14px;align-items:center;margin-top:14px;padding:14px;border-radius:16px;border:1px solid var(--gold);background:var(--gold-bg)}
+.siteqr{display:grid;justify-items:center;gap:14px;text-align:center;padding:10px 0 24px}
+.siteqr .qrbox{background:#fff;padding:18px;border-radius:22px;line-height:0;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+.siteqr .qrbox img,.siteqr .qrbox canvas{width:min(68vw,300px)!important;height:auto!important}
+.siteqr h3{font-family:var(--display);font-weight:500;font-size:2rem;line-height:1.1}
+.siteqr .url{font-size:15px;color:var(--soft);word-break:break-all}
+.rebook{display:flex;gap:14px;align-items:center;text-align:left;border:1px solid var(--rule);border-radius:16px;padding:12px;background:var(--sheet);margin-top:4px}
+.rebook .qr{flex:none;background:#fff;padding:6px;border-radius:10px;line-height:0}
+.rebook .qr img,.rebook .qr canvas{width:96px!important;height:96px!important}
+.rebook span{font-size:14px;color:var(--soft)}
 .payhelp .qr{flex:none;background:#fff;padding:8px;border-radius:12px;line-height:0}
 .payhelp .qr img,.payhelp .qr canvas{width:140px;height:140px}
 .payhelp .pi{display:grid;gap:4px;font-size:14.5px}
@@ -468,6 +477,18 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
   </div>
 </section>
 
+<!-- website QR -->
+<section class="sheet" id="qsheet" aria-label="Website QR code">
+  <div class="sheet-in">
+    <div class="sheet-top"><button class="btn small" data-x="qsheet">Close</button><h2>Scan to visit</h2></div>
+    <div class="chips" id="q-which" style="justify-content:center"></div>
+    <div class="siteqr"><div class="qrbox" id="q-code" aria-label="QR code"></div>
+      <h3>Shondell Slaughter</h3><p class="url" id="q-url"></p>
+      <p class="fine" id="q-hint"></p>
+      <div class="actions" style="justify-content:center"><button class="btn small" id="q-share">Share link</button><button class="btn small" id="q-copy">Copy link</button></div></div>
+  </div>
+</section>
+
 <!-- email templates -->
 <section class="sheet" id="msheet" aria-label="Client emails">
   <div class="sheet-in">
@@ -492,6 +513,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 <div class="acts" id="acts"><div class="menu" role="menu">
   <b>What would you like to do?</b>
   <button data-a="appt" role="menuitem"><span>📅</span><span><b>Book an appointment</b><small>Client gets a confirmation and a reminder the day before</small></span></button>
+  <button data-a="siteqr" role="menuitem"><span>🔗</span><span><b>Show my website QR</b><small>Clients scan it to see your work and book online</small></span></button>
   <button data-a="sale" role="menuitem"><span>💳</span><span><b>Check out a client</b><small>Ring up services, products, tip and payment</small></span></button>
   <button data-a="visit" role="menuitem"><span>🎨</span><span><b>Log a visit &amp; formula</b><small>Formula, notes and photos</small></span></button>
   <button data-a="expense" role="menuitem"><span>🧾</span><span><b>Add an expense</b><small>Rent, color, supplies, classes…</small></span></button>
@@ -522,6 +544,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
       <div class="col">
         <button class="btn gold" id="r-formula">Add the formula for this visit</button>
         <a class="btn" id="r-receipt" href="#">Text a receipt</a>
+        <div class="rebook"><div class="qr" id="r-rebook-qr"></div><span><b style="color:var(--ink);display:block;font-size:15px">Book your next visit</b>Your client scans this to book online at shondellslaughter.com</span></div>
         <button class="btn" id="r-finish">Done</button>
       </div></div></div>
   </div>
@@ -1792,6 +1815,26 @@ async function saveMail(close = true) {
 $('#m-save').addEventListener('click', () => saveMail(true));
 $('#s-mail').addEventListener('click', () => { closeSheet('ssheet'); openMailSettings(); });
 
+/* ---------- WEBSITE QR ---------- */
+const SITE = { site: ['Website', 'https://shondellslaughter.com/', 'Shondell’s work, services and prices.'], book: ['Book online', 'https://shondellslaughter.com/#book', 'Opens straight to the booking form.'] };
+let siteWhich = 'site';
+function drawQR(el, text, size) {
+  el.innerHTML = '';
+  if (!window.QRCode) { el.innerHTML = `<p class="fine" style="line-height:1.4;padding:8px">QR code needs internet. Link: ${esc(text)}</p>`; return; }
+  try { new QRCode(el, { text, width: size, height: size, colorDark: '#1d1a16', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M }); } catch (e) {}
+}
+function openSiteQR(which) {
+  if (which) siteWhich = which;
+  const [, url, hint] = SITE[siteWhich];
+  chipRow($('#q-which'), Object.entries(SITE).map(([k, v]) => [v[0], k]), v => v === siteWhich, v => openSiteQR(v));
+  drawQR($('#q-code'), url, 600);
+  $('#q-url').textContent = url.replace('https://', ''); $('#q-hint').textContent = hint;
+  $('#q-share').style.display = navigator.share ? '' : 'none';
+  if (!$('#qsheet').classList.contains('open')) openSheet('qsheet');
+}
+$('#q-copy').addEventListener('click', () => navigator.clipboard.writeText(SITE[siteWhich][1]).then(() => toast('Link copied'), () => toast(SITE[siteWhich][1])));
+$('#q-share').addEventListener('click', () => navigator.share({ title: 'Shondell Slaughter', url: SITE[siteWhich][1] }).catch(() => {}));
+
 /* ---------- ACTION MENU (+) ---------- */
 function openActions() {
   if (!canWrite) { toast('You can view this book but not change it.'); return; }
@@ -1800,6 +1843,7 @@ function openActions() {
 $('#acts').addEventListener('click', e => {
   const b = e.target.closest('[data-a]'); $('#acts').classList.remove('open'); if (!b) return;
   const a = b.dataset.a, cid = S.client;
+  if (a === 'siteqr') openSiteQR('site');
   if (a === 'appt') openAppt(cid ? { clientId: cid, date: S.tab === 'cal' ? S.calDay : isoDay() } : { date: S.tab === 'cal' ? S.calDay : isoDay() });
   if (a === 'sale') openRegister(cid ? { clientId: cid } : {});
   if (a === 'visit') openVisit(cid ? { clientId: cid } : {});
@@ -1950,6 +1994,7 @@ async function saveSale(lines, t, extra) {
     const c = clientId && S.clients.get(clientId), d = digits(c && c.phone);
     $('#r-done-total').textContent = money(t.total);
     $('#r-done-who').textContent = `${clientName} · ${R.payment}${extra.squareTxn ? ' · Square' : ''}`;
+    drawQR($('#r-rebook-qr'), SITE.book[1], 192);
     const receipt = `Thank you${clientName !== 'Walk-in' ? ', ' + clientName.split(' ')[0] : ''}! ✨\n${body.items.map(i => `${i.name}${i.qty > 1 ? ' ×' + i.qty : ''}  ${money(i.price * i.qty)}`).join('\n')}${body.discount ? `\nDiscount  −${money(body.discount)}` : ''}${body.salesTax ? `\nSales tax  ${money(body.salesTax)}` : ''}${body.tip ? `\nTip  ${money(body.tip)}` : ''}\nTotal  ${money(t.total)} (${R.payment})\n\n— Della · Curls & Colors\n(817) 480-6160`;
     $('#r-receipt').style.display = d ? '' : 'none';
     if (d) $('#r-receipt').href = `sms:+1${d}${/iPhone|iPad/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(receipt)}`;
