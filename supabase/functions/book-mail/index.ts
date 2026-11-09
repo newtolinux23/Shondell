@@ -1,6 +1,7 @@
 // Della's Client Book: appointment emails.
 //  - notify:    confirmation / change / cancellation, sent when Della saves an appointment (signed-in members only)
 //  - reminders: run every 15 minutes by pg_cron; emails clients ~24 hours before their appointment
+//  - request:   public booking request from the website form -> 'requested' appointment + emails
 //  - test, ping: for the settings screen
 // Secrets: RESEND_API_KEY (email service), MAIL_FROM (verified sender). The cron job's secret lives in Vault (book_cron_secret).
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -23,6 +24,14 @@ export const DEFAULT_TEMPLATES: Record<string, { subject: string; body: string }
   cancel: {
     subject: "Your appointment on {day} is cancelled",
     body: "Hi {first},\n\nYour appointment on {when} has been cancelled.\n\nWhenever you're ready to rebook, just reply to this email or text me at {phone}.\n\n{salon}",
+  },
+  received: {
+    subject: "Got your request, {first}!",
+    body: "Hi {first},\n\nThank you for reaching out! I received your request for {service}.\n\nI'll check my book and get back to you shortly to confirm your exact day and time.\n\nTalk soon,\n{salon}",
+  },
+  decline: {
+    subject: "About your appointment request",
+    body: "Hi {first},\n\nThank you so much for your request. Unfortunately I don't have an opening that fits the dates you picked.\n\nPlease reply to this email or text me at {phone} with a few other days that work for you, and I'll do my best to fit you in.\n\n{salon}",
   },
   reminder: {
     subject: "Reminder: see you tomorrow at {time}",
@@ -141,6 +150,78 @@ async function runReminders() {
   return { checked: due?.length ?? 0, sent, skipped, failed };
 }
 
+const SLOT: Record<string, string> = { "Morning": "09:00", "Mid-Day": "12:00", "Late Afternoon": "15:00" };
+const clip = (v: unknown, n: number) => String(v ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, n);
+
+// Chicago wall-clock time -> UTC instant
+function chicago(day: string, hm: string) {
+  const guess = new Date(`${day}T${hm}:00Z`);
+  const local = new Date(guess.toLocaleString("en-US", { timeZone: "America/Chicago" }));
+  return new Date(guess.getTime() + (guess.getTime() - local.getTime()));
+}
+
+async function handleRequest(b: any, req: Request) {
+  if (b.website) return { ok: true }; // honeypot
+  const f = {
+    firstName: clip(b.firstName, 60), lastName: clip(b.lastName, 60), email: clip(b.email, 120).toLowerCase(),
+    phone: clip(b.phone, 30), service: clip(b.service, 80), clientType: clip(b.clientType, 30),
+    firstChoiceDate: clip(b.firstChoiceDate, 10), alternativeChoiceDate: clip(b.alternativeChoiceDate, 10),
+    preferredTime: clip(b.preferredTime, 20), contactPreference: clip(b.contactPreference, 10),
+    notes: clip(b.notes, 1500), referredBy: clip(b.referredBy, 120),
+  };
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+  const max = new Date(Date.now() + 400 * 864e5).toISOString().slice(0, 10);
+  const okDay = (d: string) => /^\d{4}-\d{2}-\d{2}$/.test(d) && d >= today && d <= max;
+  if (!f.firstName || !f.lastName || !f.service) return { ok: false, error: "Missing name or service" };
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(f.email)) return { ok: false, error: "Email doesn't look right" };
+  if (f.phone.replace(/\D/g, "").length < 10) return { ok: false, error: "Phone number doesn't look right" };
+  if (!okDay(f.firstChoiceDate)) return { ok: false, error: "Pick a date from today on" };
+  if (f.alternativeChoiceDate && !okDay(f.alternativeChoiceDate)) f.alternativeChoiceDate = "";
+
+  const { data: books } = await admin.from("book_books").select("id").order("created_at").limit(1);
+  const bookId = books?.[0]?.id; if (!bookId) return { ok: false, error: "Booking is closed" };
+
+  // simple abuse limits: 3 per email per day, 40 per hour overall
+  const dayAgo = new Date(Date.now() - 864e5).toISOString(), hourAgo = new Date(Date.now() - 3600e3).toISOString();
+  const { count: mine } = await admin.from("book_appointments").select("id", { count: "exact", head: true })
+    .eq("book_id", bookId).eq("source", "website").gte("created_at", dayAgo).eq("data->>email", f.email);
+  if ((mine ?? 0) >= 3) return { ok: false, error: "We already have your request. Della will reach out soon." };
+  const { count: all } = await admin.from("book_appointments").select("id", { count: "exact", head: true })
+    .eq("book_id", bookId).eq("source", "website").gte("created_at", hourAgo);
+  if ((all ?? 0) >= 40) return { ok: false, error: "Too many requests right now. Please try again later." };
+
+  // link to an existing client card when the email or phone matches
+  const digits = f.phone.replace(/\D/g, "").slice(-10);
+  const { data: clients } = await admin.from("book_clients").select("id,data").eq("book_id", bookId).limit(5000);
+  const match = (clients || []).find((c: any) => (c.data?.email || "").toLowerCase() === f.email || (digits && String(c.data?.phone || "").replace(/\D/g, "").slice(-10) === digits));
+
+  const start = chicago(f.firstChoiceDate, SLOT[f.preferredTime] || "10:00");
+  const name = `${f.firstName} ${f.lastName}`;
+  const { data: appt, error } = await admin.from("book_appointments").insert({
+    book_id: bookId, client_id: match?.id ?? null, starts_at: start.toISOString(), ends_at: new Date(start.getTime() + 2 * 3600e3).toISOString(),
+    status: "requested", source: "website", notify: true,
+    data: { clientName: name, email: f.email, phone: f.phone, services: [f.service], notes: f.notes,
+      request: { secondChoice: f.alternativeChoiceDate, preferredTime: f.preferredTime, clientType: f.clientType, contactPreference: f.contactPreference, referredBy: f.referredBy, firstChoice: f.firstChoiceDate } },
+  }).select("*").single();
+  if (error || !appt) return { ok: false, error: "Couldn't save the request" };
+
+  // thank-you to the client, heads-up to Della (both best effort)
+  const r = await deliver(appt as Appt, "received").catch(() => ({ ok: false }));
+  const s = await mailSettings(bookId);
+  const notifyTo = s.replyTo || Deno.env.get("STUDIO_EMAIL") || "";
+  if (notifyTo && RESEND) {
+    const when = (d: string) => d ? new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" }) : "";
+    const lines = [`New booking request from ${name}`, "", `Service: ${f.service} (${f.clientType || "client"})`,
+      `Dates: ${when(f.firstChoiceDate)}${f.alternativeChoiceDate ? " or " + when(f.alternativeChoiceDate) : ""}, ${f.preferredTime || "any time"}`,
+      `Phone: ${f.phone}`, `Email: ${f.email}`, `Confirm by: ${f.contactPreference || "-"}`,
+      ...(f.referredBy ? [`Referred by: ${f.referredBy}`] : []), ...(f.notes ? ["", `Hair story: ${f.notes}`] : []),
+      "", "Open your Client Book to accept, move or decline it:", "https://shondellslaughter.com/book/"];
+    const res = await send(notifyTo, `New request: ${name}, ${f.service}`, lines.join("\n"), { salon: s.salon, replyTo: f.email });
+    await admin.from("book_email_log").insert({ book_id: bookId, appointment_id: appt.id, kind: "new_request", to_email: notifyTo, ok: res.ok, error: res.ok ? null : res.error });
+  }
+  return { ok: true, emailed: !!(r as any).ok };
+}
+
 Deno.serve(async (req) => {
   const h = cors(req.headers.get("origin"));
   if (req.method === "OPTIONS") return new Response("ok", { headers: h });
@@ -153,6 +234,9 @@ Deno.serve(async (req) => {
     if (!secret || req.headers.get("x-cron-secret") !== secret) return json({ error: "Not allowed" }, 401, h);
     return json(await runReminders(), 200, h);
   }
+
+  // public: booking request from the website
+  if (body.action === "request") return json(await handleRequest(body, req), 200, h);
 
   // everything else: a signed-in member of the book
   const sb = createClient(URL_, Deno.env.get("SUPABASE_ANON_KEY")!, { global: { headers: { Authorization: req.headers.get("Authorization") ?? "" } } });
@@ -175,13 +259,13 @@ Deno.serve(async (req) => {
   }
 
   if (body.action === "notify") {
-    const kind = ["confirm", "change", "cancel"].includes(body.kind) ? body.kind : "confirm";
+    const kind = ["confirm", "change", "cancel", "decline"].includes(body.kind) ? body.kind : "confirm";
     // read through RLS so members can only email about their own book's appointments
     const { data: a } = await sb.from("book_appointments").select("*").eq("id", body.id).maybeSingle();
     if (!a) return json({ error: "Appointment not found" }, 404, h);
     if (!a.notify) return json({ ok: false, skipped: true, error: "Emails are off for this appointment" }, 200, h);
     const r = await deliver(a as Appt, kind);
-    if (r.ok && kind !== "cancel") await admin.from("book_appointments").update({ confirm_sent_at: new Date().toISOString() }).eq("id", a.id);
+    if (r.ok && (kind === "confirm" || kind === "change")) await admin.from("book_appointments").update({ confirm_sent_at: new Date().toISOString() }).eq("id", a.id);
     return json(r, 200, h);
   }
 
