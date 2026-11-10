@@ -927,8 +927,36 @@ const ask = (title, text, yes = 'Delete') => new Promise(res => {
   $('#dlg-yes').onclick = () => done(true); $('#dlg-no').onclick = () => done(false);
 });
 const setStatus = (live, text) => { const s = $('#status'); s.classList.toggle('live', live); $('span', s).textContent = text; };
-const openSheet = id => { $('#' + id).classList.add('open'); $('#' + id).scrollTop = 0; document.body.style.overflow = 'hidden'; };
-const closeSheet = id => { $('#' + id).classList.remove('open'); if (!$$('.sheet.open').length) document.body.style.overflow = ''; };
+/* phone Back button: closes the open sheet, then steps back through screens instead of leaving the app */
+const NAV = { key: () => (typeof S === 'undefined' ? 'home|' : `${S.tab}|${S.client || ''}`), restoring: false, warned: 0 };
+const openSheet = id => {
+  const el = $('#' + id), was = el.classList.contains('open');
+  el.classList.add('open'); el.scrollTop = 0; document.body.style.overflow = 'hidden';
+  if (!was) try { history.pushState({ nav: NAV.key(), sheet: id }, ''); } catch (e) {}
+};
+const closeSheet = id => {
+  $('#' + id).classList.remove('open'); if (!$$('.sheet.open').length) document.body.style.overflow = '';
+  try { if (history.state && history.state.sheet === id) history.replaceState({ nav: NAV.key() }, ''); } catch (e) {}
+};
+addEventListener('popstate', e => {
+  const st = e.state || {};
+  if ($('#dlg').classList.contains('open')) { $('#dlg-no').click(); try { history.pushState(st.sheet ? st : { nav: NAV.key() }, ''); } catch (x) {} return; }
+  const open = $$('.sheet.open, .acts.open');
+  if (open.length) {
+    const top = open[open.length - 1];
+    if (top.classList.contains('acts')) top.classList.remove('open');
+    else { top.classList.remove('open'); if (!$$('.sheet.open').length) document.body.style.overflow = ''; }
+    return;
+  }
+  if (st.root) { // at the very first entry: ask before leaving the app
+    if (Date.now() - NAV.warned < 2500) { history.back(); return; }
+    NAV.warned = Date.now(); toast('Press back again to leave'); try { history.pushState({ nav: NAV.key() }, ''); } catch (x) {} return;
+  }
+  if (!st.nav) return;
+  if (st.nav === NAV.key()) { history.back(); return; } // nothing changes on screen: keep going back
+  const [tab, client] = st.nav.split('|');
+  NAV.restoring = true; S.tab = tab || 'home'; S.client = client || null; render(); scrollTo(0, 0); NAV.restoring = false;
+});
 $$('[data-x]').forEach(b => b.addEventListener('click', () => closeSheet(b.dataset.x)));
 const photoUrl = id => '/_blob/' + id;
 $('#viewer').addEventListener('click', () => $('#viewer').classList.remove('open'));
@@ -964,6 +992,10 @@ const formulaLine = f => [f.zone && `${f.zone}:`, f.brand, f.shade, f.developer 
 /* ------------ render ------------ */
 const view = $('#view');
 const render = () => {
+  try {
+    if (!history.state || (!history.state.nav && !history.state.root)) { history.replaceState({ root: true }, ''); history.pushState({ nav: NAV.key() }, ''); }
+    else if (!NAV.restoring && history.state.nav !== NAV.key() && !history.state.sheet) history.pushState({ nav: NAV.key() }, '');
+  } catch (e) {}
   $$('.tabs [data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === S.tab && !S.client));
   if (!db) { view.innerHTML = `<div class="lock"><h2 style="font-size:1.6rem;color:var(--ink)">Sign in to open the book</h2><p style="margin-top:8px">Sign in to open the book.</p></div>`; return; }
   if (S.client) return renderClient(S.client);
@@ -1989,10 +2021,13 @@ $('#q-share').addEventListener('click', () => navigator.share({ title: 'Shondell
 /* ---------- ACTION MENU (+) ---------- */
 function openActions() {
   if (!canWrite) { toast('You can view this book but not change it.'); return; }
+  if (!$('#acts').classList.contains('open')) try { history.pushState({ nav: NAV.key(), sheet: 'acts' }, ''); } catch (e) {}
   $('#acts').classList.add('open');
 }
 $('#acts').addEventListener('click', e => {
-  const b = e.target.closest('[data-a]'); $('#acts').classList.remove('open'); if (!b) return;
+  const b = e.target.closest('[data-a]'); $('#acts').classList.remove('open');
+  try { if (history.state && history.state.sheet === 'acts') history.replaceState({ nav: NAV.key() }, ''); } catch (x) {}
+  if (!b) return;
   const a = b.dataset.a, cid = S.client;
   if (a === 'siteqr') openSiteQR('site');
   if (a === 'appt') openAppt(cid ? { clientId: cid, date: S.tab === 'cal' ? S.calDay : isoDay() } : { date: S.tab === 'cal' ? S.calDay : isoDay() });
