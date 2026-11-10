@@ -1,6 +1,6 @@
 // Della's Client Book: one-way import from her Google Calendar (private iCal link) into book_appointments.
 // Runs from pg_cron every 15 minutes (x-cron-secret), or on demand by a signed-in member.
-// Secret: GCAL_ICS_URL (Google Calendar → Settings → Integrate calendar → Secret address in iCal format).
+// Link: GCAL_ICS_URL secret, or Vault secret book_gcal_ics_url (Google Calendar → Settings → Integrate calendar → Secret address in iCal format).
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const URL_ = Deno.env.get("SUPABASE_URL")!;
@@ -61,9 +61,16 @@ function parseICS(text: string): Ev[] {
   return out;
 }
 
+// "Shelby$20", "Lesa$120cash", "Kathy partial$100" -> name + price (+ how she was paid)
+function splitTitle(t: string) {
+  const m = t.match(/^(.*?)\s*\$\s*(\d+(?:\.\d+)?)\s*(cash ?app|cash|venmo|zelle|card)?/i);
+  if (!m) return { clientName: t.trim() };
+  return { clientName: m[1].trim() || t.trim(), price: Number(m[2]), ...(m[3] ? { paidBy: m[3].replace(/\b\w/g, (c) => c.toUpperCase()) } : {}) };
+}
+
 async function sync() {
-  const url = Deno.env.get("GCAL_ICS_URL");
-  if (!url) return { ok: false, error: "GCAL_ICS_URL secret is not set" };
+  const url = Deno.env.get("GCAL_ICS_URL") || (await admin.rpc("book_gcal_url")).data;
+  if (!url) return { ok: false, error: "Calendar link is not set (GCAL_ICS_URL or Vault book_gcal_ics_url)" };
   const r = await fetch(url, { headers: { "User-Agent": "client-book-sync" } });
   if (!r.ok) return { ok: false, error: `Google Calendar answered ${r.status}` };
   const text = await r.text();
@@ -88,12 +95,12 @@ async function sync() {
     const prev: any = byExt.get(ext);
     if (!prev) {
       inserts.push({ book_id: bookId, external_id: ext, source: "google", notify: false, status, starts_at: e.start.toISOString(), ends_at: e.end.toISOString(),
-        data: { clientName: e.summary, services: [], notes: e.description.slice(0, 2000), gcal } });
+        data: { ...splitTitle(e.summary), services: [], notes: e.description.slice(0, 2000), gcal } });
     } else {
       const changed = prev.starts_at !== e.start.toISOString() || prev.ends_at !== e.end.toISOString() || prev.data?.gcal?.summary !== e.summary || prev.data?.gcal?.description !== gcal.description || (prev.status !== status && !["no_show"].includes(prev.status));
       if (changed && new Date(prev.starts_at).getTime() > now - 864e5) { // don't rewrite old history Della may have edited
         await admin.from("book_appointments").update({ starts_at: e.start.toISOString(), ends_at: e.end.toISOString(), status: prev.status === "no_show" ? prev.status : status,
-          data: { ...prev.data, gcal, ...(prev.data?.gcal?.summary === prev.data?.clientName ? { clientName: e.summary } : {}) } }).eq("id", prev.id);
+          data: { ...prev.data, gcal, ...(prev.data?.gcal?.summary !== e.summary ? splitTitle(e.summary) : {}) } }).eq("id", prev.id);
         updated++;
       }
     }
