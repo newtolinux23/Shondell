@@ -315,6 +315,32 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .appt .tm{flex:none;width:66px;font-variant-numeric:tabular-nums;font-size:14px;line-height:1.25}
 .appt .tm small{display:block;color:var(--soft);font-size:12px}
 .appt.off{opacity:.55}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:6px}
+.stat{background:var(--sheet);border:1px solid var(--rule);border-radius:14px;padding:10px 8px;text-align:center}
+.stat b{display:block;font-family:var(--display);font-weight:500;font-size:1.45rem;line-height:1.1}
+.stat span{font-size:11.5px;color:var(--soft)}
+.seg .chip{flex:1}
+#dlg-p{white-space:pre-line}
+.report{font-size:14.5px;line-height:1.5;max-height:220px;overflow:hidden;position:relative}
+.report.open{max-height:none}
+.report:not(.open)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(transparent,var(--sheet))}
+.report h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:12px 0 4px}
+.report h4:first-child{margin-top:0}
+.report p{margin:0 0 6px}
+.report ul{margin:0 0 6px;padding-left:18px}
+.report li{margin:2px 0}
+.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
+.mgrid .mh{text-align:center;font-size:11px;color:var(--soft);letter-spacing:.08em}
+.mgrid .mc{aspect-ratio:1/1.05;border:1px solid var(--rule);border-radius:12px;background:var(--sheet);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;padding:0}
+.mgrid .mc b{font-weight:500;font-size:14px}
+.mgrid .mc i{font-style:normal;font-size:11px;font-weight:600;color:var(--ink);background:var(--gold-bg);border-radius:8px;padding:0 6px}
+.mgrid .mc.has{border-color:var(--gold)}
+.mgrid .mc.full{background:var(--gold-bg)}
+.mgrid .mc.full i{background:var(--gold);color:#fff}
+.mgrid .mc.out{opacity:.35}
+.mgrid .mc.today{outline:2px solid var(--ink);outline-offset:-2px}
+.appt.personal{opacity:.7;border-style:dashed}
+.appt.personal .main b{font-style:italic;font-weight:400}
 .appt.reqrow{border-style:dashed;border-color:var(--gold);background:var(--gold-bg)}
 .pill.req{background:var(--gold);color:#fff}
 .appt.off .main b{text-decoration:line-through}
@@ -787,6 +813,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
       return data || { ok: false };
     },
     async ready() { if (mailReady === null) { const r = await this.mail({ action: 'ping' }).catch(() => ({})); mailReady = !!(r && r.ready); } return mailReady; },
+    async report() { const { data } = await sb.from('book_reports').select('*').eq('book_id', BOOK).order('created_at', { ascending: false }).limit(1); return (data || [])[0] || null; },
     async log(id) { const { data } = await sb.from('book_email_log').select('kind,ok,error,to_email,created_at').eq('appointment_id', id).order('created_at', { ascending: false }).limit(10); return data || []; },
     uuid
   };
@@ -965,6 +992,7 @@ function renderHome() {
   <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="home-q" placeholder="Find a client or a formula (e.g. 6NB)" value="${esc(S.q)}" aria-label="Search clients and formulas"></div>
   <div id="home-results"></div>
+  ${S.report ? reportCard(S.report) : ''}
   ${(() => { const rq = apRequests(); return rq.length ? `<div class="sec"><div class="sec-h"><h2>Booking requests</h2><span class="num">${rq.length} new</span></div>
     <div class="list">${rq.map(a => apptRow(a).replace('<span class="tm"><b>', `<span class="tm"><small>${esc(fmtD(apDay(a)))}</small><b>`)).join('')}</div>
     <p class="fine" style="margin-top:6px">From your website. Tap one to pick the exact time and accept, or decline.</p></div>` : ''; })()}
@@ -1039,6 +1067,16 @@ function renderClient(id) {
   ${c.hair || c.notes || c.email ? `<div class="card"><dl class="kv">${c.hair ? `<dt>Hair</dt><dd>${esc(c.hair)}</dd>` : ''}${c.notes ? `<dt>Notes</dt><dd>${esc(c.notes)}</dd>` : ''}${c.email ? `<dt>Email</dt><dd>${esc(c.email)}</dd>` : ''}</dl></div>` : ''}
   ${(() => { const up = S.appts.filter(a => a.client_id === id && a.status === 'booked' && a.ends_at >= new Date().toISOString()).sort((a, b) => a.starts_at.localeCompare(b.starts_at));
     return up.length ? `<div class="sec"><div class="sec-h"><h2>Upcoming</h2></div><div class="list">${up.map(a => apptRow(a).replace('<span class="tm"><b>', `<span class="tm"><small>${esc(parseDay(apDay(a)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }))}</small><b>`)).join('')}</div></div>` : ''; })()}
+  ${(() => { const past = S.appts.filter(a => a.client_id === id && !isPersonal(a) && (a.status === 'done' || (a.status === 'booked' && a.ends_at < new Date().toISOString()))).sort((a, b) => b.starts_at.localeCompare(a.starts_at));
+    if (!past.length) return '';
+    const gaps = past.slice(0, -1).map((a, i) => (new Date(a.starts_at) - new Date(past[i + 1].starts_at)) / 864e5).filter(g => g > 0);
+    const avg = gaps.length ? Math.round(gaps.reduce((x, y) => x + y, 0) / gaps.length) : 0;
+    const since = Math.round((Date.now() - new Date(past[0].starts_at)) / 864e5);
+    const due = avg && since > avg * 1.3;
+    return `<div class="sec"><div class="sec-h"><h2>Appointment history</h2><span class="num">${past.length} visit${past.length > 1 ? 's' : ''}</span></div>
+      <p class="fine" style="margin:0 0 8px">Comes in about every <b>${avg ? (avg >= 14 ? Math.round(avg / 7) + ' weeks' : avg + ' days') : '—'}</b> · last visit ${since === 0 ? 'today' : since + ' days ago'}${due ? ' · <b style="color:var(--gold)">due to rebook</b>' : ''}</p>
+      <div class="list">${past.slice(0, 8).map(a => apptRow(a).replace('<span class="tm"><b>', `<span class="tm"><small>${esc(parseDay(apDay(a)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' }))}</small><b>`)).join('')}</div>
+      ${past.length > 8 ? `<p class="fine" style="margin-top:6px">+ ${past.length - 8} earlier</p>` : ''}</div>`; })()}
   <div class="sec"><div class="sec-h"><h2>Formula history</h2><span>Newest first</span></div>
   ${vs.length ? vs.map(visitCard).join('') : '<div class="list"><div class="empty">No visits yet.</div></div>'}</div>`;
   $('#back').onclick = () => { S.client = null; render(); scrollTo(0, 0); };
@@ -1607,33 +1645,86 @@ const smsFor = (a, kind) => { const d = digits(apPhone(a)); if (!d) return ''; c
 
 const durLabel = m => { if (m < 60) return m + 'm'; const h = Math.floor(m / 60), r = m % 60; return r === 0 ? h + 'h' : r === 30 ? h + '½h' : `${h}h ${r}m`; };
 const apptRow = a => {
+  if (isPersonal(a)) return `<button class="item appt personal" data-appt="${esc(a.id)}"><span class="tm"><b>${esc(clock(a.starts_at))}</b><small>${esc(durLabel(durOf(a)))}</small></span><span class="main"><b>Personal</b><small>Private · tap to see</small></span><span class="end"><span class="pill">🔒</span></span></button>`;
   const off = a.status === 'cancelled' || a.status === 'no_show' || a.status === 'declined', em = apEmail(a);
   const pill = a.status === 'requested' ? '<span class="pill req">Request</span>' : a.status === 'declined' ? '<span class="pill bad">Declined</span>' : a.status === 'cancelled' ? '<span class="pill bad">Cancelled</span>' : a.status === 'no_show' ? '<span class="pill bad">No-show</span>' : a.status === 'done' ? '<span class="pill ok">Done</span>'
     : a.reminder_sent_at ? '<span class="pill ok">Reminded</span>' : a.confirm_sent_at ? '<span class="pill ok">Confirmed</span>' : !a.notify || !em ? '<span class="pill">No email</span>' : '';
   return `<button class="item appt ${off ? 'off' : ''} ${a.status === 'requested' ? 'reqrow' : ''}" data-appt="${esc(a.id)}"><span class="tm"><b>${esc(clock(a.starts_at))}</b><small>${esc(durLabel(Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4)))}</small></span>
-    <span class="main"><b>${esc(apName(a))}</b><small>${esc(((a.data || {}).services || []).join(', ') || 'Appointment')}</small></span><span class="end">${pill}</span></button>`;
+    <span class="main"><b>${esc(apName(a))}</b><small>${esc(((a.data || {}).services || []).join(', ') || 'Appointment')}${(a.data || {}).price ? ' · ' + esc(money(+a.data.price)) : ''}</small></span><span class="end">${pill}</span></button>`;
 };
 function weekStart(day) { const d = parseDay(day); d.setDate(d.getDate() - d.getDay()); return isoDay(d); }
+const isPersonal = a => (a.data || {}).personal === true;
+const isClientAppt = a => !isPersonal(a) && !['cancelled', 'declined', 'requested'].includes(a.status);
+const durOf = a => Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4);
+const monthKey = d => d.slice(0, 7);
+function calHead(sel, today) {
+  return `<div class="sec-h" style="margin-top:8px"><h2 style="font-size:1.8rem">Calendar</h2><span><button class="link" id="cal-today">Today</button> · <button class="link" id="cal-mail">Client emails</button></span></div>
+  <div class="chips seg" id="cal-view" style="margin:4px 0 6px"></div>`;
+}
+function calWire(sel, today, step) {
+  chipRow($('#cal-view'), [['Day', 'day'], ['Week', 'week'], ['Month', 'month']], v => v === S.calView, v => { S.calView = v; renderCal(); });
+  const shift = n => { const d = parseDay(sel); if (step === 'month') d.setMonth(d.getMonth() + n, 1); else d.setDate(d.getDate() + n * (step === 'week' ? 7 : 1)); S.calDay = isoDay(d); renderCal(); };
+  $('#cal-prev').onclick = () => shift(-1); $('#cal-next').onclick = () => shift(1);
+  $('#cal-today').onclick = () => { S.calDay = today; renderCal(); };
+  $('#cal-mail').onclick = openMailSettings;
+  $$('[data-day]').forEach(b => b.onclick = () => { S.calDay = b.dataset.day; if (b.dataset.go) S.calView = 'day'; renderCal(); });
+  const nb = $('#cal-new'); if (nb) nb.onclick = () => openAppt({ date: sel });
+}
+const emailNote = () => S.mailReady === false ? '<div class="ai-note" style="margin-top:18px"><b>Automatic emails aren’t connected yet.</b> Until they are, saving an appointment gives you an Email and a Text button with the message already written. 24-hour reminders start as soon as email is connected.</div>' : '';
 function renderCal() {
+  S.calView = S.calView || 'day';
+  if (S.calView === 'week') return renderCalWeek();
+  if (S.calView === 'month') return renderCalMonth();
   const sel = S.calDay, ws = weekStart(sel), today = isoDay();
   const days = Array.from({ length: 7 }, (_, i) => { const d = parseDay(ws); d.setDate(d.getDate() + i); return isoDay(d); });
-  const live = apLive(), count = d => live.filter(a => apDay(a) === d).length;
+  const live = S.appts.filter(isClientAppt), count = d => S.appts.filter(a => apDay(a) === d && (isClientAppt(a) || a.status === 'requested')).length;
   const list = S.appts.filter(a => apDay(a) === sel).sort((a, b) => a.starts_at.localeCompare(b.starts_at));
   const now = new Date().toISOString(), soon = live.filter(a => a.status === 'booked' && a.starts_at >= now && apDay(a) !== sel).sort((a, b) => a.starts_at.localeCompare(b.starts_at)).slice(0, 8);
-  const booked = list.filter(a => a.status === 'booked' || a.status === 'done');
-  view.innerHTML = `<div class="sec-h" style="margin-top:8px"><h2 style="font-size:1.8rem">Calendar</h2><span><button class="link" id="cal-today">Today</button> · <button class="link" id="cal-mail">Client emails</button></span></div>
+  const booked = list.filter(a => !isPersonal(a) && (a.status === 'booked' || a.status === 'done'));
+  view.innerHTML = `${calHead(sel, today)}
   <div class="week"><button class="nav" id="cal-prev" aria-label="Previous week">‹</button>${days.map(d => `<button class="d ${d === sel ? 'on' : ''} ${d === today ? 'today' : ''} ${count(d) ? 'has' : ''}" data-day="${d}" aria-label="${esc(longDay(d))}"><span>${parseDay(d).toLocaleDateString('en-US', { weekday: 'short' }).slice(0, 2)}</span><b>${parseDay(d).getDate()}</b><i></i></button>`).join('')}<button class="nav" id="cal-next" aria-label="Next week">›</button></div>
-  <div class="sec" style="margin-top:14px"><div class="sec-h"><h2>${esc(sel === today ? 'Today' : longDay(sel))}</h2><span class="num">${booked.length ? `${booked.length} booked` : ''}</span></div>
+  <div class="sec" style="margin-top:14px"><div class="sec-h"><h2>${esc(sel === today ? 'Today' : longDay(sel))}</h2><span class="num">${booked.length ? `${booked.length} client${booked.length > 1 ? 's' : ''}` : ''}</span></div>
     <div class="list">${list.length ? list.map(apptRow).join('') : '<div class="empty">Nothing booked this day.</div>'}</div>
     ${canWrite ? '<div class="actions"><button class="btn gold" id="cal-new">+ Book an appointment</button></div>' : ''}</div>
   ${soon.length ? `<div class="sec"><div class="sec-h"><h2>Coming up</h2></div><div class="list">${soon.map(a => apptRow(a).replace('<span class="tm"><b>', `<span class="tm"><small>${esc(parseDay(apDay(a)).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }))}</small><b>`)).join('')}</div></div>` : ''}
-  ${S.mailReady === false ? '<div class="ai-note" style="margin-top:18px"><b>Automatic emails aren’t connected yet.</b> Until they are, saving an appointment gives you an Email and a Text button with the message already written. 24-hour reminders start as soon as email is connected.</div>' : ''}`;
-  $$('[data-day]').forEach(b => b.onclick = () => { S.calDay = b.dataset.day; renderCal(); });
-  const shift = n => { const d = parseDay(sel); d.setDate(d.getDate() + n); S.calDay = isoDay(d); renderCal(); };
-  $('#cal-prev').onclick = () => shift(-7); $('#cal-next').onclick = () => shift(7);
-  $('#cal-today').onclick = () => { S.calDay = today; renderCal(); };
-  $('#cal-mail').onclick = openMailSettings;
-  const nb = $('#cal-new'); if (nb) nb.onclick = () => openAppt({ date: sel });
+  ${emailNote()}`;
+  calWire(sel, today, 'week');
+}
+function renderCalWeek() {
+  const sel = S.calDay, ws = weekStart(sel), today = isoDay();
+  const days = Array.from({ length: 7 }, (_, i) => { const d = parseDay(ws); d.setDate(d.getDate() + i); return isoDay(d); });
+  const inWeek = S.appts.filter(a => days.includes(apDay(a)));
+  const clients = inWeek.filter(a => isClientAppt(a)), hours = clients.reduce((t, a) => t + durOf(a), 0) / 60;
+  const workDays = new Set(clients.map(apDay)).size, priced = clients.reduce((t, a) => t + (+(a.data || {}).price || 0), 0);
+  const label = `${parseDay(days[0]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${parseDay(days[6]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+  view.innerHTML = `${calHead(sel, today)}
+  <div class="sec-h"><button class="nav btn small" id="cal-prev" aria-label="Previous week">‹</button><h2 style="font-size:1.25rem">${esc(label)}</h2><button class="nav btn small" id="cal-next" aria-label="Next week">›</button></div>
+  <div class="stats" style="margin:8px 0 6px"><div class="stat"><b>${clients.length}</b><span>clients</span></div><div class="stat"><b>${workDays}</b><span>work days</span></div><div class="stat"><b>${hours ? Math.round(hours) : 0}h</b><span>booked</span></div>${priced ? `<div class="stat"><b>${money(priced)}</b><span>noted on calendar</span></div>` : ''}</div>
+  ${days.map(d => { const l = inWeek.filter(a => apDay(a) === d).sort((a, b) => a.starts_at.localeCompare(b.starts_at)); const n = l.filter(isClientAppt).length;
+    return `<div class="sec" style="margin-top:12px"><div class="sec-h"><h2 style="font-size:1.1rem"><button class="link" data-day="${d}" data-go="1" style="font:inherit;color:${d === today ? 'var(--gold)' : 'inherit'}">${esc(parseDay(d).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }))}</button></h2><span class="num">${n ? `${n} client${n > 1 ? 's' : ''}` : l.length ? '' : 'Off'}</span></div>
+      ${l.length ? `<div class="list">${l.map(apptRow).join('')}</div>` : ''}</div>`; }).join('')}
+  ${canWrite ? '<div class="actions"><button class="btn gold" id="cal-new">+ Book an appointment</button></div>' : ''}${emailNote()}`;
+  calWire(sel, today, 'week');
+}
+function renderCalMonth() {
+  const sel = S.calDay, today = isoDay(), first = parseDay(sel.slice(0, 8) + '01');
+  const start = new Date(first); start.setDate(1 - first.getDay());
+  const cells = Array.from({ length: 42 }, (_, i) => { const d = new Date(start); d.setDate(start.getDate() + i); return isoDay(d); });
+  const mk = monthKey(sel), inMonth = S.appts.filter(a => monthKey(apDay(a)) === mk);
+  const clients = inMonth.filter(isClientAppt), byDay = {}; clients.forEach(a => { const d = apDay(a); byDay[d] = (byDay[d] || 0) + 1; });
+  const workDays = Object.keys(byDay).length, priced = clients.reduce((t, a) => t + (+(a.data || {}).price || 0), 0);
+  const wk = [0, 0, 0, 0, 0, 0, 0]; clients.forEach(a => wk[parseDay(apDay(a)).getDay()]++);
+  const busiest = wk.indexOf(Math.max(...wk)), dn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const lastRows = cells.slice(35).every(d => monthKey(d) !== mk) ? 35 : 42;
+  view.innerHTML = `${calHead(sel, today)}
+  <div class="sec-h"><button class="nav btn small" id="cal-prev" aria-label="Previous month">‹</button><h2 style="font-size:1.35rem">${esc(first.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }))}</h2><button class="nav btn small" id="cal-next" aria-label="Next month">›</button></div>
+  <div class="mgrid">${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(x => `<span class="mh">${x}</span>`).join('')}
+    ${cells.slice(0, lastRows).map(d => { const n = byDay[d] || 0, out = monthKey(d) !== mk;
+      return `<button class="mc ${out ? 'out' : ''} ${d === today ? 'today' : ''} ${n ? 'has' : ''} ${n >= 6 ? 'full' : ''}" data-day="${d}" data-go="1" aria-label="${esc(longDay(d))}: ${n} clients"><b>${parseDay(d).getDate()}</b>${n ? `<i>${n}</i>` : ''}</button>`; }).join('')}</div>
+  <div class="stats" style="margin:14px 0 4px"><div class="stat"><b>${clients.length}</b><span>clients</span></div><div class="stat"><b>${workDays}</b><span>work days</span></div><div class="stat"><b>${workDays ? (clients.length / workDays).toFixed(1) : 0}</b><span>per work day</span></div>${clients.length ? `<div class="stat"><b>${dn[busiest].slice(0, 3)}</b><span>busiest day</span></div>` : ''}</div>
+  ${priced ? `<p class="fine">${money(priced)} written on calendar entries this month (only some entries have a price).</p>` : ''}
+  <p class="fine">Tap a day to open it. Darker days are fuller.</p>${emailNote()}`;
+  calWire(sel, today, 'month');
 }
 view.addEventListener('click', e => { const b = e.target.closest('[data-appt]'); if (b) openAppt({ id: b.dataset.appt }); });
 
@@ -1669,6 +1760,7 @@ function apDraw() {
 function openAppt(p = {}) {
   if (!canWrite && !p.id) { toast('You can view this book but not change it.'); return; }
   const a = p.id ? S.appts.find(x => x.id === p.id) : null;
+  if (a && isPersonal(a)) { openPersonal(a); return; }
   A.id = a ? a.id : null; A.orig = a; A.services = new Set(a ? (a.data.services || []) : (p.services || []));
   A.len = a ? Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4) : (+p.minutes || 60);
   if (!LENGTHS.some(l => l[1] === A.len)) LENGTHS.push([durLabel(A.len), A.len]);
@@ -1707,6 +1799,7 @@ function openAppt(p = {}) {
       else if (a.status !== 'requested' && a.status !== 'declined') b.push('<button class="btn small" data-ap="rebook">Book again</button>');
       if (apEmail(a)) b.push(`<a class="btn small" href="${esc(mailtoFor(a, a.status === 'cancelled' ? 'cancel' : 'confirm'))}">Email her</a>`);
       if (digits(apPhone(a))) b.push(`<a class="btn small" href="${esc(smsFor(a, a.status === 'cancelled' ? 'cancel' : 'reminder'))}">Text her</a>`);
+      b.push('<button class="btn small" data-ap="personal">Mark as personal</button>');
       b.push('<button class="btn small danger" data-ap="delete">Delete</button>');
       $('#ap-more').innerHTML = b.join('');
     }
@@ -1725,6 +1818,11 @@ $('#ap-more').addEventListener('click', async e => {
     if (!await ask('Cancel this appointment?', `${apName(a)} · ${longDay(apDay(a))} at ${clock(a.starts_at)}.${a.notify && apEmail(a) ? ' She’ll get a cancellation email.' : ''}`, 'Cancel it')) return;
     const r = await cancelAppt(a.id); showDone(r); return;
   }
+  if (act === 'personal') {
+    if (!await ask('Mark as personal?', 'It stays on your calendar to block the time, but shows only “Personal” and is left out of client lists and reports.', 'Mark personal')) return;
+    try { await window.__appts.save({ id: a.id, client_id: null, data: { ...a.data, personal: true } }); closeSheet('asheet'); toast('Marked personal'); } catch (err) { toast('Couldn’t save: ' + err.message); }
+    return;
+  }
   if (act === 'decline') {
     if (!await ask('Decline this request?', `${apName(a)}${a.notify && apEmail(a) ? ' gets a polite email asking for other days.' : '.'}`, 'Decline')) return;
     try { const saved = await window.__appts.save({ id: a.id, status: 'declined' }); const r = await notifyClient(saved, 'decline'); showDone({ appt: saved, ...r }); } catch (err) { toast('Couldn’t save: ' + err.message); }
@@ -1735,6 +1833,13 @@ $('#ap-more').addEventListener('click', async e => {
     try { await window.__appts.remove(a.id); closeSheet('asheet'); toast('Appointment deleted'); } catch (err) { toast('Couldn’t delete: ' + err.message); }
   }
 });
+
+async function openPersonal(a) {
+  const title = ((a.data || {}).gcal || {}).summary || (a.data || {}).clientName || 'Personal';
+  const yes = await ask('Personal', `${title}\n${longDay(apDay(a))}, ${clock(a.starts_at)} – ${clock(a.ends_at)}\n\nOnly you see this. It blocks the time and stays out of client lists and reports.`, canWrite ? 'Actually, it’s a client' : 'OK');
+  if (!yes || !canWrite) return;
+  try { const d = { ...a.data, personal: false }; await window.__appts.save({ id: a.id, data: d }); toast('Moved back to clients. Tap it to pick the client.'); } catch (err) { toast('Couldn’t save: ' + err.message); }
+}
 
 /* shared by the form and by Claude in "Ask" */
 async function saveAppt(d, { confirmOverlap } = {}) {
@@ -1839,6 +1944,27 @@ async function saveMail(close = true) {
 }
 $('#m-save').addEventListener('click', () => saveMail(true));
 $('#s-mail').addEventListener('click', () => { closeSheet('ssheet'); openMailSettings(); });
+
+/* ---------- WEEKLY REPORT (written by Claude) ---------- */
+function mdLite(t) {
+  const inline = x => esc(x).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  let out = '', list = false;
+  t.split('\n').forEach(l => {
+    const m = l.match(/^\s*[-•]\s+(.*)/);
+    if (m) { if (!list) { out += '<ul>'; list = true; } out += `<li>${inline(m[1])}</li>`; return; }
+    if (list) { out += '</ul>'; list = false; }
+    const h = l.match(/^#+\s*(.*)/);
+    if (h) out += `<h4>${inline(h[1])}</h4>`; else if (l.trim()) out += `<p>${inline(l)}</p>`;
+  });
+  return out + (list ? '</ul>' : '');
+}
+function reportCard(r) {
+  const open = S.reportOpen;
+  return `<div class="sec"><div class="sec-h"><h2>${esc(r.title)}</h2><span class="num">${esc(new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }))}</span></div>
+    <div class="card report ${open ? 'open' : ''}">${mdLite(r.body)}</div>
+    <button class="link" id="rep-more" style="margin-top:6px">${open ? 'Show less' : 'Read the whole report'}</button></div>`;
+}
+view.addEventListener('click', e => { if (e.target.id === 'rep-more') { S.reportOpen = !S.reportOpen; render(); } });
 
 /* ---------- WEBSITE QR ---------- */
 const SITE = { site: ['Website', 'https://shondellslaughter.com/', 'Shondell’s work, services and prices.'], book: ['Book online', 'https://shondellslaughter.com/#book', 'Opens straight to the booking form.'] };
@@ -2163,6 +2289,8 @@ render();
   if (window.__appts) {
     window.__appts.on(list => { S.appts = list; refresh(); });
     window.__appts.ready().then(r => { S.mailReady = r; if (S.tab === 'cal') refresh(); });
+    const loadReport = () => window.__appts.report().then(r => { if (JSON.stringify(r) !== JSON.stringify(S.report)) { S.report = r; if (S.tab === 'home') refresh(); } }).catch(() => {});
+    loadReport(); document.addEventListener('visibilitychange', () => { if (!document.hidden) loadReport(); });
   }
   db.collection('visits').orderBy('date', 'desc').limit(1000).onSnapshot(snap => {
     S.visits = snap.docs.map(d => ({ ...d.data(), _id: d.id })).sort((a, b) => (b.date || '').localeCompare(a.date || '') || (b.createdAt || '').localeCompare(a.createdAt || ''));
