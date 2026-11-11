@@ -334,6 +334,42 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .list.big .appt .tm{width:78px;font-size:16px}
 .list.big .appt .main b{font-size:1.15rem}
 .list.big .appt .main small{font-size:14px}
+.icard{margin:14px 0 4px;border:1px solid #e3d6bd;border-radius:6px 18px 18px 6px;background:repeating-linear-gradient(#fffdf7 0 27px,#efe5d1 27px 28px);box-shadow:0 1px 0 #e9dfcc,0 8px 22px rgba(60,40,10,.07);padding:12px 14px 14px;position:relative;animation:ciIn .45s both}
+.icard::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:1px;background:#e8b4a8;opacity:.7}
+.ic-top{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);padding-left:18px;margin-bottom:8px}
+.ic-top span:last-child{letter-spacing:.02em;text-transform:none;color:var(--soft);text-align:right}
+.icard > *:not(.ic-top){margin-left:18px}
+.ic-next label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.ic-next textarea{min-height:56px;background:rgba(255,253,247,.8);font-size:14.5px}
+.ic-last{margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.75);border:1px solid #eadfca}
+.ic-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ic-h span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.ic-h b{font-family:var(--display);font-weight:500;font-size:1.3rem}
+.ic-h small{color:var(--soft);font-size:12.5px}
+.ic-svc{font-size:15px;font-weight:500;margin:2px 0 8px}
+.ic-paid{display:grid;grid-template-columns:repeat(auto-fit,minmax(64px,1fr));gap:6px;margin-bottom:8px}
+.ic-paid div,.ic-money div{background:var(--paper);border-radius:10px;padding:6px 8px}
+.ic-paid small,.ic-money small{display:block;font-size:11px;color:var(--soft)}
+.ic-paid b,.ic-money b{font-size:15.5px}
+.ic-paid em{display:block;font-style:normal;font-size:11px;color:var(--soft)}
+.ic-f{font-size:14px;line-height:1.45;border-left:3px solid var(--gold);padding:4px 0 4px 10px;margin:6px 0}
+.ic-f strong{font-weight:600}
+.ic-cost{font-size:13.5px;background:#eef4ec;color:#2f5d34;border-radius:10px;padding:8px 10px;margin-top:6px}
+.ic-cost.up{background:#fbefd9;color:#7a4e0c}
+.ic-buy,.ic-note{font-size:14px;margin:6px 0 0}
+.ic-note{font-style:italic;color:var(--soft)}
+.ic-money{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:6px;margin-top:10px}
+.ic-money div:first-child{background:var(--ink);color:var(--paper)}
+.ic-money div:first-child small{color:rgba(255,255,255,.7)}
+.ic-bought{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.ic-bought small{width:100%;font-size:11px;color:var(--soft)}
+.ic-bought span{font-size:12.5px;background:var(--gold-bg);border-radius:8px;padding:3px 8px}
+.lastmini{display:grid;gap:2px;font-size:13.5px;background:var(--gold-bg);border-radius:12px;padding:10px 12px;margin:10px 0 4px}
+.lastmini b{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.lastmini .up{color:#7a4e0c;font-weight:600}
+.sup-row{display:grid;grid-template-columns:1fr 1fr 1.4fr 32px;gap:6px;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px dashed var(--rule)}
+.sup-row [data-f=name]{grid-column:1/-1}
+.sup-row .sup-h{grid-column:1/-1;font-size:12px;color:var(--soft);margin-top:-2px}
 .mtop{display:flex;align-items:center;justify-content:space-between;margin:6px 0 4px}
 .mtop h2{font-family:var(--display);font-weight:500;font-size:1.45rem}
 .mgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;margin:6px -14px 0}
@@ -666,6 +702,8 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
     <p class="fine">These prices fill in the register. She can still change any price at checkout. Nothing here shows on the website.</p>
     <div class="fg"><span class="lbl">Service menu</span><div id="s-menu"></div><button class="btn small" id="s-addm" style="margin-top:8px">+ Add a service</button></div>
     <div class="fg"><span class="lbl">Retail products</span><div id="s-products"></div><button class="btn small" id="s-addp" style="margin-top:8px">+ Add a product</button></div>
+    <div class="fg"><span class="lbl">Color &amp; supply costs</span><p class="fine" style="margin:0 0 8px">What she pays for color, lightener and developer. Write the name the way she types it in formulas (for example “Redken Shades EQ”). The app then shows what each client’s formula costs, and warns when a price went up.</p>
+      <div id="s-supplies"></div><button class="btn small" id="s-adds" style="margin-top:8px">+ Add a color or supply</button></div>
     <div class="fg"><label for="s-tax">Sales tax on products (%)</label><input class="in num" id="s-tax" type="number" inputmode="decimal" step="0.01"><p class="fine" style="margin-top:6px">Texas charges sales tax on retail products, not on hair services. Most cities total 8.25%.</p></div>
     <div class="fg"><span class="lbl">Getting paid</span><p class="fine" style="margin:0 0 8px">Fill in the ones she uses. At checkout the app shows a QR code the client scans to pay her, with the amount already filled in.</p>
       <div class="grid2"><div><label class="lbl" for="s-venmo">Venmo username</label><input class="in" id="s-venmo" placeholder="@Della-Curls" autocomplete="off"></div>
@@ -1029,6 +1067,72 @@ const clientStats = id => {
   const vs = visitsOf(id); const last = vs[0];
   return { count: vs.length, total: vs.reduce((a, v) => a + (+v.price || 0), 0), last, avg: vs.length ? vs.reduce((a, v) => a + (+v.price || 0), 0) / vs.length : 0 };
 };
+/* product cost: grams in a bowl × what she pays per gram for that color */
+const gramsOf = (size, unit) => (+size || 0) * (unit === 'oz' ? 28.35 : 1);
+function supplyFor(f) {
+  const text = norm(`${f.brand || ''} ${f.shade || ''}`), list = (SET().supplies || []).filter(m => m.name && +m.price && +m.size);
+  return list.filter(m => text.includes(norm(m.name)) || norm(m.name).includes(norm(f.brand || '~'))).sort((a, b) => b.name.length - a.name.length)[0] || null;
+}
+function bowlCost(f) {
+  const g = +f.amt; if (!g) return null; const sup = supplyFor(f); if (!sup) return null;
+  const perG = +sup.price / gramsOf(sup.size, sup.unit); return { supply: sup, perG, cost: Math.round(g * perG * 100) / 100 };
+}
+const visitProducts = v => (v.items || []).filter(i => i.type === 'product');
+const visitPaid = v => (+v.price || 0) + (+v.productSales || 0) + (+v.tip || 0);
+function lastTime(id) {
+  const vs = visitsOf(id), last = vs[0];
+  const cal = S.appts.filter(a => a.client_id === id && !isPersonal(a) && (a.status === 'done' || (a.status === 'booked' && a.ends_at < new Date().toISOString()))).sort((a, b) => b.starts_at.localeCompare(a.starts_at))[0];
+  return { last, cal: cal && (!last || apDay(cal) > last.date) ? cal : null };
+}
+function costCompare(v) {
+  const rows = (v.formula || []).filter(f => +f.amt);
+  if (!rows.length) return null;
+  let then = 0, now = 0, known = 0;
+  rows.forEach(f => { const c = bowlCost(f); if (c) { now += c.cost; known++; then += +f.cost || c.cost; } });
+  if (!known) return null;
+  return { then: Math.round(then * 100) / 100, now: Math.round(now * 100) / 100, diff: Math.round((now - then) * 100) / 100, grams: rows.reduce((t, f) => t + (+f.amt || 0), 0) };
+}
+function lastTimeMini(id) {
+  const { last, cal } = lastTime(id); if (!last && !cal) return '';
+  if (last) { const cc = costCompare(last);
+    return `<div class="lastmini"><b>Last time · ${esc(niceDay(last.date))}</b><span>${esc((last.services || []).join(', ') || 'Visit')} · paid ${money(visitPaid(last))}${last.payment ? ' ' + esc(last.payment) : ''}</span>
+      ${(last.formula || []).length ? `<span>${esc(last.formula.map(formulaLine).join(' | '))}${cc ? ` · product ${money(cc.then)}` : ''}</span>` : ''}${cc && cc.diff > 0.25 ? `<span class="up">Color costs ${money(cc.diff)} more now</span>` : ''}</div>`; }
+  return `<div class="lastmini"><b>Last time · ${esc(longDay(apDay(cal)))}</b><span>${esc(((cal.data || {}).services || []).join(', ') || (cal.data || {}).clientName || '')}${(cal.data || {}).price ? ' · ' + money(+cal.data.price) : ''}</span></div>`;
+}
+function clientIndexCard(id, c) {
+  const vs = visitsOf(id), { last, cal } = lastTime(id);
+  const visitDays = new Set(vs.map(v => v.date));
+  const calPaid = S.appts.filter(a => a.client_id === id && !isPersonal(a) && a.status === 'done' && (a.data || {}).price && !visitDays.has(apDay(a)));
+  const svc = vs.reduce((t, v) => t + (+v.price || 0), 0), retail = vs.reduce((t, v) => t + (+v.productSales || 0), 0), tips = vs.reduce((t, v) => t + (+v.tip || 0), 0);
+  const calTotal = calPaid.reduce((t, a) => t + (+a.data.price || 0), 0), spent = svc + retail + tips + calTotal;
+  const calVisits = S.appts.filter(a => a.client_id === id && !isPersonal(a) && a.status === 'done' && !visitDays.has(apDay(a))).length, visits = vs.length + calVisits;
+  const svcCount = {}; vs.forEach(v => (v.services || []).forEach(x => svcCount[x] = (svcCount[x] || 0) + 1));
+  S.appts.filter(a => a.client_id === id && a.status === 'done').forEach(a => ((a.data || {}).services || []).forEach(x => svcCount[x] = (svcCount[x] || 0) + 1));
+  const usual = Object.entries(svcCount).sort((a, b) => b[1] - a[1]).slice(0, 3).map(x => x[0]);
+  const bought = vs.flatMap(v => visitProducts(v).map(p => ({ ...p, date: v.date })));
+  const cc = last && costCompare(last);
+  const calNote = last && cal ? `<p class="fine" style="margin:8px 0 0 18px">Newer on her calendar: <b>${esc(parseDay(apDay(cal)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }))}</b>${(cal.data || {}).price ? ` · ${money(+cal.data.price)}` : ''}${((cal.data || {}).services || []).length ? ` · ${esc(cal.data.services.join(', '))}` : ''}. Check her out in the app next time so it lands on this card.</p>` : '';
+  const lastBlock = last ? `<div class="ic-last">
+      <div class="ic-h"><span>Last visit</span><b>${esc(niceDay(last.date))}</b><small>${daysBetween(last.date, isoDay())} days ago</small></div>
+      <p class="ic-svc">${esc((last.services || []).join(' · ') || 'Visit')}${last.duration ? ` · ${esc(last.duration)} hrs` : ''}</p>
+      <div class="ic-paid"><div><small>Service</small><b>${money(+last.price || 0)}</b></div>${+last.productSales ? `<div><small>Products</small><b>${money(+last.productSales)}</b></div>` : ''}<div><small>Tip</small><b>${money(+last.tip || 0)}</b></div><div><small>Paid</small><b>${money(visitPaid(last))}</b>${last.payment ? `<em>${esc(last.payment)}</em>` : ''}</div></div>
+      ${(last.formula || []).length ? `<div class="ic-f">${last.formula.map(f => `<div><strong>${esc(f.zone || 'Bowl')}</strong> ${esc([f.brand, f.shade].filter(Boolean).join(' '))}${f.developer ? ` + ${esc(f.developer)}` : ''}${f.ratio ? ` (${esc(f.ratio)})` : ''}${+f.amt ? ` · <b>${esc(f.amt)} g</b>` : ''}${f.time ? ` · ${esc(f.time)} min` : ''}${+f.cost ? ` · ${money(+f.cost)}` : ''}</div>`).join('')}</div>` : '<p class="fine">No formula written down for this visit.</p>'}
+      ${cc ? `<div class="ic-cost ${cc.diff > 0.25 ? 'up' : ''}">Product used: <b>${cc.grams} g</b>, cost <b>${money(cc.then)}</b> then${cc.diff > 0.25 ? ` · same formula costs <b>${money(cc.now)}</b> today (+${money(cc.diff)}). Consider charging at least <b>${money(Math.ceil(((+last.price || 0) + cc.diff) / 5) * 5)}</b>.` : cc.diff < -0.25 ? ` · costs ${money(cc.now)} today` : ' · same price today'}</div>` : ''}
+      ${visitProducts(last).length ? `<p class="ic-buy">Bought: ${visitProducts(last).map(p => `${esc(p.name)}${p.qty > 1 ? ' ×' + p.qty : ''} ${money(p.price * (p.qty || 1))}`).join(', ')}</p>` : ''}
+      ${last.notes ? `<p class="ic-note">“${esc(last.notes)}”</p>` : ''}
+      ${last.rebookWeeks ? `<span class="pill">Rebook in ${esc(last.rebookWeeks)} weeks</span>` : ''}
+    </div>` : cal ? `<div class="ic-last"><div class="ic-h"><span>Last visit</span><b>${esc(parseDay(apDay(cal)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }))}</b><small>from her calendar</small></div>
+      <p class="ic-svc">${esc(((cal.data || {}).services || []).join(' · ') || 'Appointment')}${(cal.data || {}).price ? ` · ${money(+cal.data.price)}` : ''}</p><p class="fine">Check her out in the app next time to keep the formula, products and price on this card.</p></div>` : '<div class="ic-last"><p class="fine">No visits yet. After her first checkout, everything from that visit shows here.</p></div>';
+  return `<section class="icard">
+    <div class="ic-top"><span>Client card</span><span>${visits} visit${visits === 1 ? '' : 's'}${usual.length ? ' · usually ' + esc(usual.join(', ')) : ''}</span></div>
+    <div class="ic-next"><label for="ic-next">For next time</label><textarea id="ic-next" class="in" placeholder="Anything to remember: wants it a bit warmer, bring inspo pics, running 15 min late…" ${canWrite ? '' : 'readonly'}>${esc(c.nextNote || '')}</textarea>${canWrite ? '<button class="btn small" id="ic-save" style="display:none">Save note</button>' : ''}</div>
+    ${lastBlock}${calNote}
+    <div class="ic-money"><div><small>Spent with you</small><b>${money(spent)}</b></div><div><small>Services</small><b>${money(svc + calTotal)}</b></div><div><small>Products</small><b>${money(retail)}</b></div><div><small>Tips</small><b>${money(tips)}</b></div></div>
+    ${calTotal ? `<p class="fine" style="margin:4px 0 0 18px">Includes ${money(calTotal)} written on ${calPaid.length} calendar entr${calPaid.length === 1 ? 'y' : 'ies'}.</p>` : ''}
+    ${bought.length ? `<div class="ic-bought"><small>Products bought</small>${bought.slice(0, 6).map(p => `<span>${esc(p.name)}${p.qty > 1 ? ' ×' + p.qty : ''} · ${esc(niceDay(p.date))}</span>`).join('')}</div>` : ''}
+  </section>`;
+}
+
 const dueList = () => {
   const today = isoDay(), out = [];
   S.clients.forEach((c, id) => {
@@ -1149,7 +1253,8 @@ function renderClient(id) {
   view.innerHTML = `<button class="back" id="back">← Back</button>
   <div class="chead"><span class="av">${esc(initials(c.name))}</span><div><h2>${esc(c.name)}</h2><p>${esc(fmtPhone(c.phone))}${c.birthday ? ` · 🎂 ${esc(parseDay(c.birthday).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }))}` : ''}</p></div></div>
   ${c.allergies ? `<div class="alert"><b>Allergy / patch test:</b> ${esc(c.allergies)}</div>` : ''}
-  <div class="tiles"><div class="tile"><small>Visits</small><b class="num">${st.count}</b></div><div class="tile"><small>Lifetime</small><b class="num">${money(st.total)}</b></div>
+  ${clientIndexCard(id, c)}
+  <div class="tiles" style="display:none"><div class="tile"><small>Visits</small><b class="num">${st.count}</b></div><div class="tile"><small>Lifetime</small><b class="num">${money(st.total)}</b></div>
     <div class="tile"><small>Average</small><b class="num">${money(Math.round(st.avg))}</b></div><div class="tile"><small>Last visit</small><b style="font-size:1.4rem">${st.last ? esc(niceDay(st.last.date)) : '—'}</b>${st.last ? `<span>${daysBetween(st.last.date, isoDay())} days ago</span>` : ''}</div></div>
   <div class="actions">
     <button class="btn gold" id="cv-new">+ New visit</button>
@@ -1178,13 +1283,17 @@ function renderClient(id) {
   if ($('#cv-book')) $('#cv-book').onclick = () => openAppt({ clientId: id });
   const rp = $('#cv-repeat'); if (rp) rp.onclick = () => openVisit({ clientId: id, formula: st.last.formula, services: st.last.services, price: st.last.price, rebookWeeks: st.last.rebookWeeks, repeat: true });
   $('#cv-edit').onclick = () => editClient(id);
+  const nt = $('#ic-next'), ns = $('#ic-save');
+  if (nt && ns) { nt.oninput = () => { ns.style.display = nt.value !== (c.nextNote || '') ? '' : 'none'; };
+    ns.onclick = async () => { try { await db.collection('clients').doc(id).update({ nextNote: nt.value.trim() }); ns.style.display = 'none'; toast('Saved for next time ✓'); } catch (err) { toast('Couldn’t save: ' + (err.message || '')); } }; }
   wireVisitCards();
 }
 function visitCard(v) {
   return `<article class="visit" data-vid="${esc(v._id)}">
     <div class="v-top"><div><b>${esc(niceDay(v.date))}</b><small>${esc((v.services || []).join(' · ') || 'Visit')}${v.duration ? ` · ${esc(v.duration)} hrs` : ''}</small></div>
       <div class="v-money"><b class="num">${money(vRevenue(v))}</b>${+v.tip ? `+ ${money(v.tip)} tip` : ''}${v.payment ? ` · ${esc(v.payment)}` : ''}</div></div>
-    ${(v.formula || []).length ? `<div class="formula"><h4>Formula</h4>${v.formula.map(f => `<div class="f-row"><strong>${esc(f.zone || 'Bowl')}</strong><span>${esc([f.brand, f.shade].filter(Boolean).join(' '))}${f.developer ? ` + ${esc(f.developer)}` : ''}${f.ratio ? ` <em>(${esc(f.ratio)})</em>` : ''}${f.time ? ` <em>· ${esc(f.time)} min</em>` : ''}${f.note ? `<br><em>${esc(f.note)}</em>` : ''}</span></div>`).join('')}</div>` : ''}
+    ${(v.formula || []).length ? `<div class="formula"><h4>Formula</h4>${v.formula.map(f => `<div class="f-row"><strong>${esc(f.zone || 'Bowl')}</strong><span>${esc([f.brand, f.shade].filter(Boolean).join(' '))}${f.developer ? ` + ${esc(f.developer)}` : ''}${f.ratio ? ` <em>(${esc(f.ratio)})</em>` : ''}${f.time ? ` <em>· ${esc(f.time)} min</em>` : ''}${+f.amt ? ` <em>· ${esc(f.amt)} g</em>` : ''}${+f.cost ? ` <em>· ${money(+f.cost)}</em>` : ''}${f.note ? `<br><em>${esc(f.note)}</em>` : ''}</span></div>`).join('')}${+v.productCost ? `<p class="fine" style="margin:4px 0 0">Product cost ${money(+v.productCost)} · kept ${money((+v.price || 0) - (+v.productCost))} after color</p>` : ''}</div>` : ''}
+    ${visitProducts(v).length ? `<p class="v-note">Bought: ${visitProducts(v).map(p => `${esc(p.name)}${p.qty > 1 ? ' ×' + p.qty : ''} ${money(p.price * (p.qty || 1))}`).join(', ')}</p>` : ''}
     ${v.notes ? `<p class="v-note">${esc(v.notes)}</p>` : ''}
     ${(v.photos || []).length ? `<div class="photos">${v.photos.map(p => `<img src="${__photoSrc(p)}" data-photo="${esc(p)}" alt="Visit photo" data-zoom>`).join('')}</div>` : ''}
     ${v.rebookWeeks ? `<span class="pill">Rebook in ${esc(v.rebookWeeks)} weeks</span>` : ''}
@@ -1359,15 +1468,17 @@ function drawFormula() {
     <div class="head"><span>Bowl ${i + 1}</span><button type="button" class="link" data-rm="${i}" style="color:var(--bad)">Remove</button></div>
     <div class="grid2"><input class="in" list="dl-zone" data-k="zone" placeholder="Where (roots, ends…)" value="${esc(f.zone)}"><input class="in" list="dl-brand" data-k="brand" placeholder="Brand / line" value="${esc(f.brand)}"></div>
     <div class="grid3"><input class="in" data-k="shade" placeholder="Shade (6NB)" value="${esc(f.shade)}"><input class="in" list="dl-dev" data-k="developer" placeholder="Developer" value="${esc(f.developer)}"><input class="in" data-k="ratio" placeholder="Ratio 1:1" value="${esc(f.ratio)}"></div>
-    <div class="grid2"><input class="in num" data-k="time" type="number" inputmode="numeric" placeholder="Minutes" value="${esc(f.time)}"><input class="in" data-k="note" placeholder="Note (grams, sections…)" value="${esc(f.note)}"></div>
+    <div class="grid3"><input class="in num" data-k="amt" type="number" inputmode="decimal" step="0.5" placeholder="Grams used" value="${esc(f.amt ?? '')}"><input class="in num" data-k="time" type="number" inputmode="numeric" placeholder="Minutes" value="${esc(f.time)}"><input class="in" data-k="note" placeholder="Note" value="${esc(f.note)}"></div>
+    ${(() => { const c = bowlCost(f); return c ? `<p class="fine" style="margin:2px 0 0">≈ ${money(c.cost)} of product (${esc(c.supply.name)}: ${money(+c.supply.price)} per ${esc(c.supply.size)} ${esc(c.supply.unit)})</p>` : f.amt && (f.brand || f.shade) ? '<p class="fine" style="margin:2px 0 0">Add this color under Prices &amp; settings → Color &amp; supply costs to see what it costs.</p>' : ''; })()}
   </div>`).join('') || '<p style="font-size:14px;color:var(--soft)">No formula for this visit, or tap below to add one.</p>';
   $$('.f-edit', box).forEach(row => {
     const i = +row.dataset.i;
-    $$('[data-k]', row).forEach(inp => inp.oninput = () => { V.formula[i][inp.dataset.k] = inp.dataset.k === 'time' ? (inp.value ? +inp.value : '') : inp.value; });
+    $$('[data-k]', row).forEach(inp => { inp.oninput = () => { V.formula[i][inp.dataset.k] = ['time', 'amt'].includes(inp.dataset.k) ? (inp.value ? +inp.value : '') : inp.value; };
+      if (['amt', 'brand', 'shade'].includes(inp.dataset.k)) inp.onchange = () => { const at = document.activeElement; drawFormula(); }; });
     $('[data-rm]', row).onclick = () => { V.formula.splice(i, 1); drawFormula(); };
   });
 }
-$('#v-addf').onclick = () => { V.formula.push({ zone: '', brand: (V.formula.at(-1) || {}).brand || '', shade: '', developer: '', ratio: '', time: '', note: '' }); drawFormula(); const ins = $$('#v-formula .f-edit'); $('[data-k=zone]', ins.at(-1)).focus(); };
+$('#v-addf').onclick = () => { V.formula.push({ zone: '', brand: (V.formula.at(-1) || {}).brand || '', shade: '', developer: '', ratio: '', time: '', amt: '', note: '' }); drawFormula(); const ins = $$('#v-formula .f-edit'); $('[data-k=zone]', ins.at(-1)).focus(); };
 
 function pickClient(id) {
   V.clientId = id;
@@ -1391,7 +1502,7 @@ function openVisit(p = {}) {
   if (!canWrite) { toast('You can view this book but not change it.'); return; }
   V.editId = p.editId || null; V.services = new Set(p.services || []); V.payment = PAY.includes(p.payment) ? p.payment : (p.payment ? 'Other' : '');
   V.rebook = +p.rebookWeeks || 0; V.photos = p.repeat ? [] : [...(p.photos || [])];
-  V.formula = (p.formula || []).map(f => ({ zone: f.zone || '', brand: f.brand || '', shade: f.shade || '', developer: f.developer || '', ratio: f.ratio || '', time: f.time ?? '', note: f.note || '' }));
+  V.formula = (p.formula || []).map(f => ({ zone: f.zone || '', brand: f.brand || '', shade: f.shade || '', developer: f.developer || '', ratio: f.ratio || '', time: f.time ?? '', amt: f.amt ?? '', note: f.note || '' }));
   $('#v-title').textContent = V.editId ? 'Edit visit' : p.repeat ? 'Repeat visit' : 'New visit';
   $('#v-date').value = p.repeat ? isoDay() : (p.date && /^\d{4}-\d{2}-\d{2}$/.test(p.date) ? p.date : isoDay());
   $('#v-price').value = p.price ?? ''; $('#v-tip').value = p.repeat ? '' : (p.tip ?? ''); $('#v-duration').value = p.repeat ? '' : (p.duration ?? '');
@@ -1447,12 +1558,13 @@ $('#v-save').onclick = async () => {
     }
     const body = {
       clientId, clientName, date,
-      services: [...V.services], formula: V.formula.filter(f => Object.values(f).some(x => String(x).trim())),
+      services: [...V.services], formula: V.formula.filter(f => Object.values(f).some(x => String(x).trim())).map(f => { const c = bowlCost(f); return c ? { ...f, cost: c.cost, perG: c.perG } : f; }),
       price: +$('#v-price').value || 0, tip: +$('#v-tip').value || 0, payment: V.payment,
       duration: +$('#v-duration').value || null, rebookWeeks: V.rebook || null,
       notes: $('#v-notes').value.trim(), photos: V.photos.filter(p => !p.startsWith('blob:')),
       updatedAt: new Date().toISOString()
     };
+    const pc = body.formula.reduce((t, f) => t + (+f.cost || 0), 0); if (pc) body.productCost = Math.round(pc * 100) / 100;
     if (V.editId) await db.collection('visits').doc(V.editId).update(body);
     else await db.collection('visits').add({ ...body, createdAt: new Date().toISOString() });
     closeSheet('vsheet'); toast(`Saved ${clientName.split(' ')[0]}’s visit ✓`);
@@ -1902,6 +2014,7 @@ function openAppt(p = {}) {
   $('#ap-save').textContent = !a ? 'Book it' : a.status === 'requested' ? 'Accept & book this time' : a.status === 'declined' ? 'Book it after all' : 'Save changes';
   // status + more actions for an existing appointment
   $('#ap-status').innerHTML = ''; $('#ap-more').innerHTML = '';
+  { const cid = a ? a.client_id : (p.clientId || null); if (cid && S.clients.has(cid) && !(a && a.data.request)) $('#ap-ai').innerHTML = lastTimeMini(cid); }
   if (a && a.data.request) {
     const q = a.data.request;
     $('#ap-ai').innerHTML = `<div class="callout" style="margin:10px 0 4px"><b>${a.status === 'requested' ? 'Requested on your website' : 'Website request'}</b><span>
@@ -2415,6 +2528,15 @@ function drawSettings() {
     <div class="price-in"><span>$</span><input class="in num" data-${key}="${i}" data-f="price" type="number" inputmode="decimal" step="0.01" value="${m.price || ''}" placeholder="0" aria-label="Price"></div>
     <button type="button" class="x" data-del${key}="${i}" aria-label="Remove">×</button></div>`).join('');
   $('#s-menu').innerHTML = row(draftSet.menu, 'mi'); $('#s-products').innerHTML = row(draftSet.products, 'pi') || '<p class="fine" style="margin:0">No retail products yet.</p>';
+  draftSet.supplies = draftSet.supplies || [];
+  $('#s-supplies').innerHTML = draftSet.supplies.map((m, i) => `<div class="sup-row"><input class="in" data-si="${i}" data-f="name" value="${esc(m.name)}" placeholder="Brand / line" aria-label="Name">
+    <input class="in num" data-si="${i}" data-f="size" type="number" inputmode="decimal" step="0.1" value="${m.size || ''}" placeholder="Size" aria-label="Size">
+    <select class="in" data-si="${i}" data-f="unit" aria-label="Unit">${['oz', 'g', 'ml'].map(u => `<option ${m.unit === u ? 'selected' : ''}>${u}</option>`).join('')}</select>
+    <div class="price-in"><span>$</span><input class="in num" data-si="${i}" data-f="price" type="number" inputmode="decimal" step="0.01" value="${m.price || ''}" placeholder="Paid" aria-label="Price paid"></div>
+    <button type="button" class="x" data-delsi="${i}" aria-label="Remove">×</button>
+    ${(m.hist || []).length ? `<small class="sup-h">Was ${money(m.hist.at(-1).price)} until ${esc(new Date(m.hist.at(-1).until).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }))}</small>` : ''}</div>`).join('') || '<p class="fine" style="margin:0">No colors yet.</p>';
+  $$('[data-si]').forEach(inp => (inp.tagName === 'SELECT' ? inp.onchange = null : 0, inp[inp.tagName === 'SELECT' ? 'onchange' : 'oninput'] = () => { const it = draftSet.supplies[+inp.dataset.si]; it[inp.dataset.f] = ['size', 'price'].includes(inp.dataset.f) ? (+inp.value || 0) : inp.value; }));
+  $$('[data-delsi]').forEach(b => b.onclick = () => { draftSet.supplies.splice(+b.dataset.delsi, 1); drawSettings(); });
   $('#s-tax').value = draftSet.salesTaxRate;
   if ($('#s-square')) $('#s-square').value = draftSet.squareAppId || '';
   [['#s-venmo', 'venmoHandle'], ['#s-cashtag', 'cashtag'], ['#s-zelle', 'zelleContact'], ['#s-zellename', 'zelleName']].forEach(([id, k]) => { if ($(id)) $(id).value = draftSet[k] || ''; });
@@ -2425,9 +2547,15 @@ function drawSettings() {
   });
 }
 $('#s-addm').addEventListener('click', () => { draftSet.menu.push({ name: '', price: 0 }); drawSettings(); $$('#s-menu [data-f=name]').at(-1).focus(); });
+$('#s-adds').addEventListener('click', () => { (draftSet.supplies = draftSet.supplies || []).push({ name: '', size: 2, unit: 'oz', price: 0 }); drawSettings(); $$('#s-supplies [data-f=name]').at(-1).focus(); });
 $('#s-addp').addEventListener('click', () => { draftSet.products.push({ name: '', price: 0 }); drawSettings(); $$('#s-products [data-f=name]').at(-1).focus(); });
 $('#s-save').addEventListener('click', async () => {
   draftSet.menu = draftSet.menu.filter(m => m.name.trim()); draftSet.products = draftSet.products.filter(m => m.name.trim());
+  // keep a history of supply prices so old visits still show what the color cost back then
+  const before = new Map((SET().supplies || []).map(m => [norm(m.name), m]));
+  draftSet.supplies = (draftSet.supplies || []).filter(m => m.name.trim()).map(m => { const o = before.get(norm(m.name)); m.hist = (o && o.hist) || m.hist || [];
+    if (o && (+o.price !== +m.price || +o.size !== +m.size || o.unit !== m.unit)) m.hist = m.hist.concat([{ price: +o.price, size: +o.size, unit: o.unit, until: new Date().toISOString() }]).slice(-12);
+    m.updatedAt = o && +o.price === +m.price ? (o.updatedAt || new Date().toISOString()) : new Date().toISOString(); return m; });
   draftSet.salesTaxRate = +$('#s-tax').value || 0;
   if ($('#s-square')) draftSet.squareAppId = $('#s-square').value.trim();
   [['#s-venmo', 'venmoHandle'], ['#s-cashtag', 'cashtag'], ['#s-zelle', 'zelleContact'], ['#s-zellename', 'zelleName']].forEach(([id, k]) => { if ($(id)) draftSet[k] = $(id).value.trim(); });
