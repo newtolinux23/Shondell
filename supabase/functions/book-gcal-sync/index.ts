@@ -91,15 +91,19 @@ async function sync() {
     const ext = e.recurrenceId ? `${e.uid}#${e.recurrenceId}` : e.uid;
     seen.add(ext);
     const status = e.status === "CANCELLED" ? "cancelled" : e.end.getTime() < now ? "done" : "booked";
-    const gcal = { summary: e.summary, description: e.description.slice(0, 2000), location: e.location, repeats: !!e.rrule };
+    const gcal = { summary: e.summary, description: e.description.slice(0, 2000), location: e.location, repeats: !!e.rrule, cancelled: e.status === "CANCELLED" };
     const prev: any = byExt.get(ext);
     if (!prev) {
       inserts.push({ book_id: bookId, external_id: ext, source: "google", notify: false, status, starts_at: e.start.toISOString(), ends_at: e.end.toISOString(),
         data: { ...splitTitle(e.summary), services: [], notes: e.description.slice(0, 2000), gcal } });
     } else {
-      const changed = prev.starts_at !== e.start.toISOString() || prev.ends_at !== e.end.toISOString() || prev.data?.gcal?.summary !== e.summary || prev.data?.gcal?.description !== gcal.description || (prev.status !== status && !["no_show"].includes(prev.status));
-      if (changed && new Date(prev.starts_at).getTime() > now - 864e5) { // don't rewrite old history Della may have edited
-        await admin.from("book_appointments").update({ starts_at: e.start.toISOString(), ends_at: e.end.toISOString(), status: prev.status === "no_show" ? prev.status : status,
+      const moved = new Date(prev.starts_at).getTime() !== e.start.getTime() || new Date(prev.ends_at).getTime() !== e.end.getTime();
+      const retitled = prev.data?.gcal?.summary !== e.summary || (prev.data?.gcal?.description || "") !== gcal.description;
+      const gcalCancelChanged = !!prev.data?.gcal?.cancelled !== gcal.cancelled;
+      // past booked -> done is ours to do; otherwise only follow Google when Google itself changed, so edits Della makes in the Client Book stick
+      const nextStatus = gcalCancelChanged ? status : (prev.status === "booked" && status === "done" ? "done" : prev.status);
+      if ((moved || retitled || nextStatus !== prev.status) && new Date(prev.starts_at).getTime() > now - 864e5) {
+        await admin.from("book_appointments").update({ starts_at: e.start.toISOString(), ends_at: e.end.toISOString(), status: nextStatus,
           data: { ...prev.data, gcal, ...(prev.data?.gcal?.summary !== e.summary ? splitTitle(e.summary) : {}) } }).eq("id", prev.id);
         updated++;
       }
