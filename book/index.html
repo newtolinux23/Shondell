@@ -334,6 +334,17 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .list.big .appt .tm{width:78px;font-size:16px}
 .list.big .appt .main b{font-size:1.15rem}
 .list.big .appt .main small{font-size:14px}
+.hbar{display:block;height:5px;border-radius:3px;background:var(--gold);margin-top:5px;opacity:.75}
+.ro-list{display:grid;gap:10px}
+.ro-row{border:1px solid var(--rule);border-radius:16px;background:var(--sheet);padding:12px;transition:opacity .35s,transform .35s,max-height .35s;max-height:420px;overflow:hidden}
+.ro-row.gone{opacity:0;transform:translateX(40px);max-height:0;padding:0;border:0;margin:-5px 0}
+.ro-who{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ro-name{font-size:16px;font-weight:600;color:var(--ink)}
+.ro-row p{font-size:13.5px;color:var(--soft);margin:4px 0 6px}
+.ro-msg summary{font-size:13px;color:var(--gold);cursor:pointer}
+.ro-msg p{background:var(--paper);border-radius:10px;padding:8px 10px;color:var(--ink);font-size:14px}
+.ro-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--soft)}
 .icard{margin:14px 0 4px;border:1px solid #e3d6bd;border-radius:6px 18px 18px 6px;background:repeating-linear-gradient(#fffdf7 0 27px,#efe5d1 27px 28px);box-shadow:0 1px 0 #e9dfcc,0 8px 22px rgba(60,40,10,.07);padding:12px 14px 14px;position:relative;animation:ciIn .45s both}
 .icard::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:1px;background:#e8b4a8;opacity:.7}
 .ic-top{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);padding-left:18px;margin-bottom:8px}
@@ -713,6 +724,10 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
     <div class="fg"><label for="s-square">Square Application ID (optional)</label><input class="in" id="s-square" placeholder="sq0idp-…" autocomplete="off">
       <p class="fine" style="margin-top:6px">When this is filled in, choosing <b>Card</b> at checkout opens the Square app on Android with the total ready to tap.</p></div>
     <div class="fg"><span class="lbl">Appointments</span><button class="btn small" id="s-mail">Client emails &amp; reminders</button></div>
+    <div class="fg"><span class="lbl">Reach-out texts</span><p class="fine" style="margin:0 0 6px">Ready-made texts for regulars who are due back. Fill-ins: <code>{first}</code> <code>{weeks}</code> <code>{service}</code> <code>{phone}</code></p>
+      <label class="lbl" for="s-ro-due">Due (a little past their usual time)</label><textarea class="in" id="s-ro-due" style="min-height:96px"></textarea>
+      <label class="lbl" for="s-ro-missed" style="margin-top:8px">Missed (twice their usual time or more)</label><textarea class="in" id="s-ro-missed" style="min-height:96px"></textarea>
+      <button class="link" id="s-ro-reset" style="margin-top:6px">Put back the original wording</button></div>
     <div class="fg card"><span class="lbl">Account</span><p id="s-account" style="font-size:14.5px">…</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn small" onclick="window.__changePassword && window.__changePassword()">Change password</button><button class="btn small" data-a-out>Sign out</button></div></div>
     <div class="sheet-foot"><button class="btn gold" id="s-save">Save</button></div>
   </div>
@@ -1148,6 +1163,8 @@ const inPeriod = (v, p) => {
   if (p === 'week') { const s = new Date(now); s.setHours(0, 0, 0, 0); s.setDate(s.getDate() - ((s.getDay() + 6) % 7)); return d >= s; }
   if (p === 'month') return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
   if (p === 'lastmonth') { const lm = new Date(now.getFullYear(), now.getMonth() - 1, 1); return d.getMonth() === lm.getMonth() && d.getFullYear() === lm.getFullYear(); }
+  if (p === 'quarter') return d.getFullYear() === now.getFullYear() && Math.floor(d.getMonth() / 3) === Math.floor(now.getMonth() / 3);
+  if (p === '6mo') { const s = new Date(now.getFullYear(), now.getMonth() - 5, 1); return d >= s && d <= now; }
   if (p === 'year') return d.getFullYear() === now.getFullYear();
   if (p === 'lastyear') return d.getFullYear() === now.getFullYear() - 1;
   return true;
@@ -1190,6 +1207,7 @@ function renderHome() {
   <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="home-q" placeholder="Find a client or a formula (e.g. 6NB)" value="${esc(S.q)}" aria-label="Search clients and formulas"></div>
   <div id="home-results"></div>
+  ${outreachCard(3)}
   ${S.report ? reportCard(S.report) : ''}
   ${(() => { const rq = apRequests(); return rq.length ? `<div class="sec"><div class="sec-h"><h2>Booking requests</h2><span class="num">${rq.length} new</span></div>
     <div class="list">${rq.map(a => apptRow(a).replace('<span class="tm"><b>', `<span class="tm"><small>${esc(fmtD(apDay(a)))}</small><b>`)).join('')}</div>
@@ -1236,10 +1254,15 @@ function renderClients() {
   const list = [...S.clients.entries()].sort((a, b) => norm(a[1].name).localeCompare(norm(b[1].name)));
   view.innerHTML = `<div class="sec-h" style="margin-top:8px"><h2 style="font-size:1.8rem">Clients</h2><span class="num">${list.length}</span></div>
   <div class="search" style="margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="cq" placeholder="Search by name or phone" aria-label="Search clients"></div>
+  <div class="chips" id="cfilt" style="margin-top:8px"></div>
   <div class="actions"><button class="btn small" id="c-add">+ Add a client</button></div>
   <div class="list" id="clist"></div>`;
+  const RO = outreachList();
+  chipRow($('#cfilt'), [['All', 'all'], [`Reach out (${RO.length})`, 'reach'], ['No phone yet', 'nophone']], v => (S.cfilter || 'all') === v, v => { S.cfilter = v; draw(); });
   const draw = () => { const q = norm($('#cq').value.trim()), qd = q.replace(/\D/g, '');
-    const f = list.filter(([, c]) => !q || norm(c.name).includes(q) || (qd && digits(c.phone).includes(qd)));
+    chipRow($('#cfilt'), [['All', 'all'], [`Reach out (${RO.length})`, 'reach'], ['No phone yet', 'nophone']], v => (S.cfilter || 'all') === v, v => { S.cfilter = v; draw(); });
+    if (S.cfilter === 'reach') { const f = RO.filter(o => !q || norm(o.c.name).includes(q)); $('#clist').innerHTML = f.length ? `<div class="ro-list">${f.map(outreachRow).join('')}</div>` : '<div class="empty">Nobody is overdue right now. 🎉</div>'; return; }
+    const f = list.filter(([, c]) => (!q || norm(c.name).includes(q) || (qd && digits(c.phone).includes(qd))) && (S.cfilter !== 'nophone' || !digits(c.phone)));
     $('#clist').innerHTML = f.length ? f.map(([id, c]) => clientRow(id, c)).join('') : `<div class="empty">${list.length ? 'No match.' : 'No clients yet. They’re added automatically when you log a visit.'}</div>`; };
   $('#cq').oninput = draw; draw();
   $('#c-add').onclick = () => editClient(null);
@@ -1260,7 +1283,9 @@ function renderClient(id) {
     <button class="btn gold" id="cv-new">+ New visit</button>
     ${canWrite ? '<button class="btn" id="cv-book">Book appointment</button>' : ''}
     ${st.last && (st.last.formula || []).length ? '<button class="btn" id="cv-repeat">Repeat last formula</button>' : ''}
-    ${d ? `<a class="btn" href="sms:+1${d}">Text</a><a class="btn" href="tel:+1${d}">Call</a>` : ''}
+    ${(() => { const r = clientRhythm(id), o = r ? { id, c, ...r, level: r.since >= r.rhythm * 2 ? 'missed' : 'due' } : null, overdue = r && !r.upcoming && r.since >= r.rhythm * 1.15;
+      const msg = overdue ? outreachText(o) : '';
+      return `${d ? `<a class="btn" href="sms:+1${d}${msg ? (/iPhone|iPad/.test(navigator.userAgent) ? '&' : '?') + 'body=' + encodeURIComponent(msg) : ''}">💬 Text${overdue ? ' (invite back)' : ''}</a><a class="btn" href="tel:+1${d}">📞 Call</a>` : ''}${c.email ? `<a class="btn" href="mailto:${encodeURIComponent(c.email)}${msg ? '?subject=' + encodeURIComponent('Time for your next appointment?') + '&body=' + encodeURIComponent(msg) : ''}">✉️ Email</a>` : ''}${!d && !c.email ? '<button class="btn" id="cv-addc">+ Add phone or email</button>' : ''}`; })()}
     <button class="btn" id="cv-edit">Edit details</button>
   </div>
   ${c.hair || c.notes || c.email ? `<div class="card"><dl class="kv">${c.hair ? `<dt>Hair</dt><dd>${esc(c.hair)}</dd>` : ''}${c.notes ? `<dt>Notes</dt><dd>${esc(c.notes)}</dd>` : ''}${c.email ? `<dt>Email</dt><dd>${esc(c.email)}</dd>` : ''}</dl></div>` : ''}
@@ -1283,6 +1308,7 @@ function renderClient(id) {
   if ($('#cv-book')) $('#cv-book').onclick = () => openAppt({ clientId: id });
   const rp = $('#cv-repeat'); if (rp) rp.onclick = () => openVisit({ clientId: id, formula: st.last.formula, services: st.last.services, price: st.last.price, rebookWeeks: st.last.rebookWeeks, repeat: true });
   $('#cv-edit').onclick = () => editClient(id);
+  if ($('#cv-addc')) $('#cv-addc').onclick = () => editClient(id);
   const nt = $('#ic-next'), ns = $('#ic-save');
   if (nt && ns) { nt.oninput = () => { ns.style.display = nt.value !== (c.nextNote || '') ? '' : 'none'; };
     ns.onclick = async () => { try { await db.collection('clients').doc(id).update({ nextNote: nt.value.trim() }); ns.style.display = 'none'; toast('Saved for next time ✓'); } catch (err) { toast('Couldn’t save: ' + (err.message || '')); } }; }
@@ -1314,7 +1340,7 @@ function wireVisitCards() {
 
 function renderIncome() {
   const host = $('#mbody') || view;
-  const P = [['week', 'This week'], ['month', 'This month'], ['lastmonth', 'Last month'], ['year', 'This year'], ['lastyear', 'Last year'], ['all', 'All time']];
+  const P = [['week', 'This week'], ['month', 'This month'], ['lastmonth', 'Last month'], ['quarter', 'This quarter'], ['6mo', '6 months'], ['year', 'This year'], ['lastyear', 'Last year'], ['all', 'All time']];
   const vs = S.visits.filter(v => inPeriod(v, S.period));
   const svc = vs.reduce((a, v) => a + vRevenue(v), 0), tips = vs.reduce((a, v) => a + (+v.tip || 0), 0);
   const byPay = {}; vs.forEach(v => { const k = v.payment || 'Not set'; byPay[k] = (byPay[k] || 0) + vIncome(v); });
@@ -1324,22 +1350,74 @@ function renderIncome() {
   const rows = (o, fmt) => Object.entries(o).sort((a, b) => b[1] - a[1]).map(([k, n]) => `<div class="item"><span class="main"><b>${esc(k)}</b></span><span class="end"><b class="num">${fmt(n)}</b></span></div>`).join('') || '<div class="empty">Nothing in this period yet.</div>';
   host.innerHTML = `${downloads || navigator.clipboard ? '<div style="text-align:right;margin:-4px 0 8px"><button class="link" id="exp">Export income</button></div>' : ''}
   <div class="seg" role="tablist">${P.map(([k, l]) => `<button data-p="${k}" class="${S.period === k ? 'on' : ''}" role="tab" aria-selected="${S.period === k}">${l}</button>`).join('')}</div>
-  <div class="tiles">
-    <div class="tile"><small>Services &amp; products</small><b class="num">${money(svc)}</b></div>
-    <div class="tile"><small>Tips</small><b class="num">${money(tips)}</b></div>
-    <div class="tile"><small>Total</small><b class="num">${money(svc + tips)}</b></div>
-    <div class="tile"><small>Visits</small><b class="num">${vs.length}</b><span>avg ${money(vs.length ? Math.round(svc / vs.length) : 0)}</span></div>
-  </div>
+  ${(() => { const prod = vs.reduce((a, v) => a + (+v.productSales || 0), 0), serv = svc - prod; return `<div class="tiles">
+    <div class="tile"><small>Services</small><b class="num">${money(serv)}</b></div>
+    <div class="tile"><small>Products sold</small><b class="num">${money(prod)}</b></div>
+    <div class="tile"><small>Tips</small><b class="num">${money(tips)}</b>${svc ? `<span>${Math.round(tips / svc * 100)}% of sales</span>` : ''}</div>
+    <div class="tile"><small>Total</small><b class="num">${money(svc + tips)}</b><span>${vs.length} visit${vs.length === 1 ? '' : 's'} · avg ${money(vs.length ? Math.round(svc / vs.length) : 0)}</span></div>
+  </div>`; })()}
+  ${insightsHTML(vs)}
   <div class="sec"><div class="sec-h"><h2>${yr} by month</h2><span>with tips</span></div>
     <div class="bars" aria-label="Monthly income chart">${months.map((n, i) => `<div class="${n ? '' : 'zero'} ${i === cm ? 'cur' : ''}" style="height:${Math.max(2, n / max * 100)}%" title="${money(n)}"></div>`).join('')}</div>
     <div class="bar-l">${['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'].map(m => `<span>${m}</span>`).join('')}</div>
     <p style="font-size:13px;color:var(--soft);margin-top:6px">Best month: ${months.some(Boolean) ? `${new Date(yr, months.indexOf(Math.max(...months)), 1).toLocaleDateString('en-US', { month: 'long' })} · ${money(Math.max(...months))}` : '—'}</p></div>
-  <div class="sec"><div class="sec-h"><h2>How clients paid</h2></div><div class="list">${rows(byPay, money)}</div></div>
+  <div class="sec"><div class="sec-h"><h2>How clients paid</h2></div><div class="list">${(() => { const tot = Object.values(byPay).reduce((a, b) => a + b, 0); return rows(byPay, n => money(n) + (tot ? ` <small style="color:var(--soft);font-weight:400">${Math.round(n / tot * 100)}%</small>` : '')); })()}</div></div>
   <div class="sec"><div class="sec-h"><h2>Most booked services</h2></div><div class="list">${rows(bySvc, n => n + '×')}</div></div>
+  ${(() => { const bp = {}; vs.forEach(v => visitProducts(v).forEach(p => { bp[p.name] = (bp[p.name] || 0) + (+p.price || 0) * (p.qty || 1); })); return Object.keys(bp).length ? `<div class="sec"><div class="sec-h"><h2>Products sold</h2></div><div class="list">${rows(bp, money)}</div></div>` : ''; })()}
 `;
   $$('[data-p]').forEach(b => b.onclick = () => { S.period = b.dataset.p; renderIncome(); });
   const ex = $('#exp'); if (ex) ex.onclick = exportCSV;
 }
+/* business insights: kind of service, how she works, what's ahead */
+const SVC_TYPES = [['Perms & texture', /perm|body wave|relaxer|straighten/i], ['Highlights & lightening', /full|partial|highlight|hilight|balayage|lowlight|lightening|blond|bleach/i], ['Color', /colou?r|tint|root|toner|gloss|demi/i], ['Cuts & trims', /cut|trim|bang|shape/i], ['Treatments', /treat|olaplex|condition|mask|keratin/i], ['Style & blowout', /blow|style|silk|press|updo|curl/i]];
+const svcType = name => (SVC_TYPES.find(([, re]) => re.test(name || '')) || ['Other'])[0];
+function revenueByType(vs) {
+  const out = {};
+  vs.forEach(v => {
+    const items = (v.items || []).filter(i => i.type !== 'product');
+    if (items.length) items.forEach(i => { const k = svcType(i.name); out[k] = (out[k] || 0) + (+i.price || 0) * (i.qty || 1); });
+    else { const sv = (v.services || []).length ? v.services : ['Other'], each = (+v.price || 0) / sv.length; sv.forEach(x => { const k = svcType(x); out[k] = (out[k] || 0) + each; }); }
+  });
+  return out;
+}
+function periodRange(p) {
+  const now = new Date(), y = now.getFullYear(), m = now.getMonth();
+  const r = { week: [(() => { const s = new Date(now); s.setHours(0, 0, 0, 0); s.setDate(s.getDate() - ((s.getDay() + 6) % 7)); return s; })(), now], month: [new Date(y, m, 1), now], lastmonth: [new Date(y, m - 1, 1), new Date(y, m, 0)],
+    quarter: [new Date(y, Math.floor(m / 3) * 3, 1), now], '6mo': [new Date(y, m - 5, 1), now], year: [new Date(y, 0, 1), now], lastyear: [new Date(y - 1, 0, 1), new Date(y - 1, 11, 31)] }[p];
+  return r || [new Date(2000, 0, 1), now];
+}
+function insightsHTML(vs) {
+  const [from, to] = periodRange(S.period), toI = isoDay(to), fromI = isoDay(from);
+  // days she worked: any checkout or calendar client that day
+  const workDays = new Set(vs.map(v => v.date));
+  const cal = S.appts.filter(a => !isPersonal(a) && ['done', 'no_show'].includes(a.status) && apDay(a) >= fromI && apDay(a) <= toI);
+  cal.forEach(a => workDays.add(apDay(a)));
+  const clientsSeen = new Set(vs.map(v => v.date + '|' + v.clientId)); cal.filter(a => a.status === 'done').forEach(a => clientsSeen.add(apDay(a) + '|' + (a.client_id || a.data.clientName)));
+  const weeks = Math.max(1, (Math.min(to, new Date()) - from) / (7 * 864e5));
+  const dow = [0, 0, 0, 0, 0, 0, 0]; [...workDays].forEach(d => dow[parseDay(d).getDay()]++);
+  const dn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const topDays = dow.map((n, i) => [n, i]).filter(x => x[0]).sort((a, b) => b[0] - a[0]).slice(0, 3).map(x => dn[x[1]]);
+  const calNoted = cal.reduce((t, a) => t + (+(a.data || {}).price || 0), 0);
+  const noShows = cal.filter(a => a.status === 'no_show').length, lates = cal.filter(a => (a.data || {}).arrival === 'late').length;
+  const byType = revenueByType(vs), typeTot = Object.values(byType).reduce((a, b) => a + b, 0);
+  // looking ahead (next 30 days) — booked clients × her average ticket
+  const now = Date.now(), ahead = S.appts.filter(a => !isPersonal(a) && a.status === 'booked' && new Date(a.starts_at).getTime() > now && new Date(a.starts_at).getTime() < now + 30 * 864e5);
+  const ticketSrc = S.visits.filter(v => +v.price), calPriced = S.appts.filter(a => !isPersonal(a) && a.status === 'done' && +(a.data || {}).price);
+  const avgTicket = ticketSrc.length ? ticketSrc.reduce((t, v) => t + vRevenue(v) + (+v.tip || 0), 0) / ticketSrc.length : calPriced.length ? calPriced.reduce((t, a) => t + +a.data.price, 0) / calPriced.length : 0;
+  const last12 = S.appts.filter(a => !isPersonal(a) && a.status === 'done' && now - new Date(a.starts_at) < 84 * 864e5).length + S.visits.filter(v => now - parseDay(v.date) < 84 * 864e5).length;
+  const pace = last12 / 12, monthPace = Math.round(pace * 4.33);
+  const taxRate = (() => { try { const y = new Date().getFullYear(), M = yearMoney(y); return (M.projected ? M.proj : M.est).rate || 0; } catch (e) { return 0; } })();
+  return `<div class="sec"><div class="sec-h"><h2>How you work</h2><span>${esc((PERIOD_LABEL[S.period] || '').toLowerCase())}</span></div>
+    <div class="stats"><div class="stat"><b>${workDays.size}</b><span>days worked</span></div><div class="stat"><b>${(workDays.size / weeks).toFixed(1)}</b><span>days a week</span></div><div class="stat"><b>${workDays.size ? (clientsSeen.size / workDays.size).toFixed(1) : 0}</b><span>clients a day</span></div><div class="stat"><b>${clientsSeen.size}</b><span>clients</span></div></div>
+    ${topDays.length ? `<p class="fine" style="margin-top:6px">Busiest days: <b>${topDays.join(', ')}</b>${noShows ? ` · ${noShows} no-show${noShows > 1 ? 's' : ''}` : ''}${lates ? ` · ${lates} late` : ''}.</p>` : ''}
+    ${calNoted && !vs.length ? `<p class="fine">Her old calendar has ${money(calNoted)} written on entries this period. Exact income starts once she checks clients out in the app.</p>` : ''}</div>
+  ${typeTot ? `<div class="sec"><div class="sec-h"><h2>Money by type of service</h2></div><div class="list">${Object.entries(byType).sort((a, b) => b[1] - a[1]).map(([k, n]) => `<div class="item"><span class="main"><b>${esc(k)}</b><small><span class="hbar" style="width:${Math.max(4, n / typeTot * 100)}%"></span></small></span><span class="end"><b class="num">${money(n)}</b> <small style="color:var(--soft)">${Math.round(n / typeTot * 100)}%</small></span></div>`).join('')}</div></div>` : ''}
+  <div class="sec"><div class="sec-h"><h2>Looking ahead</h2><span>next 30 days</span></div>
+    <div class="stats"><div class="stat"><b>${ahead.length}</b><span>booked</span></div>${avgTicket ? `<div class="stat"><b>${money(Math.round(ahead.length * avgTicket))}</b><span>expected</span></div>` : ''}<div class="stat"><b>~${monthPace}</b><span>clients a month at your pace</span></div>${taxRate && avgTicket ? `<div class="stat"><b>${money(Math.round(ahead.length * avgTicket * taxRate))}</b><span>to set aside for taxes</span></div>` : ''}</div>
+    <p class="fine" style="margin-top:6px">${ahead.length < monthPace * 0.7 ? `You usually see about ${monthPace} clients a month and ${ahead.length} are booked so far. The <b>Time to reach out</b> list on Today shows regulars who are due.` : 'You’re on your usual pace. 👏'}${avgTicket ? ` Based on an average visit of ${money(Math.round(avgTicket))}${ticketSrc.length ? '' : ' (from prices on her calendar)'}.` : ''}</p></div>`;
+}
+const PERIOD_LABEL = { week: 'This week', month: 'This month', lastmonth: 'Last month', quarter: 'This quarter', '6mo': 'Last 6 months', year: 'This year', lastyear: 'Last year', all: 'All time' };
+
 async function exportCSV() {
   const vs = S.visits.filter(v => inPeriod(v, S.period));
   const q = s => `"${String(s ?? '').replace(/"/g, '""')}"`;
@@ -2182,6 +2260,70 @@ async function saveMail(close = true) {
 $('#m-save').addEventListener('click', () => saveMail(true));
 $('#s-mail').addEventListener('click', () => { closeSheet('ssheet'); openMailSettings(); });
 
+/* ---------- REACH OUT: regulars who are due back ---------- */
+const RHYTHM = [[/perm|body wave|relaxer|straighten/i, 84, 'perm'], [/full|highlight|hilight|balayage|lowlight|lightening|blond/i, 56, 'highlights'], [/colou?r|tint|root|toner|gloss|demi/i, 42, 'color'], [/cut|trim|bang/i, 42, 'haircut']];
+const DEFAULT_OUTREACH = {
+  due: "Hi {first}! It’s Della 💇‍♀️ It’s been about {weeks} weeks since your last {service}, so you’re right on time for the next one. Want me to save you a spot? Just reply here or call me at {phone}. You can also see my latest work at shondellslaughter.com",
+  missed: "Hi {first}, it’s Della! I’ve missed you in my chair 💛 Whenever you’re ready for a refresh, reply here or call me at {phone} and I’ll find you a time. My latest cuts and color are at shondellslaughter.com"
+};
+const OUTREACH = () => ({ ...DEFAULT_OUTREACH, ...(SET().outreach || {}) });
+function clientRhythm(id) {
+  const vs = visitsOf(id), now = Date.now();
+  const days = new Map(); // date -> services
+  vs.forEach(v => days.set(v.date, v.services || []));
+  S.appts.filter(a => a.client_id === id && !isPersonal(a) && (a.status === 'done' || (a.status === 'booked' && new Date(a.ends_at) < new Date()))).forEach(a => { const d = apDay(a); if (!days.has(d)) days.set(d, (a.data || {}).services || []); });
+  const dates = [...days.keys()].sort(); if (!dates.length) return null;
+  const last = dates.at(-1), lastSvc = days.get(last) || [];
+  const gaps = dates.slice(1).map((d, i) => (parseDay(d) - parseDay(dates[i])) / 864e5).filter(g => g >= 7).sort((a, b) => a - b);
+  const median = gaps.length >= 2 ? gaps[Math.floor(gaps.length / 2)] : 0;
+  const hint = RHYTHM.find(([re]) => lastSvc.some(x => re.test(x)));
+  const rhythm = Math.round(median ? Math.min(Math.max(median, 14), 120) : (hint ? hint[1] : 42));
+  const upcoming = S.appts.some(a => a.client_id === id && ['booked', 'requested'].includes(a.status) && new Date(a.starts_at).getTime() > now);
+  const since = Math.round((now - parseDay(last)) / 864e5);
+  return { last, since, rhythm, visits: dates.length, upcoming, service: lastSvc.join(' + ') || (hint ? hint[2] : ''), fromHistory: !!median };
+}
+function outreachList() {
+  const out = [];
+  S.clients.forEach((c, id) => {
+    const r = clientRhythm(id); if (!r || r.upcoming || r.since < r.rhythm * 1.15 || r.since > 420) return;
+    if (c.lastContacted && Date.now() - new Date(c.lastContacted) < 14 * 864e5) return;
+    out.push({ id, c, ...r, level: r.since >= r.rhythm * 2 ? 'missed' : 'due', score: (r.since / r.rhythm) * Math.min(r.visits, 12) });
+  });
+  return out.sort((a, b) => (a.level === b.level ? 0 : a.level === 'due' ? -1 : 1) || b.visits - a.visits || b.score - a.score);
+}
+const wk = d => Math.max(1, Math.round(d / 7));
+function outreachText(o) {
+  const t = OUTREACH()[o.level], phone = (SET().mail || {}).phone || MAIL().phone || '';
+  return t.replace(/\{(\w+)\}/g, (m, k) => ({ first: o.c.name.split(/\s+/)[0], name: o.c.name, weeks: wk(o.since), usual: wk(o.rhythm), service: (o.service || 'visit').toLowerCase(), phone })[k] ?? m).replace(/\s+at\s+\./, '.').trim();
+}
+function outreachRow(o) {
+  const d = digits(o.c.phone), em = o.c.email, msg = outreachText(o);
+  const sms = d ? `sms:+1${d}${/iPhone|iPad/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(msg)}` : '';
+  const mail = em ? `mailto:${encodeURIComponent(em)}?subject=${encodeURIComponent('Time for your next appointment?')}&body=${encodeURIComponent(msg)}` : '';
+  return `<div class="ro-row" data-ro="${esc(o.id)}"><div class="ro-who"><button class="link ro-name" data-open-client="${esc(o.id)}">${esc(o.c.name)}</button><span class="pill ${o.level === 'missed' ? 'bad' : 'req'}">${o.level === 'missed' ? 'Missed' : 'Due'}</span></div>
+    <p>Usually every <b>${wk(o.rhythm)} wks</b>${o.fromHistory ? '' : ' (typical for ' + esc(o.service || 'her service') + ')'} · last came in <b>${wk(o.since)} wks ago</b>${o.service ? ' · ' + esc(o.service) : ''} · ${o.visits} visit${o.visits > 1 ? 's' : ''}</p>
+    <details class="ro-msg"><summary>See the message</summary><p>${esc(msg)}</p></details>
+    <div class="ro-btns">${sms ? `<a class="btn small gold" href="${esc(sms)}" data-contacted>💬 Text</a>` : ''}${mail ? `<a class="btn small" href="${esc(mail)}" data-contacted>✉️ Email</a>` : ''}${d ? `<a class="btn small" href="tel:+1${d}" data-contacted>📞 Call</a>` : ''}
+      ${!d && !em ? `<button class="btn small" data-addcontact="${esc(o.id)}">+ Add phone or email</button>` : ''}<button class="btn small ghost" data-skip="${esc(o.id)}">Not now</button></div></div>`;
+}
+function outreachCard(limit = 3) {
+  if (!canWrite) return '';
+  const L = outreachList(); if (!L.length) return '';
+  return `<div class="sec"><div class="sec-h"><h2>Time to reach out</h2><button class="link" id="ro-all">See all ${L.length}</button></div>
+    <p class="fine" style="margin:0 0 8px">Regulars past their usual time with nothing booked. The text is written for you. Tap Text, it opens your messages, then come back here.</p>
+    <div class="ro-list">${L.slice(0, limit).map(outreachRow).join('')}</div></div>`;
+}
+async function markContacted(id, label) {
+  const c = S.clients.get(id); if (!c) return;
+  try { await db.collection('clients').doc(id).update({ lastContacted: new Date().toISOString(), contactLog: [...(c.contactLog || []), { at: new Date().toISOString(), how: label }].slice(-20) }); } catch (e) {}
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-contacted]'); if (a) { const row = a.closest('[data-ro]'); if (row) { const id = row.dataset.ro; setTimeout(() => { markContacted(id, a.textContent.replace(/[^A-Za-z]/g, '')); row.classList.add('gone'); }, 600); } return; }
+  const sk = e.target.closest('[data-skip]'); if (sk) { const row = sk.closest('[data-ro]'); row.classList.add('gone'); markContacted(sk.dataset.skip, 'skipped'); toast('Hidden for 2 weeks'); return; }
+  const ad = e.target.closest('[data-addcontact]'); if (ad) { editClient(ad.dataset.addcontact); return; }
+  if (e.target.id === 'ro-all') { S.tab = 'clients'; S.cfilter = 'reach'; S.client = null; render(); scrollTo(0, 0); }
+});
+
 /* ---------- CHECK-IN: did they come? ---------- */
 const needsCheckin = a => !isPersonal(a) && (a.status === 'booked' || a.status === 'done') && apDay(a) === isoDay() && !(a.data || {}).arrival
   && new Date(a.starts_at).getTime() <= Date.now() + 5 * 6e4;
@@ -2537,6 +2679,7 @@ function drawSettings() {
     ${(m.hist || []).length ? `<small class="sup-h">Was ${money(m.hist.at(-1).price)} until ${esc(new Date(m.hist.at(-1).until).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }))}</small>` : ''}</div>`).join('') || '<p class="fine" style="margin:0">No colors yet.</p>';
   $$('[data-si]').forEach(inp => (inp.tagName === 'SELECT' ? inp.onchange = null : 0, inp[inp.tagName === 'SELECT' ? 'onchange' : 'oninput'] = () => { const it = draftSet.supplies[+inp.dataset.si]; it[inp.dataset.f] = ['size', 'price'].includes(inp.dataset.f) ? (+inp.value || 0) : inp.value; }));
   $$('[data-delsi]').forEach(b => b.onclick = () => { draftSet.supplies.splice(+b.dataset.delsi, 1); drawSettings(); });
+  $('#s-ro-due').value = (draftSet.outreach || {}).due || DEFAULT_OUTREACH.due; $('#s-ro-missed').value = (draftSet.outreach || {}).missed || DEFAULT_OUTREACH.missed;
   $('#s-tax').value = draftSet.salesTaxRate;
   if ($('#s-square')) $('#s-square').value = draftSet.squareAppId || '';
   [['#s-venmo', 'venmoHandle'], ['#s-cashtag', 'cashtag'], ['#s-zelle', 'zelleContact'], ['#s-zellename', 'zelleName']].forEach(([id, k]) => { if ($(id)) $(id).value = draftSet[k] || ''; });
@@ -2547,6 +2690,7 @@ function drawSettings() {
   });
 }
 $('#s-addm').addEventListener('click', () => { draftSet.menu.push({ name: '', price: 0 }); drawSettings(); $$('#s-menu [data-f=name]').at(-1).focus(); });
+$('#s-ro-reset').addEventListener('click', () => { $('#s-ro-due').value = DEFAULT_OUTREACH.due; $('#s-ro-missed').value = DEFAULT_OUTREACH.missed; });
 $('#s-adds').addEventListener('click', () => { (draftSet.supplies = draftSet.supplies || []).push({ name: '', size: 2, unit: 'oz', price: 0 }); drawSettings(); $$('#s-supplies [data-f=name]').at(-1).focus(); });
 $('#s-addp').addEventListener('click', () => { draftSet.products.push({ name: '', price: 0 }); drawSettings(); $$('#s-products [data-f=name]').at(-1).focus(); });
 $('#s-save').addEventListener('click', async () => {
@@ -2557,6 +2701,7 @@ $('#s-save').addEventListener('click', async () => {
     if (o && (+o.price !== +m.price || +o.size !== +m.size || o.unit !== m.unit)) m.hist = m.hist.concat([{ price: +o.price, size: +o.size, unit: o.unit, until: new Date().toISOString() }]).slice(-12);
     m.updatedAt = o && +o.price === +m.price ? (o.updatedAt || new Date().toISOString()) : new Date().toISOString(); return m; });
   draftSet.salesTaxRate = +$('#s-tax').value || 0;
+  draftSet.outreach = { due: $('#s-ro-due').value.trim() || DEFAULT_OUTREACH.due, missed: $('#s-ro-missed').value.trim() || DEFAULT_OUTREACH.missed };
   if ($('#s-square')) draftSet.squareAppId = $('#s-square').value.trim();
   [['#s-venmo', 'venmoHandle'], ['#s-cashtag', 'cashtag'], ['#s-zelle', 'zelleContact'], ['#s-zellename', 'zelleName']].forEach(([id, k]) => { if ($(id)) draftSet[k] = $(id).value.trim(); });
   await saveSettings(draftSet); closeSheet('ssheet'); toast('Prices saved ✓'); render();

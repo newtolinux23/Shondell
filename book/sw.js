@@ -1,6 +1,6 @@
 // Keeps the app shell available so the book opens fast and installs on Android.
 // Client data is never cached here: it always comes live from the secure database.
-const CACHE = 'client-book-v10';
+const CACHE = 'client-book-v11';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))); self.clients.claim(); });
