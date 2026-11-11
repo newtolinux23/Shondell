@@ -329,16 +329,22 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .report p{margin:0 0 6px}
 .report ul{margin:0 0 6px;padding-left:18px}
 .report li{margin:2px 0}
-.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
-.mgrid .mh{text-align:center;font-size:11px;color:var(--soft);letter-spacing:.08em}
-.mgrid .mc{aspect-ratio:1/1.05;border:1px solid var(--rule);border-radius:12px;background:var(--sheet);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;padding:0}
-.mgrid .mc b{font-weight:500;font-size:14px}
-.mgrid .mc i{font-style:normal;font-size:11px;font-weight:600;color:var(--ink);background:var(--gold-bg);border-radius:8px;padding:0 6px}
+.mgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;margin:8px -10px 0}
+.mgrid .mh{text-align:center;font-size:11px;color:var(--soft);letter-spacing:.08em;padding-bottom:2px}
+.mgrid .mc{min-height:92px;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:2px;min-width:0;padding:3px 2px 4px;text-align:left;overflow:hidden}
+.mgrid .mc b{font-weight:500;font-size:12.5px;padding-left:2px;line-height:1.3}
+.mgrid .ev{display:block;font-style:normal;font-size:9.5px;line-height:1.25;padding:1px 3px;border-radius:4px;background:var(--gold-bg);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mgrid .ev.d{background:rgba(0,0,0,.05);color:var(--soft)}
+.mgrid .ev.r{background:transparent;border:1px dashed var(--gold);color:var(--gold)}
+.mgrid .ev.p{background:transparent;color:var(--soft);font-style:italic}
+.mgrid .ev small{font-size:inherit;opacity:.7}
+@media (max-width:599px){.mgrid .ev small{display:none}.mgrid .ev{font-size:10px;padding:1px 2px;letter-spacing:-.01em}}
+.mgrid .ev.more{background:none;color:var(--gold);font-weight:600;padding-left:2px}
 .mgrid .mc.has{border-color:var(--gold)}
-.mgrid .mc.full{background:var(--gold-bg)}
-.mgrid .mc.full i{background:var(--gold);color:#fff}
 .mgrid .mc.out{opacity:.35}
 .mgrid .mc.today{outline:2px solid var(--ink);outline-offset:-2px}
+.mgrid .mc.today b{color:var(--gold);font-weight:700}
+@media (min-width:600px){.mgrid{margin:8px 0 0;gap:4px}.mgrid .mc{min-height:110px}.mgrid .ev{font-size:11px}}
 .appt.personal{opacity:.7;border-style:dashed}
 .appt.personal .main b{font-style:italic;font-weight:400}
 .appt.reqrow{border-style:dashed;border-color:var(--gold);background:var(--gold-bg)}
@@ -1752,10 +1758,15 @@ function renderCalMonth() {
   <div class="sec-h"><button class="nav btn small" id="cal-prev" aria-label="Previous month">‹</button><h2 style="font-size:1.35rem">${esc(first.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }))}</h2><button class="nav btn small" id="cal-next" aria-label="Next month">›</button></div>
   <div class="mgrid">${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(x => `<span class="mh">${x}</span>`).join('')}
     ${cells.slice(0, lastRows).map(d => { const n = byDay[d] || 0, out = monthKey(d) !== mk;
-      return `<button class="mc ${out ? 'out' : ''} ${d === today ? 'today' : ''} ${n ? 'has' : ''} ${n >= 6 ? 'full' : ''}" data-day="${d}" data-go="1" aria-label="${esc(longDay(d))}: ${n} clients"><b>${parseDay(d).getDate()}</b>${n ? `<i>${n}</i>` : ''}</button>`; }).join('')}</div>
+      const items = S.appts.filter(a => apDay(a) === d && a.status !== 'cancelled' && a.status !== 'declined').sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+      const shown = items.slice(0, 4), more = items.length - shown.length;
+      const tag = a => { const t = new Date(a.starts_at), h = t.getHours() % 12 || 12, m = t.getMinutes(); const tm = h + (m ? ':' + String(m).padStart(2, '0') : '');
+        if (isPersonal(a)) return `<em class="ev p"><small>${tm} </small>Busy</em>`;
+        return `<em class="ev ${a.status === 'requested' ? 'r' : a.status === 'done' ? 'd' : ''}"><small>${tm} </small>${esc(apName(a).split(/\s+/)[0])}</em>`; };
+      return `<button class="mc ${out ? 'out' : ''} ${d === today ? 'today' : ''} ${n ? 'has' : ''}" data-day="${d}" data-go="1" aria-label="${esc(longDay(d))}: ${n} clients${items.length ? ': ' + esc(items.filter(a => !isPersonal(a)).map(a => apName(a)).join(', ')) : ''}"><b>${parseDay(d).getDate()}</b>${shown.map(tag).join('')}${more > 0 ? `<em class="ev more">+${more} more</em>` : ''}</button>`; }).join('')}</div>
   <div class="stats" style="margin:14px 0 4px"><div class="stat"><b>${clients.length}</b><span>clients</span></div><div class="stat"><b>${workDays}</b><span>work days</span></div><div class="stat"><b>${workDays ? (clients.length / workDays).toFixed(1) : 0}</b><span>per work day</span></div>${clients.length ? `<div class="stat"><b>${dn[busiest].slice(0, 3)}</b><span>busiest day</span></div>` : ''}</div>
   ${priced ? `<p class="fine">${money(priced)} written on calendar entries this month (only some entries have a price).</p>` : ''}
-  <p class="fine">Tap a day to open it. Darker days are fuller.</p>${emailNote()}`;
+  <p class="fine">Tap a day to see times and details. Gold = coming up, grey = past, dashed = website request, “Busy” = personal.</p>${emailNote()}`;
   calWire(sel, today, 'month');
 }
 view.addEventListener('click', e => { const b = e.target.closest('[data-appt]'); if (b) openAppt({ id: b.dataset.appt }); });
