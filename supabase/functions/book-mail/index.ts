@@ -2,6 +2,7 @@
 //  - notify:    confirmation / change / cancellation, sent when Della saves an appointment (signed-in members only)
 //  - reminders: run every 15 minutes by pg_cron; emails clients ~24 hours before their appointment
 //  - request:   public booking request from the website form -> 'requested' appointment + emails
+//  - alerts:    every 15 minutes (pg_cron): emails Della + Rob about NEW double bookings, big overlaps, duplicates, clashes with personal time
 //  - test, ping: for the settings screen
 // Secrets: RESEND_API_KEY (email service), MAIL_FROM (verified sender). The cron job's secret lives in Vault (book_cron_secret).
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -222,6 +223,31 @@ async function handleRequest(b: any, req: Request) {
   return { ok: true, emailed: !!(r as any).ok };
 }
 
+const URGENT = ["double booking", "overlap", "possible duplicate", "conflict with personal time"];
+async function runAlerts() {
+  const { data: issues, error } = await admin.rpc("book_check_issues");
+  if (error) return { error: error.message };
+  const urgent = (issues || []).filter((i: any) => URGENT.includes(i.kind));
+  if (!urgent.length) return { checked: issues?.length ?? 0, sent: 0 };
+  const keys = urgent.map((i: any) => "mail:" + i.key);
+  const { data: done } = await admin.from("book_alerts").select("key").in("key", keys);
+  const seen = new Set((done || []).map((d: any) => d.key));
+  const fresh = urgent.filter((i: any) => !seen.has("mail:" + i.key));
+  if (!fresh.length) return { checked: issues.length, sent: 0 };
+  const { data: books } = await admin.from("book_books").select("id").order("created_at").limit(1);
+  const { data: st } = await admin.from("book_settings").select("data").eq("book_id", books?.[0]?.id).maybeSingle();
+  const to: string[] = (st?.data?.mail?.alertsTo || [st?.data?.mail?.replyTo]).filter(Boolean);
+  if (!to.length || !RESEND) return { checked: issues.length, sent: 0, waiting: fresh.length, note: !RESEND ? "Email service not set up yet" : "No alert address" };
+  const label: Record<string, string> = { "double booking": "Double booking", "overlap": "Overlap", "possible duplicate": "Possible duplicate", "conflict with personal time": "During personal time" };
+  const lines = fresh.map((i: any) => `- ${label[i.kind] || i.kind}: ${i.detail}`);
+  const body = ["Heads up! The Client Book found something on the calendar:", "", ...lines, "", "Open the Calendar to fix it:", "https://shondellslaughter.com/book/"].join("\n");
+  const subject = fresh.length === 1 ? `Calendar alert: ${label[fresh[0].kind] || fresh[0].kind}` : `Calendar alert: ${fresh.length} things to check`;
+  let sent = 0;
+  for (const addr of to) { const r = await send(addr, subject, body, { salon: "Client Book", replyTo: "" }); if (r.ok) sent++; }
+  if (sent) await admin.from("book_alerts").insert(fresh.map((i: any) => ({ key: "mail:" + i.key, kind: i.kind, detail: i.detail })));
+  return { checked: issues.length, sent, items: fresh.length };
+}
+
 Deno.serve(async (req) => {
   const h = cors(req.headers.get("origin"));
   if (req.method === "OPTIONS") return new Response("ok", { headers: h });
@@ -233,6 +259,11 @@ Deno.serve(async (req) => {
     const { data: secret } = await admin.rpc("book_cron_secret");
     if (!secret || req.headers.get("x-cron-secret") !== secret) return json({ error: "Not allowed" }, 401, h);
     return json(await runReminders(), 200, h);
+  }
+  if (body.action === "alerts") {
+    const { data: secret } = await admin.rpc("book_cron_secret");
+    if (!secret || req.headers.get("x-cron-secret") !== secret) return json({ error: "Not allowed" }, 401, h);
+    return json(await runAlerts(), 200, h);
   }
 
   // public: booking request from the website
