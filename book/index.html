@@ -69,6 +69,7 @@ a.btn{text-decoration:none;color:inherit}
 .btn[disabled]{opacity:.55;pointer-events:none}
 .btn svg{width:18px;height:18px}
 .link{color:var(--gold);font-weight:500;font-size:14px}
+a.link{text-decoration:none}
 
 .search{position:relative;margin:18px 0 6px}
 .search input{width:100%;height:50px;border-radius:14px;border:1px solid var(--rule);background:var(--sheet);padding:0 14px 0 44px;font-size:16px}
@@ -573,7 +574,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
     <div class="siteqr"><div class="qrbox" id="q-code" aria-label="QR code"></div>
       <h3>Shondell Slaughter</h3><p class="url" id="q-url"></p>
       <p class="fine" id="q-hint"></p>
-      <div class="actions" style="justify-content:center"><button class="btn small" id="q-share">Share link</button><button class="btn small" id="q-copy">Copy link</button></div></div>
+      <div class="actions" style="justify-content:center"><button class="btn small" id="q-share">Share link</button><button class="btn small" id="q-copy">Copy link</button><button class="btn small" id="q-open">Open it</button></div></div>
   </div>
 </section>
 
@@ -602,6 +603,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
   <b>What would you like to do?</b>
   <button data-a="appt" role="menuitem"><span>📅</span><span><b>Book an appointment</b><small>Client gets a confirmation and a reminder the day before</small></span></button>
   <button data-a="siteqr" role="menuitem"><span>🔗</span><span><b>Show my website QR</b><small>Clients scan it to see your work and book online</small></span></button>
+  <button data-a="site" role="menuitem"><span>🌐</span><span><b>Open my website</b><small>See your site the way clients do. Close it to come right back</small></span></button>
   <button data-a="sale" role="menuitem"><span>💳</span><span><b>Check out a client</b><small>Ring up services, products, tip and payment</small></span></button>
   <button data-a="visit" role="menuitem"><span>🎨</span><span><b>Log a visit &amp; formula</b><small>Formula, notes and photos</small></span></button>
   <button data-a="expense" role="menuitem"><span>🧾</span><span><b>Add an expense</b><small>Rent, color, supplies, classes…</small></span></button>
@@ -1089,7 +1091,7 @@ function renderHome() {
     <div class="list">${rq.map(a => apptRow(a).replace('<span class="tm"><b>', `<span class="tm"><small>${esc(fmtD(apDay(a)))}</small><b>`)).join('')}</div>
     <p class="fine" style="margin-top:6px">From your website. Tap one to pick the exact time and accept, or decline.</p></div>` : ''; })()}
   ${(() => { const ap = S.appts.filter(a => apDay(a) === today && a.status !== 'cancelled' && a.status !== 'declined' && a.status !== 'requested').sort((a, b) => a.starts_at.localeCompare(b.starts_at));
-    return `<div class="sec"><div class="sec-h"><h2>Appointments today</h2><span><button class="link" id="home-qr">Website QR</button> · <button class="link" id="home-cal">Calendar</button></span></div>
+    return `<div class="sec"><div class="sec-h"><h2>Appointments today</h2><span><a class="link" href="https://shondellslaughter.com/" target="_blank" rel="noopener">My website ↗</a> · <button class="link" id="home-qr">QR</button> · <button class="link" id="home-cal">Calendar</button></span></div>
     <div class="list">${ap.length ? ap.map(apptRow).join('') : `<div class="empty">No appointments today. ${canWrite ? '<button class="link" id="home-book">Book one</button>' : ''}</div>`}</div></div>`; })()}
   <div class="sec"><div class="sec-h"><h2>Today</h2><span class="num">${todays.length} visit${todays.length === 1 ? '' : 's'} · ${money(tTot)} with tips</span></div>
     <div class="list">${todays.length ? todays.map(visitRow).join('') : `<div class="empty">No visits logged today yet.</div>`}</div></div>
@@ -2152,6 +2154,7 @@ function openSiteQR(which) {
   $('#q-share').style.display = navigator.share ? '' : 'none';
   if (!$('#qsheet').classList.contains('open')) openSheet('qsheet');
 }
+$('#q-open').addEventListener('click', () => window.open(SITE[siteWhich][1], '_blank', 'noopener'));
 $('#q-copy').addEventListener('click', () => navigator.clipboard.writeText(SITE[siteWhich][1]).then(() => toast('Link copied'), () => toast(SITE[siteWhich][1])));
 $('#q-share').addEventListener('click', () => navigator.share({ title: 'Shondell Slaughter', url: SITE[siteWhich][1] }).catch(() => {}));
 
@@ -2167,6 +2170,7 @@ $('#acts').addEventListener('click', e => {
   if (!b) return;
   const a = b.dataset.a, cid = S.client;
   if (a === 'siteqr') openSiteQR('site');
+  if (a === 'site') window.open('https://shondellslaughter.com/', '_blank', 'noopener');
   if (a === 'appt') openAppt(cid ? { clientId: cid, date: S.tab === 'cal' ? S.calDay : isoDay() } : { date: S.tab === 'cal' ? S.calDay : isoDay() });
   if (a === 'sale') openRegister(cid ? { clientId: cid } : {});
   if (a === 'visit') openVisit(cid ? { clientId: cid } : {});
