@@ -183,7 +183,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .sugg button small{color:var(--soft);margin-left:6px}
 .picked{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--gold);border-radius:12px;background:var(--gold-bg)}
 .picked b{flex:1}
-.save-bar{position:fixed;left:0;right:0;bottom:0;z-index:41;padding:10px 16px calc(12px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--paper) 94%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--rule);display:none}
+.save-bar{position:fixed;left:0;right:0;bottom:0;z-index:49;padding:10px 16px calc(12px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--paper) 94%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--rule);display:none}
 .sheet.open ~ .save-bar.for-open{display:block}
 .save-bar .inner{max-width:760px;margin:0 auto;display:flex;gap:10px}
 .save-bar .btn{flex:1}
@@ -329,6 +329,10 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .report p{margin:0 0 6px}
 .report ul{margin:0 0 6px;padding-left:18px}
 .report li{margin:2px 0}
+.list.big .appt{padding:16px 14px}
+.list.big .appt .tm{width:78px;font-size:16px}
+.list.big .appt .main b{font-size:1.15rem}
+.list.big .appt .main small{font-size:14px}
 .mgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;margin:8px -10px 0}
 .mgrid .mh{text-align:center;font-size:11px;color:var(--soft);letter-spacing:.08em;padding-bottom:2px}
 .mgrid .mc{min-height:92px;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:2px;min-width:0;padding:3px 2px 4px;text-align:left;overflow:hidden}
@@ -508,6 +512,16 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
     <div id="ap-done" style="display:none"><div class="paid">
       <div class="ok">✓</div><b id="ap-done-t" style="font-size:2.2rem"></b><p id="ap-done-p"></p>
       <div class="col" id="ap-done-btns"></div></div></div>
+  </div>
+</section>
+
+<!-- one day, opened from the month view -->
+<section class="sheet" id="dsheet" aria-label="Day">
+  <div class="sheet-in">
+    <div class="sheet-top"><button class="btn small" data-x="dsheet">Back</button><h2 id="ds-title"></h2></div>
+    <p class="fine" id="ds-sum" style="margin:0 0 10px"></p>
+    <div class="list big" id="ds-list"></div>
+    <div class="actions" id="ds-actions"></div>
   </div>
 </section>
 
@@ -934,34 +948,33 @@ const ask = (title, text, yes = 'Delete') => new Promise(res => {
 });
 const setStatus = (live, text) => { const s = $('#status'); s.classList.toggle('live', live); $('span', s).textContent = text; };
 /* phone Back button: closes the open sheet, then steps back through screens instead of leaving the app */
-const NAV = { key: () => (typeof S === 'undefined' ? 'home|' : `${S.tab}|${S.client || ''}`), restoring: false, warned: 0 };
+const NAV = { key: () => (typeof S === 'undefined' ? 'home|' : `${S.tab}|${S.client || ''}|${S.tab === 'cal' ? (S.calView || 'day') : ''}`), restoring: false, warned: 0, stack: [] };
 const openSheet = id => {
   const el = $('#' + id), was = el.classList.contains('open');
+  if (!was) { NAV.stack = NAV.stack.filter(x => x !== id); NAV.stack.push(id); el.style.zIndex = 40 + NAV.stack.length; } // newest sheet on top
   el.classList.add('open'); el.scrollTop = 0; document.body.style.overflow = 'hidden';
   if (!was) try { history.pushState({ nav: NAV.key(), sheet: id }, ''); } catch (e) {}
 };
 const closeSheet = id => {
-  $('#' + id).classList.remove('open'); if (!$$('.sheet.open').length) document.body.style.overflow = '';
+  $('#' + id).classList.remove('open'); NAV.stack = NAV.stack.filter(x => x !== id); if (!$$('.sheet.open').length) document.body.style.overflow = '';
   try { if (history.state && history.state.sheet === id) history.replaceState({ nav: NAV.key() }, ''); } catch (e) {}
 };
 addEventListener('popstate', e => {
   const st = e.state || {};
   if ($('#dlg').classList.contains('open')) { $('#dlg-no').click(); try { history.pushState(st.sheet ? st : { nav: NAV.key() }, ''); } catch (x) {} return; }
-  const open = $$('.sheet.open, .acts.open');
-  if (open.length) {
-    const top = open[open.length - 1];
-    if (top.classList.contains('acts')) top.classList.remove('open');
-    else { top.classList.remove('open'); if (!$$('.sheet.open').length) document.body.style.overflow = ''; }
-    return;
-  }
+  if ($('#acts').classList.contains('open')) { $('#acts').classList.remove('open'); return; }
+  const openIds = NAV.stack.filter(id => $('#' + id).classList.contains('open'));
+  const loose = $$('.sheet.open').map(x => x.id).filter(id => !openIds.includes(id));
+  const topId = openIds.length ? openIds[openIds.length - 1] : loose[loose.length - 1];
+  if (topId) { $('#' + topId).classList.remove('open'); NAV.stack = NAV.stack.filter(x => x !== topId); if (!$$('.sheet.open').length) document.body.style.overflow = ''; return; }
   if (st.root) { // at the very first entry: ask before leaving the app
     if (Date.now() - NAV.warned < 2500) { history.back(); return; }
     NAV.warned = Date.now(); toast('Press back again to leave'); try { history.pushState({ nav: NAV.key() }, ''); } catch (x) {} return;
   }
   if (!st.nav) return;
   if (st.nav === NAV.key()) { history.back(); return; } // nothing changes on screen: keep going back
-  const [tab, client] = st.nav.split('|');
-  NAV.restoring = true; S.tab = tab || 'home'; S.client = client || null; render(); scrollTo(0, 0); NAV.restoring = false;
+  const [tab, client, cv] = st.nav.split('|');
+  NAV.restoring = true; S.tab = tab || 'home'; S.client = client || null; if (cv) S.calView = cv; render(); scrollTo(0, 0); NAV.restoring = false;
 });
 $$('[data-x]').forEach(b => b.addEventListener('click', () => closeSheet(b.dataset.x)));
 const photoUrl = id => '/_blob/' + id;
@@ -1686,7 +1699,7 @@ const apptRow = a => {
   if (isPersonal(a)) return `<button class="item appt personal" data-appt="${esc(a.id)}"><span class="tm"><b>${esc(clock(a.starts_at))}</b><small>${esc(durLabel(durOf(a)))}</small></span><span class="main"><b>Personal</b><small>Private · tap to see</small></span><span class="end"><span class="pill">🔒</span></span></button>`;
   const off = a.status === 'cancelled' || a.status === 'no_show' || a.status === 'declined', em = apEmail(a);
   const pill = a.status === 'requested' ? '<span class="pill req">Request</span>' : a.status === 'declined' ? '<span class="pill bad">Declined</span>' : a.status === 'cancelled' ? '<span class="pill bad">Cancelled</span>' : a.status === 'no_show' ? '<span class="pill bad">No-show</span>' : a.status === 'done' ? '<span class="pill ok">Done</span>'
-    : a.reminder_sent_at ? '<span class="pill ok">Reminded</span>' : a.confirm_sent_at ? '<span class="pill ok">Confirmed</span>' : !a.notify || !em ? '<span class="pill">No email</span>' : '';
+    : a.reminder_sent_at ? '<span class="pill ok">Reminded</span>' : a.confirm_sent_at ? '<span class="pill ok">Confirmed</span>' : a.source !== 'google' && (!a.notify || !em) ? '<span class="pill">No email</span>' : '';
   return `<button class="item appt ${off ? 'off' : ''} ${a.status === 'requested' ? 'reqrow' : ''}" data-appt="${esc(a.id)}"><span class="tm"><b>${esc(clock(a.starts_at))}</b><small>${esc(durLabel(Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4)))}</small></span>
     <span class="main"><b>${esc(apName(a))}</b><small>${esc(((a.data || {}).services || []).join(', ') || 'Appointment')}${(a.data || {}).price ? ' · ' + esc(money(+a.data.price)) : ''}</small></span><span class="end">${pill}</span></button>`;
 };
@@ -1763,12 +1776,26 @@ function renderCalMonth() {
       const tag = a => { const t = new Date(a.starts_at), h = t.getHours() % 12 || 12, m = t.getMinutes(); const tm = h + (m ? ':' + String(m).padStart(2, '0') : '');
         if (isPersonal(a)) return `<em class="ev p"><small>${tm} </small>Busy</em>`;
         return `<em class="ev ${a.status === 'requested' ? 'r' : a.status === 'done' ? 'd' : ''}"><small>${tm} </small>${esc(apName(a).split(/\s+/)[0])}</em>`; };
-      return `<button class="mc ${out ? 'out' : ''} ${d === today ? 'today' : ''} ${n ? 'has' : ''}" data-day="${d}" data-go="1" aria-label="${esc(longDay(d))}: ${n} clients${items.length ? ': ' + esc(items.filter(a => !isPersonal(a)).map(a => apName(a)).join(', ')) : ''}"><b>${parseDay(d).getDate()}</b>${shown.map(tag).join('')}${more > 0 ? `<em class="ev more">+${more} more</em>` : ''}</button>`; }).join('')}</div>
+      return `<button class="mc ${out ? 'out' : ''} ${d === today ? 'today' : ''} ${n ? 'has' : ''}" data-mday="${d}" aria-label="${esc(longDay(d))}: ${n} clients${items.length ? ': ' + esc(items.filter(a => !isPersonal(a)).map(a => apName(a)).join(', ')) : ''}"><b>${parseDay(d).getDate()}</b>${shown.map(tag).join('')}${more > 0 ? `<em class="ev more">+${more} more</em>` : ''}</button>`; }).join('')}</div>
   <div class="stats" style="margin:14px 0 4px"><div class="stat"><b>${clients.length}</b><span>clients</span></div><div class="stat"><b>${workDays}</b><span>work days</span></div><div class="stat"><b>${workDays ? (clients.length / workDays).toFixed(1) : 0}</b><span>per work day</span></div>${clients.length ? `<div class="stat"><b>${dn[busiest].slice(0, 3)}</b><span>busiest day</span></div>` : ''}</div>
   ${priced ? `<p class="fine">${money(priced)} written on calendar entries this month (only some entries have a price).</p>` : ''}
   <p class="fine">Tap a day to see times and details. Gold = coming up, grey = past, dashed = website request, “Busy” = personal.</p>${emailNote()}`;
   calWire(sel, today, 'month');
+  $$('[data-mday]').forEach(b => b.onclick = () => openDaySheet(b.dataset.mday));
 }
+function openDaySheet(d) {
+  const items = S.appts.filter(a => apDay(a) === d && a.status !== 'cancelled' && a.status !== 'declined').sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+  const n = items.filter(isClientAppt).length, rq = items.filter(a => a.status === 'requested').length;
+  $('#ds-title').textContent = longDay(d);
+  $('#ds-sum').textContent = items.length ? [n ? `${n} client${n > 1 ? 's' : ''}` : '', rq ? `${rq} request${rq > 1 ? 's' : ''}` : '', items.length ? `${clock(items[0].starts_at)} – ${clock(items[items.length - 1].ends_at)}` : ''].filter(Boolean).join(' · ') : 'Nothing booked. A day off?';
+  $('#ds-list').innerHTML = items.length ? items.map(apptRow).join('') : '';
+  $('#ds-actions').innerHTML = (canWrite ? '<button class="btn gold" id="ds-new">+ Book this day</button>' : '') + '<button class="btn" id="ds-open">Open in Day view</button>';
+  const nb = $('#ds-new'); if (nb) nb.onclick = () => openAppt({ date: d });
+  $('#ds-open').onclick = () => { closeSheet('dsheet'); S.calDay = d; S.calView = 'day'; render(); scrollTo(0, 0); };
+  S.daySheet = d;
+  openSheet('dsheet');
+}
+$('#ds-list').addEventListener('click', e => { const b = e.target.closest('[data-appt]'); if (b) openAppt({ id: b.dataset.appt }); });
 view.addEventListener('click', e => { const b = e.target.closest('[data-appt]'); if (b) openAppt({ id: b.dataset.appt }); });
 
 /* appointment form */
@@ -2333,7 +2360,7 @@ render();
   db.doc('settings/main').onSnapshot(d => { S.settings = d.exists ? d.data() : null; }, () => {});
   setTimeout(squareReturn, 400);
   if (window.__appts) {
-    window.__appts.on(list => { S.appts = list; refresh(); });
+    window.__appts.on(list => { S.appts = list; refresh(); if (S.daySheet && $('#dsheet').classList.contains('open') && !$('#asheet').classList.contains('open')) openDaySheet(S.daySheet); });
     window.__appts.ready().then(r => { S.mailReady = r; if (S.tab === 'cal') refresh(); });
     const loadReport = () => window.__appts.report().then(r => { if (JSON.stringify(r) !== JSON.stringify(S.report)) { S.report = r; if (S.tab === 'home') refresh(); } }).catch(() => {});
     loadReport(); document.addEventListener('visibilitychange', () => { if (!document.hidden) loadReport(); });
