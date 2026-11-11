@@ -333,22 +333,62 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .list.big .appt .tm{width:78px;font-size:16px}
 .list.big .appt .main b{font-size:1.15rem}
 .list.big .appt .main small{font-size:14px}
-.mgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;margin:8px -10px 0}
-.mgrid .mh{text-align:center;font-size:11px;color:var(--soft);letter-spacing:.08em;padding-bottom:2px}
-.mgrid .mc{min-height:92px;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:2px;min-width:0;padding:3px 2px 4px;text-align:left;overflow:hidden}
-.mgrid .mc b{font-weight:500;font-size:12.5px;padding-left:2px;line-height:1.3}
-.mgrid .ev{display:block;font-style:normal;font-size:9.5px;line-height:1.25;padding:1px 3px;border-radius:4px;background:var(--gold-bg);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mgrid .ev.d{background:rgba(0,0,0,.05);color:var(--soft)}
+.mtop{display:flex;align-items:center;justify-content:space-between;margin:6px 0 4px}
+.mtop h2{font-family:var(--display);font-weight:500;font-size:1.45rem}
+.mgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;margin:6px -14px 0}
+.mgrid.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+.mgrid .mh{text-align:center;font-size:11px;color:var(--soft);letter-spacing:.06em;padding-bottom:3px;text-transform:uppercase}
+.mgrid .mc{min-height:118px;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:2px;min-width:0;padding:3px 2px 4px;text-align:left;overflow:hidden;transition:transform .15s}
+.mgrid .mc:active{transform:scale(.96)}
+.mgrid.anim .mc{animation:mcIn .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes mcIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.mgrid .mc b{font-weight:600;font-size:12.5px;padding:0 2px;line-height:1.35;display:flex;justify-content:space-between;align-items:center}
+.mgrid .mc b i{font-style:normal;font-size:10px;font-weight:700;color:var(--gold)}
+.mgrid .ev{display:block;font-style:normal;font-size:10.5px;font-weight:500;line-height:1.3;padding:1px 3px;border-radius:4px;background:var(--gold-bg);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mgrid.five .ev{font-size:11.5px;padding:2px 4px}
+.mgrid .ev small{font-size:8.5px;opacity:.7;font-weight:500;letter-spacing:-.02em}
+.mgrid.five .ev small{font-size:9px}
+.mgrid .ev.d{background:rgba(0,0,0,.045);color:var(--soft)}
+.mgrid .ev.ok{background:#e3efe2;color:#2f5d34}
+.mgrid .ev.x{background:#f6e1df;color:#9b3b31;text-decoration:line-through}
 .mgrid .ev.r{background:transparent;border:1px dashed var(--gold);color:var(--gold)}
-.mgrid .ev.p{background:transparent;color:var(--soft);font-style:italic}
-.mgrid .ev small{font-size:inherit;opacity:.7}
-@media (max-width:599px){.mgrid .ev small{display:none}.mgrid .ev{font-size:10px;padding:1px 2px;letter-spacing:-.01em}}
-.mgrid .ev.more{background:none;color:var(--gold);font-weight:600;padding-left:2px}
-.mgrid .mc.has{border-color:var(--gold)}
+.mgrid .ev.p{background:transparent;color:var(--soft);font-style:italic;font-weight:400}
+.mgrid .ev.more{background:none;color:var(--gold);font-weight:700;padding-left:2px}
+.mgrid .mc.has{border-color:color-mix(in srgb,var(--gold) 55%,var(--rule))}
+.mgrid .mc.past{background:color-mix(in srgb,var(--sheet) 70%,var(--paper))}
 .mgrid .mc.out{opacity:.35}
-.mgrid .mc.today{outline:2px solid var(--ink);outline-offset:-2px}
-.mgrid .mc.today b{color:var(--gold);font-weight:700}
-@media (min-width:600px){.mgrid{margin:8px 0 0;gap:4px}.mgrid .mc{min-height:110px}.mgrid .ev{font-size:11px}}
+.mgrid .mc.today{outline:2px solid var(--gold);outline-offset:-2px;animation:todayGlow 2.4s ease-in-out 1}
+.mgrid .mc.today b{color:var(--gold)}
+@keyframes todayGlow{0%,100%{box-shadow:0 0 0 0 rgba(176,134,64,0)}40%{box-shadow:0 0 0 6px rgba(176,134,64,.18)}}
+@media (max-width:420px){.mgrid:not(.five) .ev small{display:none}}
+@media (min-width:600px){.mgrid{margin:6px 0 0;gap:4px}.mgrid .mc{min-height:130px}.mgrid .ev{font-size:12px}}
+.mfoot{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12.5px;color:var(--soft)}
+.list.big .appt{animation:rowIn .35s cubic-bezier(.2,.8,.2,1) both}
+.list.big .appt:nth-child(2){animation-delay:.04s}.list.big .appt:nth-child(3){animation-delay:.08s}.list.big .appt:nth-child(4){animation-delay:.12s}.list.big .appt:nth-child(5){animation-delay:.16s}.list.big .appt:nth-child(n+6){animation-delay:.2s}
+@keyframes rowIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.pill.arr-ok{background:#e3efe2;color:#2f5d34}
+.pill.arr-late{background:#f7ead2;color:#8a5a12}
+.checkin{border:1.5px solid var(--gold);border-radius:18px;background:linear-gradient(180deg,var(--gold-bg),var(--sheet));padding:14px;margin-top:14px;animation:ciIn .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes ciIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.checkin h3{font-family:var(--display);font-weight:500;font-size:1.35rem;margin-bottom:2px}
+.checkin p{font-size:13.5px;color:var(--soft);margin-bottom:8px}
+.ci-row{display:grid;grid-template-columns:1fr;gap:8px;padding:10px 0;border-top:1px solid var(--rule);transition:opacity .35s,transform .35s,max-height .35s;max-height:160px;overflow:hidden}
+.ci-row.hide{display:none}
+.ci-row.gone{opacity:0;transform:translateX(40px);max-height:0;padding:0;border:0}
+.ci-row .who{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}
+.ci-row .who small{color:var(--soft);font-size:13px}
+.ci-btns{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:6px}
+.ci-btns button{border-radius:12px;padding:10px 6px;font-size:14px;border:1px solid var(--rule);background:var(--paper)}
+.ci-btns .on{background:#2f5d34;color:#fff;border-color:#2f5d34}
+.ci-btns .late{background:#f7ead2;border-color:#e2c78f}
+.ci-btns .ns{color:#9b3b31}
+.ci-done{text-align:center;padding:8px 0 2px;font-size:15px}
+.ci-done b{display:block;font-family:var(--display);font-size:1.5rem;font-weight:500}
+.burst{position:fixed;inset:0;pointer-events:none;z-index:80;overflow:hidden}
+.burst i{position:absolute;top:-12px;width:8px;height:12px;border-radius:2px;animation:fall 1.6s cubic-bezier(.25,.6,.3,1) forwards}
+@keyframes fall{to{transform:translate(var(--dx),105vh) rotate(var(--r));opacity:.2}}
+.tabs [data-tab] .dot{position:absolute;top:4px;right:calc(50% - 18px);min-width:16px;height:16px;border-radius:8px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;line-height:16px;text-align:center;padding:0 4px;animation:ciIn .4s both}
+.tabs [data-tab]{position:relative}
 .appt.personal{opacity:.7;border-style:dashed}
 .appt.personal .main b{font-style:italic;font-weight:400}
 .appt.reqrow{border-style:dashed;border-color:var(--gold);background:var(--gold-bg)}
@@ -1017,6 +1057,7 @@ const render = () => {
   } catch (e) {}
   $$('.tabs [data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === S.tab && !S.client));
   if (!db) { view.innerHTML = `<div class="lock"><h2 style="font-size:1.6rem;color:var(--ink)">Sign in to open the book</h2><p style="margin-top:8px">Sign in to open the book.</p></div>`; return; }
+  setTimeout(tabDots, 0);
   if (S.client) return renderClient(S.client);
   ({ home: renderHome, cal: renderCal, clients: renderClients, money: renderMoney, ask: renderAsk })[S.tab]();
 };
@@ -1030,7 +1071,7 @@ function renderHome() {
   const today = isoDay(), todays = S.visits.filter(v => v.date === today);
   const due = dueList(), recent = S.visits.slice(0, 6);
   const tTot = todays.reduce((a, v) => a + vIncome(v), 0);
-  view.innerHTML = `
+  view.innerHTML = `${checkinCard()}
   <section class="talk" aria-labelledby="talk-h">
     <h2 id="talk-h">Tell me about a visit or an expense</h2>
     <p>Tap the box, then the 🎤 on your keyboard. Say the client, services, formula, price and tip, or what you bought. Claude fills in the form for you to check.</p>
@@ -1698,7 +1739,8 @@ const durLabel = m => { if (m < 60) return m + 'm'; const h = Math.floor(m / 60)
 const apptRow = a => {
   if (isPersonal(a)) return `<button class="item appt personal" data-appt="${esc(a.id)}"><span class="tm"><b>${esc(clock(a.starts_at))}</b><small>${esc(durLabel(durOf(a)))}</small></span><span class="main"><b>Personal</b><small>Private · tap to see</small></span><span class="end"><span class="pill">🔒</span></span></button>`;
   const off = a.status === 'cancelled' || a.status === 'no_show' || a.status === 'declined', em = apEmail(a);
-  const pill = a.status === 'requested' ? '<span class="pill req">Request</span>' : a.status === 'declined' ? '<span class="pill bad">Declined</span>' : a.status === 'cancelled' ? '<span class="pill bad">Cancelled</span>' : a.status === 'no_show' ? '<span class="pill bad">No-show</span>' : a.status === 'done' ? '<span class="pill ok">Done</span>'
+  const arr = (a.data || {}).arrival;
+  const pill = arr === 'on_time' && a.status !== 'no_show' ? '<span class="pill arr-ok">✓ On time</span>' : arr === 'late' && a.status !== 'no_show' ? '<span class="pill arr-late">⏱ Late</span>' : a.status === 'requested' ? '<span class="pill req">Request</span>' : a.status === 'declined' ? '<span class="pill bad">Declined</span>' : a.status === 'cancelled' ? '<span class="pill bad">Cancelled</span>' : a.status === 'no_show' ? '<span class="pill bad">No-show</span>' : a.status === 'done' ? '<span class="pill ok">Done</span>'
     : a.reminder_sent_at ? '<span class="pill ok">Reminded</span>' : a.confirm_sent_at ? '<span class="pill ok">Confirmed</span>' : a.source !== 'google' && (!a.notify || !em) ? '<span class="pill">No email</span>' : '';
   return `<button class="item appt ${off ? 'off' : ''} ${a.status === 'requested' ? 'reqrow' : ''}" data-appt="${esc(a.id)}"><span class="tm"><b>${esc(clock(a.starts_at))}</b><small>${esc(durLabel(Math.round((new Date(a.ends_at) - new Date(a.starts_at)) / 6e4)))}</small></span>
     <span class="main"><b>${esc(apName(a))}</b><small>${esc(((a.data || {}).services || []).join(', ') || 'Appointment')}${(a.data || {}).price ? ' · ' + esc(money(+a.data.price)) : ''}</small></span><span class="end">${pill}</span></button>`;
@@ -1723,7 +1765,7 @@ function calWire(sel, today, step) {
 }
 const emailNote = () => S.mailReady === false ? '<div class="ai-note" style="margin-top:18px"><b>Automatic emails aren’t connected yet.</b> Until they are, saving an appointment gives you an Email and a Text button with the message already written. 24-hour reminders start as soon as email is connected.</div>' : '';
 function renderCal() {
-  S.calView = S.calView || 'day';
+  S.calView = S.calView || 'month';
   if (S.calView === 'week') return renderCalWeek();
   if (S.calView === 'month') return renderCalMonth();
   const sel = S.calDay, ws = weekStart(sel), today = isoDay();
@@ -1759,29 +1801,39 @@ function renderCalWeek() {
 }
 function renderCalMonth() {
   const sel = S.calDay, today = isoDay(), first = parseDay(sel.slice(0, 8) + '01');
-  const start = new Date(first); start.setDate(1 - first.getDay());
-  const cells = Array.from({ length: 42 }, (_, i) => { const d = new Date(start); d.setDate(start.getDate() + i); return isoDay(d); });
   const mk = monthKey(sel), inMonth = S.appts.filter(a => monthKey(apDay(a)) === mk);
   const clients = inMonth.filter(isClientAppt), byDay = {}; clients.forEach(a => { const d = apDay(a); byDay[d] = (byDay[d] || 0) + 1; });
   const workDays = Object.keys(byDay).length, priced = clients.reduce((t, a) => t + (+(a.data || {}).price || 0), 0);
   const wk = [0, 0, 0, 0, 0, 0, 0]; clients.forEach(a => wk[parseDay(apDay(a)).getDay()]++);
   const busiest = wk.indexOf(Math.max(...wk)), dn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const lastRows = cells.slice(35).every(d => monthKey(d) !== mk) ? 35 : 42;
+  // she rarely works weekends: show Mon–Fri (bigger boxes) unless this month has weekend clients or she asked for all 7 days
+  const weekendUsed = inMonth.some(a => isClientAppt(a) || a.status === 'requested') && inMonth.some(a => (isClientAppt(a) || a.status === 'requested') && [0, 6].includes(parseDay(apDay(a)).getDay()));
+  const seven = S.monthCols === 'all' || (S.monthCols !== 'work' && weekendUsed);
+  const start = new Date(first); start.setDate(1 - ((first.getDay() + 6) % 7)); // Monday on or before the 1st
+  const cells = [];
+  for (let w = 0; w < 6; w++) for (let i = 0; i < 7; i++) { const d = new Date(start); d.setDate(start.getDate() + w * 7 + i); if (seven || (i < 5)) cells.push(isoDay(d)); }
+  const per = seven ? 7 : 5; while (cells.length > per && cells.slice(-per).every(d => monthKey(d) !== mk)) cells.splice(-per);
+  const heads = seven ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  const animate = S.monthAnim !== mk; S.monthAnim = mk;
+  const nowIso = new Date().toISOString();
   view.innerHTML = `${calHead(sel, today)}
-  <div class="sec-h"><button class="nav btn small" id="cal-prev" aria-label="Previous month">‹</button><h2 style="font-size:1.35rem">${esc(first.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }))}</h2><button class="nav btn small" id="cal-next" aria-label="Next month">›</button></div>
-  <div class="mgrid">${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(x => `<span class="mh">${x}</span>`).join('')}
-    ${cells.slice(0, lastRows).map(d => { const n = byDay[d] || 0, out = monthKey(d) !== mk;
+  <div class="mtop"><button class="nav btn small" id="cal-prev" aria-label="Previous month">‹</button><h2>${esc(first.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }))}</h2><button class="nav btn small" id="cal-next" aria-label="Next month">›</button></div>
+  <div class="mgrid ${seven ? '' : 'five'} ${animate ? 'anim' : ''}">${heads.map(x => `<span class="mh">${x}</span>`).join('')}
+    ${cells.map((d, idx) => { const n = byDay[d] || 0, out = monthKey(d) !== mk, past = d < today;
       const items = S.appts.filter(a => apDay(a) === d && a.status !== 'cancelled' && a.status !== 'declined').sort((a, b) => a.starts_at.localeCompare(b.starts_at));
-      const shown = items.slice(0, 4), more = items.length - shown.length;
+      const cap = seven ? 5 : 6, shown = items.length > cap ? items.slice(0, cap - 1) : items, more = items.length - shown.length;
       const tag = a => { const t = new Date(a.starts_at), h = t.getHours() % 12 || 12, m = t.getMinutes(); const tm = h + (m ? ':' + String(m).padStart(2, '0') : '');
         if (isPersonal(a)) return `<em class="ev p"><small>${tm} </small>Busy</em>`;
-        return `<em class="ev ${a.status === 'requested' ? 'r' : a.status === 'done' ? 'd' : ''}"><small>${tm} </small>${esc(apName(a).split(/\s+/)[0])}</em>`; };
-      return `<button class="mc ${out ? 'out' : ''} ${d === today ? 'today' : ''} ${n ? 'has' : ''}" data-mday="${d}" aria-label="${esc(longDay(d))}: ${n} clients${items.length ? ': ' + esc(items.filter(a => !isPersonal(a)).map(a => apName(a)).join(', ')) : ''}"><b>${parseDay(d).getDate()}</b>${shown.map(tag).join('')}${more > 0 ? `<em class="ev more">+${more} more</em>` : ''}</button>`; }).join('')}</div>
-  <div class="stats" style="margin:14px 0 4px"><div class="stat"><b>${clients.length}</b><span>clients</span></div><div class="stat"><b>${workDays}</b><span>work days</span></div><div class="stat"><b>${workDays ? (clients.length / workDays).toFixed(1) : 0}</b><span>per work day</span></div>${clients.length ? `<div class="stat"><b>${dn[busiest].slice(0, 3)}</b><span>busiest day</span></div>` : ''}</div>
+        const arr = (a.data || {}).arrival, cls = a.status === 'requested' ? 'r' : a.status === 'no_show' ? 'x' : arr ? 'ok' : a.starts_at < nowIso ? 'd' : '';
+        return `<em class="ev ${cls}"><small>${tm} </small>${arr === 'on_time' ? '✓' : arr === 'late' ? '⏱' : ''}${esc(apName(a).split(/\s+/)[0])}</em>`; };
+      return `<button class="mc ${out ? 'out' : ''} ${past && !out ? 'past' : ''} ${d === today ? 'today' : ''} ${n ? 'has' : ''}" style="${animate ? `animation-delay:${Math.min(idx * 12, 400)}ms` : ''}" data-mday="${d}" aria-label="${esc(longDay(d))}: ${n} clients${items.length ? ': ' + esc(items.filter(a => !isPersonal(a)).map(a => apName(a)).join(', ')) : ''}"><b>${parseDay(d).getDate()}${n ? `<i>${n}</i>` : ''}</b>${shown.map(tag).join('')}${more > 0 ? `<em class="ev more">+${more}</em>` : ''}</button>`; }).join('')}</div>
+  <div class="mfoot"><button class="link" id="m-cols">${seven ? (weekendUsed ? 'Weekend clients this month' : 'Show Mon–Fri only') : 'Show weekends'}</button><span>Tap a day to see everything</span></div>
+  <div class="stats" style="margin:12px 0 4px"><div class="stat"><b>${clients.length}</b><span>clients</span></div><div class="stat"><b>${workDays}</b><span>work days</span></div><div class="stat"><b>${workDays ? (clients.length / workDays).toFixed(1) : 0}</b><span>per work day</span></div>${clients.length ? `<div class="stat"><b>${dn[busiest].slice(0, 3)}</b><span>busiest day</span></div>` : ''}</div>
   ${priced ? `<p class="fine">${money(priced)} written on calendar entries this month (only some entries have a price).</p>` : ''}
-  <p class="fine">Tap a day to see times and details. Gold = coming up, grey = past, dashed = website request, “Busy” = personal.</p>${emailNote()}`;
+  <p class="fine">Gold = coming up · grey = past · ✓ came on time · ⏱ late · red = no-show · dashed = website request · “Busy” = personal.</p>${emailNote()}`;
   calWire(sel, today, 'month');
   $$('[data-mday]').forEach(b => b.onclick = () => openDaySheet(b.dataset.mday));
+  $('#m-cols').onclick = () => { if (seven && weekendUsed && S.monthCols !== 'all') return toast('This month has weekend appointments, so all 7 days stay visible.'); S.monthCols = seven ? 'work' : 'all'; S.monthAnim = null; renderCal(); };
 }
 function openDaySheet(d) {
   const items = S.appts.filter(a => apDay(a) === d && a.status !== 'cancelled' && a.status !== 'declined').sort((a, b) => a.starts_at.localeCompare(b.starts_at));
@@ -2014,6 +2066,53 @@ async function saveMail(close = true) {
 }
 $('#m-save').addEventListener('click', () => saveMail(true));
 $('#s-mail').addEventListener('click', () => { closeSheet('ssheet'); openMailSettings(); });
+
+/* ---------- CHECK-IN: did they come? ---------- */
+const needsCheckin = a => !isPersonal(a) && (a.status === 'booked' || a.status === 'done') && apDay(a) === isoDay() && !(a.data || {}).arrival
+  && new Date(a.starts_at).getTime() <= Date.now() + 5 * 6e4;
+const todaysClients = () => S.appts.filter(a => !isPersonal(a) && apDay(a) === isoDay() && ['booked', 'done', 'no_show'].includes(a.status));
+function checkinCard() {
+  if (!canWrite) return '';
+  const due = S.appts.filter(needsCheckin).sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+  if (!due.length) {
+    const t = todaysClients(), allIn = t.length && t.every(a => (a.data || {}).arrival || a.status === 'no_show') && t.every(a => new Date(a.starts_at) < new Date());
+    if (allIn && S.celebrated === isoDay()) return `<div class="checkin"><div class="ci-done">🎉<b>That’s everyone today</b>${t.filter(a => a.status !== 'no_show').length} client${t.length > 1 ? 's' : ''} in the chair. Great work, Della!</div></div>`;
+    return '';
+  }
+  return `<div class="checkin" id="checkin"><h3>Did they make it?</h3><p>Tap once. It keeps her history so you know who’s always on time.</p>
+    ${due.map((a, i) => `<div class="ci-row ${i >= 3 && !S.ciAll ? 'hide' : ''}" data-ci="${esc(a.id)}"><div class="who"><b>${esc(apName(a))}</b><small>${esc(clock(a.starts_at))}${((a.data || {}).services || []).length ? ' · ' + esc(a.data.services.join(', ')) : ''}</small></div>
+      <div class="ci-btns"><button class="on" data-arr="on_time">✓ On time</button><button class="late" data-arr="late">⏱ Late</button><button class="ns" data-arr="no_show">No-show</button></div></div>`).join('')}
+    ${due.length > 3 && !S.ciAll ? `<button class="link" id="ci-all" style="margin-top:6px">Show all ${due.length}</button>` : ''}</div>`;
+}
+view.addEventListener('click', async e => {
+  if (e.target.id === 'ci-all') { S.ciAll = true; $$('.ci-row.hide').forEach(r => r.classList.remove('hide')); e.target.remove(); return; }
+  const b = e.target.closest('[data-arr]'); if (!b) return;
+  const row = b.closest('[data-ci]'), a = S.appts.find(x => x.id === row.dataset.ci); if (!a) return;
+  const arr = b.dataset.arr;
+  row.classList.add('gone');
+  const nextHidden = $('.ci-row.hide'); if (nextHidden) nextHidden.classList.remove('hide');
+  const allBtn = $('#ci-all'); if (allBtn && !$('.ci-row.hide')) allBtn.remove();
+  if (arr === 'on_time') burst(b);
+  try {
+    await window.__appts.save({ id: a.id, status: arr === 'no_show' ? 'no_show' : 'done', data: { ...a.data, arrival: arr === 'no_show' ? null : arr, arrivedAt: new Date().toISOString() } });
+    toast(arr === 'on_time' ? `${apName(a).split(/\s+/)[0]} was on time ✓` : arr === 'late' ? `Noted: ${apName(a).split(/\s+/)[0]} was late` : `Marked ${apName(a).split(/\s+/)[0]} as a no-show`);
+    if (!S.appts.some(needsCheckin)) { const t = todaysClients(); if (t.length && t.every(x => new Date(x.starts_at) < new Date())) { S.celebrated = isoDay(); setTimeout(() => { burst(null, 70); render(); }, 380); } }
+  } catch (err) { row.classList.remove('gone'); toast('Couldn’t save: ' + err.message); }
+});
+function burst(from, n = 28) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const box = document.createElement('div'); box.className = 'burst'; const colors = ['#b08640', '#d8b46a', '#1d1a16', '#c96f5a', '#7fa37a', '#f2e3c4'];
+  const r = from ? from.getBoundingClientRect() : { left: innerWidth / 2, width: 0 };
+  for (let i = 0; i < n; i++) { const c = document.createElement('i'); const x = from ? r.left + r.width / 2 + (Math.random() - .5) * 120 : Math.random() * innerWidth;
+    c.style.left = x + 'px'; c.style.background = colors[i % colors.length]; c.style.setProperty('--dx', ((Math.random() - .5) * 160) + 'px'); c.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg'); c.style.animationDelay = (Math.random() * .25) + 's'; box.appendChild(c); }
+  document.body.appendChild(box); setTimeout(() => box.remove(), 2200);
+}
+function tabDots() {
+  const n = canWrite ? S.appts.filter(needsCheckin).length + apRequests().length : 0, btn = $('.tabs [data-tab="home"]'); if (!btn) return;
+  let dot = btn.querySelector('.dot'); if (!n) { if (dot) dot.remove(); return; }
+  if (!dot) { dot = document.createElement('span'); dot.className = 'dot'; btn.appendChild(dot); } dot.textContent = n;
+}
+setInterval(() => { tabDots(); if (S.tab === 'home' && !S.client && !$('#checkin') && S.appts.some(needsCheckin)) refresh(); }, 60000);
 
 /* ---------- WEEKLY REPORT (written by Claude) ---------- */
 function mdLite(t) {
@@ -2333,7 +2432,7 @@ $('#s-save').addEventListener('click', async () => {
 });
 
 /* ------------ nav ------------ */
-$$('.tabs [data-tab]').forEach(b => b.onclick = () => { S.tab = b.dataset.tab; S.client = null; render(); scrollTo(0, 0); });
+$$('.tabs [data-tab]').forEach(b => b.onclick = () => { S.tab = b.dataset.tab; S.client = null; if (S.tab === 'cal') S.calView = 'month'; render(); scrollTo(0, 0); });
 view.addEventListener('click', e => { const b = e.target.closest('[data-open-client]'); if (b) { S.client = b.dataset.openClient; render(); scrollTo(0, 0); } });
 
 /* ------------ boot ------------ */
