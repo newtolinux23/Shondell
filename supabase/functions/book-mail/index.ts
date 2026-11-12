@@ -2,6 +2,7 @@
 //  - notify:    confirmation / change / cancellation, sent when Della saves an appointment (signed-in members only)
 //  - reminders: run every 15 minutes by pg_cron; emails clients ~24 hours before their appointment
 //  - request:   public booking request from the website form -> 'requested' appointment + emails
+//  - intake:    public new-client form -> book_intake row for Della to review
 //  - alerts:    every 15 minutes (pg_cron): emails Della + Rob about NEW double bookings, big overlaps, duplicates, clashes with personal time
 //  - test, ping: for the settings screen
 // Secrets: RESEND_API_KEY (email service), MAIL_FROM (verified sender). The cron job's secret lives in Vault (book_cron_secret).
@@ -223,6 +224,42 @@ async function handleRequest(b: any, req: Request) {
   return { ok: true, emailed: !!(r as any).ok };
 }
 
+// public: new-client form filled in the chair or on the client's own phone -> book_intake (Della reviews it in the app)
+const PICK = (v: unknown, ok: string[]) => { const x = clip(v, 40); return ok.includes(x) ? x : ""; };
+async function handleIntake(b: any) {
+  if (b.website) return { ok: true }; // honeypot
+  const multi = (v: unknown, ok: string[]) => (Array.isArray(v) ? v : []).map((x) => clip(x, 40)).filter((x) => ok.includes(x)).slice(0, 10);
+  const f = {
+    firstName: clip(b.firstName, 60), lastName: clip(b.lastName, 60), phone: clip(b.phone, 30), email: clip(b.email, 120).toLowerCase(),
+    birthday: /^\d{2}-\d{2}$/.test(clip(b.birthday, 5)) ? clip(b.birthday, 5) : "",
+    contact: PICK(b.contact, ["Text", "Call", "Email"]), textOk: !!b.textOk,
+    texture: PICK(b.texture, ["Straight", "Wavy", "Curly", "Coily", "Not sure"]),
+    history: multi(b.history, ["Never colored", "Salon color", "Box dye", "Henna", "Bleach / lightener", "Relaxer", "Perm", "Keratin / smoothing", "Not sure"]),
+    lastColor: clip(b.lastColor, 120), allergies: clip(b.allergies, 400), products: clip(b.products, 300),
+    goals: clip(b.goals, 800), dislikes: clip(b.dislikes, 400),
+    often: PICK(b.often, ["Every 4–6 weeks", "Every 6–8 weeks", "Every 2–3 months", "A few times a year", "Just today"]),
+    heard: clip(b.heard, 120), photos: PICK(b.photos, ["Yes", "Hair only, no face", "No"]),
+    agree: !!b.agree, signed: clip(b.signed, 80), inSalon: !!b.inSalon,
+  };
+  if (!f.firstName || !f.lastName) return { ok: false, error: "Please add your first and last name" };
+  if (f.phone.replace(/\D/g, "").length < 10) return { ok: false, error: "Phone number doesn't look right" };
+  if (f.email && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(f.email)) return { ok: false, error: "Email doesn't look right" };
+  if (!f.agree || !f.signed) return { ok: false, error: "Please check the box and type your name at the bottom" };
+  const { data: books } = await admin.from("book_books").select("id").order("created_at").limit(1);
+  const bookId = books?.[0]?.id; if (!bookId) return { ok: false, error: "The form is closed right now" };
+  const digits = f.phone.replace(/\D/g, "").slice(-10);
+  const hourAgo = new Date(Date.now() - 3600e3).toISOString();
+  const { count: mine } = await admin.from("book_intake").select("id", { count: "exact", head: true }).eq("book_id", bookId).gte("created_at", hourAgo).eq("data->>digits", digits);
+  if ((mine ?? 0) >= 3) return { ok: true }; // already have it
+  const { count: all } = await admin.from("book_intake").select("id", { count: "exact", head: true }).eq("book_id", bookId).gte("created_at", hourAgo);
+  if ((all ?? 0) >= 30) return { ok: false, error: "Too many forms right now. Please try again later." };
+  const { data: clients } = await admin.from("book_clients").select("id,data").eq("book_id", bookId).limit(5000);
+  const match = (clients || []).find((c: any) => (f.email && (c.data?.email || "").toLowerCase() === f.email) || String(c.data?.phone || "").replace(/\D/g, "").slice(-10) === digits);
+  const { error } = await admin.from("book_intake").insert({ book_id: bookId, client_id: match?.id ?? null, data: { ...f, digits } });
+  if (error) return { ok: false, error: "Couldn't save the form. Please try again." };
+  return { ok: true };
+}
+
 const URGENT = ["double booking", "overlap", "possible duplicate", "conflict with personal time"];
 async function runAlerts() {
   const { data: issues, error } = await admin.rpc("book_check_issues");
@@ -268,6 +305,7 @@ Deno.serve(async (req) => {
 
   // public: booking request from the website
   if (body.action === "request") return json(await handleRequest(body, req), 200, h);
+  if (body.action === "intake") return json(await handleIntake(body), 200, h);
 
   // everything else: a signed-in member of the book
   const sb = createClient(URL_, Deno.env.get("SUPABASE_ANON_KEY")!, { global: { headers: { Authorization: req.headers.get("Authorization") ?? "" } } });

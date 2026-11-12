@@ -558,6 +558,15 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 <div class="save-bar for-open" id="v-savebar"><div class="inner"><button class="btn gold" id="v-save">Save visit</button></div></div>
 
 <!-- client edit -->
+<section class="sheet" id="iksheet" aria-label="Client form">
+  <div class="sheet-in">
+    <div class="sheet-top"><button class="btn small" data-x="iksheet">Close</button><h2 id="ik-name">Client form</h2></div>
+    <p class="fine" id="ik-sub" style="margin:0 0 10px"></p>
+    <div class="list" id="ik-body"></div>
+    <div class="actions" style="margin-top:14px"><button class="btn gold" id="ik-save">Save to her card</button><button class="btn" id="ik-skip">Remove</button></div>
+  </div>
+</section>
+
 <section class="sheet" id="csheet" aria-label="Client details">
   <div class="sheet-in">
     <div class="sheet-top"><button class="btn small" data-x="csheet">Cancel</button><h2>Client details</h2><button class="btn small gold" id="c-save">Save</button></div>
@@ -623,7 +632,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
     <div class="siteqr"><div class="qrbox" id="q-code" aria-label="QR code"></div>
       <h3>Jordan Rivers</h3><p class="url" id="q-url"></p>
       <p class="fine" id="q-hint"></p>
-      <div class="actions" style="justify-content:center"><button class="btn small" id="q-share">Share link</button><button class="btn small" id="q-copy">Copy link</button><button class="btn small" id="q-open">Open it</button></div></div>
+      <div class="actions" style="justify-content:center"><button class="btn small" id="q-share">Share link</button><button class="btn small" id="q-copy">Copy link</button><button class="btn small" id="q-open">Open it</button><button class="btn small gold" id="q-kiosk" style="display:none">Hand her this phone</button></div></div>
   </div>
 </section>
 
@@ -652,6 +661,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
   <b>What would you like to do?</b>
   <button data-a="appt" role="menuitem"><span>📅</span><span><b>Book an appointment</b><small>Client gets a confirmation and a reminder the day before</small></span></button>
   <button data-a="siteqr" role="menuitem"><span>🔗</span><span><b>Show my website QR</b><small>Clients scan it to see your work and book online</small></span></button>
+  <button data-a="form" role="menuitem"><span>📝</span><span><b>Client form</b><small>Hand her your phone, or show the QR so she fills it on hers</small></span></button>
   <button data-a="site" role="menuitem"><span>🌐</span><span><b>Open my website</b><small>See your site the way clients do. Close it to come right back</small></span></button>
   <button data-a="sale" role="menuitem"><span>💳</span><span><b>Check out a client</b><small>Ring up services, products, tip and payment</small></span></button>
   <button data-a="visit" role="menuitem"><span>🎨</span><span><b>Log a visit &amp; formula</b><small>Formula, notes and photos</small></span></button>
@@ -880,7 +890,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
       }
       cache[col] = out;
     };
-    await Promise.all(['clients', 'visits', 'expenses'].map(pull).concat(loadAppts().catch(e => console.error(e))));
+    await Promise.all(['clients', 'visits', 'expenses'].map(pull).concat(loadAppts().catch(e => console.error(e)), loadIntake().catch(() => {})));
     const { data: st } = await sb.from('book_settings').select('data').eq('book_id', BOOK).maybeSingle();
     settings = st ? st.data : null; loaded = true;
     ['clients', 'visits', 'expenses'].forEach(emit); emitSet();
@@ -898,6 +908,7 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
       if (p.eventType === 'DELETE') appts.delete(p.old.id); else appts.set(p.new.id, p.new);
       emitA();
     });
+    ch.on('postgres_changes', { event: '*', schema: 'public', table: 'book_intake', filter: 'book_id=eq.' + BOOK }, () => loadIntake().catch(() => {}));
     ch.subscribe();
     // refresh when the phone wakes the app back up
     document.addEventListener('visibilitychange', () => { if (!document.hidden) loadAll().catch(() => {}); });
@@ -933,6 +944,18 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
     async report() { const { data } = await sb.from('book_reports').select('*').eq('book_id', BOOK).order('created_at', { ascending: false }).limit(1); return (data || [])[0] || null; },
     async log(id) { const { data } = await sb.from('book_email_log').select('kind,ok,error,to_email,created_at').eq('appointment_id', id).order('created_at', { ascending: false }).limit(10); return data || []; },
     uuid
+  };
+
+  /* ---------- new-client forms (filled on /form/) ---------- */
+  const intake = new Map(), intakeSubs = [];
+  const emitI = () => { const l = [...intake.values()].filter(r => r.status === 'new').sort((a, b) => b.created_at.localeCompare(a.created_at)); intakeSubs.forEach(f => { try { f(l); } catch (e) { console.error(e); } }); };
+  async function loadIntake() {
+    const { data, error } = await sb.from('book_intake').select('*').eq('book_id', BOOK).eq('status', 'new').order('created_at', { ascending: false }).limit(50);
+    if (error) return; intake.clear(); (data || []).forEach(r => intake.set(r.id, r)); emitI();
+  }
+  window.__intake = {
+    on(fn) { intakeSubs.push(fn); if (loaded) setTimeout(emitI, 0); },
+    async mark(id, status, clientId) { const { error } = await sb.from('book_intake').update({ status, client_id: clientId || null }).eq('id', id); if (error) fail(error); intake.delete(id); emitI(); }
   };
 
   /* ---------- photos: private bucket, short-lived signed links ---------- */
@@ -1209,6 +1232,8 @@ function renderHome() {
   <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="home-q" placeholder="Find a client or a formula (e.g. 6NB)" value="${esc(S.q)}" aria-label="Search clients and formulas"></div>
   <div id="home-results"></div>
+  ${intakeCard()}
+  ${remindCard()}
   ${outreachCard(3)}
   ${S.report ? reportCard(S.report) : ''}
   ${(() => { const rq = apRequests(); return rq.length ? `<div class="sec"><div class="sec-h"><h2>Booking requests</h2><span class="num">${rq.length} new</span></div>
@@ -1279,6 +1304,7 @@ function renderClient(id) {
   <div class="chead"><span class="av">${esc(initials(c.name))}</span><div><h2>${esc(c.name)}</h2><p>${esc(fmtPhone(c.phone))}${c.birthday ? ` · 🎂 ${esc(parseDay(c.birthday).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }))}` : ''}</p></div></div>
   ${c.allergies ? `<div class="alert"><b>Allergy / patch test:</b> ${esc(c.allergies)}</div>` : ''}
   ${clientIndexCard(id, c)}
+  ${intakeSummary(c)}
   <div class="tiles" style="display:none"><div class="tile"><small>Visits</small><b class="num">${st.count}</b></div><div class="tile"><small>Lifetime</small><b class="num">${money(st.total)}</b></div>
     <div class="tile"><small>Average</small><b class="num">${money(Math.round(st.avg))}</b></div><div class="tile"><small>Last visit</small><b style="font-size:1.4rem">${st.last ? esc(niceDay(st.last.date)) : '—'}</b>${st.last ? `<span>${daysBetween(st.last.date, isoDay())} days ago</span>` : ''}</div></div>
   <div class="actions">
@@ -2326,6 +2352,93 @@ document.addEventListener('click', e => {
   if (e.target.id === 'ro-all') { S.tab = 'clients'; S.cfilter = 'reach'; S.client = null; render(); scrollTo(0, 0); }
 });
 
+/* ---------- NEW-CLIENT FORMS ---------- */
+const FORM_URL = 'https://example.com/form/';
+function openFormChoice() { openSiteQR('form'); }
+$('#q-kiosk').addEventListener('click', () => window.open(FORM_URL + '?salon=1', '_blank', 'noopener'));
+const intakeMatch = r => {
+  if (r.client_id && S.clients.has(r.client_id)) return r.client_id;
+  const d = r.data || {}, dg = digits(d.phone), em = (d.email || '').toLowerCase(), nm = norm(`${d.firstName} ${d.lastName}`);
+  const hit = [...S.clients.entries()].find(([, c]) => (dg && digits(c.phone) === dg) || (em && (c.email || '').toLowerCase() === em))
+    || [...S.clients.entries()].find(([, c]) => norm(c.name) === nm);
+  return hit ? hit[0] : null;
+};
+const ago = iso => { const m = Math.round((Date.now() - new Date(iso)) / 6e4); return m < 2 ? 'just now' : m < 60 ? m + ' min ago' : m < 1440 ? Math.round(m / 60) + ' h ago' : new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); };
+function intakeCard() {
+  const l = S.intake || []; if (!l.length) return '';
+  return `<div class="sec"><div class="sec-h"><h2>Client forms</h2><span class="num">${l.length} new</span></div><div class="list">${l.map(r => {
+    const d = r.data || {}, m = intakeMatch(r);
+    return `<button class="item" data-intake="${esc(r.id)}"><span class="main"><b>${esc(d.firstName + ' ' + d.lastName)}</b><small>${m ? 'Matches ' + esc(S.clients.get(m).name) : 'New client'} · ${esc(ago(r.created_at))}${d.allergies && !/^(none|no|n\/a)\.?$/i.test(d.allergies) ? ' · ⚠️ allergy noted' : ''}</small></span><span class="end"><span class="pill">Open</span></span></button>`; }).join('')}</div>
+    <p class="fine" style="margin-top:6px">Filled in on the client form. Open one to save it to her card.</p></div>`;
+}
+const intakeLines = d => [
+  ['Phone', d.phone], ['Email', d.email], ['Birthday', d.birthday ? new Date('2000-' + d.birthday + 'T12:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) : ''],
+  ['Reach her by', (d.contact || '') + (d.textOk ? ' · OK to text' : ' · no texts')], ['Hair', d.texture], ['Last 2 years', (d.history || []).join(', ')],
+  ['Last color/chemical', d.lastColor], ['Allergies', d.allergies], ['Uses at home', d.products], ['Hoping for', d.goals], ['Doesn’t want', d.dislikes],
+  ['Comes in', d.often], ['Heard about you', d.heard], ['Photos', d.photos], ['Signed', d.signed ? d.signed + (d.inSalon ? ' (in the salon)' : '') : '']
+].filter(x => x[1]);
+function openIntake(id) {
+  const r = (S.intake || []).find(x => x.id === id); if (!r) return;
+  const d = r.data || {}, m = intakeMatch(r);
+  $('#ik-name').textContent = `${d.firstName} ${d.lastName}`;
+  $('#ik-sub').textContent = (m ? 'Matches your client ' + S.clients.get(m).name : 'Not in your book yet. Saving makes a new client card.') + ' · ' + ago(r.created_at);
+  $('#ik-body').innerHTML = intakeLines(d).map(([k, v]) => `<div class="item" style="cursor:default"><span class="main"><small>${esc(k)}</small><b style="font-weight:400;white-space:pre-wrap">${esc(v)}</b></span></div>`).join('');
+  $('#ik-save').textContent = m ? `Save to ${S.clients.get(m).name.split(' ')[0]}’s card` : 'Save as a new client';
+  $('#ik-save').onclick = async () => {
+    if (!canWrite) return toast('You can view this book but not change it.');
+    $('#ik-save').disabled = true;
+    try {
+      const cur = m ? S.clients.get(m) : {}, name = `${d.firstName} ${d.lastName}`.trim();
+      const notes = [d.goals && 'Hoping for: ' + d.goals, d.dislikes && 'Doesn’t want: ' + d.dislikes, d.heard && 'Heard about me: ' + d.heard].filter(Boolean).join('\n');
+      const hair = [d.texture, (d.history || []).length && 'History: ' + d.history.join(', '), d.lastColor && 'Last: ' + d.lastColor, d.products && 'Uses: ' + d.products].filter(Boolean).join(' · ');
+      const allergy = d.allergies && !/^(none|no|n\/a|nothing)\.?$/i.test(d.allergies) ? d.allergies : '';
+      const patch = {
+        name: cur.name || name, phone: cur.phone || fmtPhone(d.phone), email: cur.email || d.email || '',
+        birthday: cur.birthday || (d.birthday ? '2000-' + d.birthday : ''),
+        allergies: [cur.allergies, allergy].filter(Boolean).filter((x, i, a) => a.indexOf(x) === i).join(' · '),
+        hair: cur.hair ? (hair && !cur.hair.includes(hair) ? cur.hair + ' · ' + hair : cur.hair) : hair,
+        notes: cur.notes ? (notes && !cur.notes.includes(notes) ? cur.notes + '\n' + notes : cur.notes) : notes,
+        intake: { ...d, digits: undefined, at: r.created_at }, textOk: !!d.textOk, contactPref: d.contact || '', photoOk: d.photos || '',
+        updatedAt: new Date().toISOString()
+      };
+      let cid = m;
+      if (m) await db.collection('clients').doc(m).update(patch);
+      else { const ref = db.collection('clients').doc(); await ref.set({ ...patch, createdAt: new Date().toISOString() }); cid = ref.id; }
+      await window.__intake.mark(r.id, 'saved', cid);
+      closeSheet('iksheet'); toast(`Saved to ${patch.name.split(' ')[0]}’s card ✓`);
+      S.pending = cid; S.client = cid; S.tab = 'clients'; render(); scrollTo(0, 0);
+    } catch (e) { toast('Couldn’t save. Check the internet and try again.'); }
+    finally { $('#ik-save').disabled = false; }
+  };
+  $('#ik-skip').onclick = async () => { if (await ask('Remove this form?', 'It won’t be saved to any client card.', 'Remove')) { await window.__intake.mark(r.id, 'dismissed'); closeSheet('iksheet'); toast('Removed'); } };
+  openSheet('iksheet');
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-intake]'); if (b) openIntake(b.dataset.intake); });
+function intakeSummary(c) {
+  const d = c.intake; if (!d) return '';
+  return `<details class="sec card" style="padding:12px 14px"><summary style="cursor:pointer"><b>Client form</b> <span class="fine">filled ${esc(new Date(d.at || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }))}</span></summary>
+    <div class="list" style="margin-top:8px">${intakeLines(d).map(([k, v]) => `<div class="item" style="cursor:default"><span class="main"><small>${esc(k)}</small><b style="font-weight:400;white-space:pre-wrap">${esc(v)}</b></span></div>`).join('')}</div></details>`;
+}
+
+/* ---------- reminders by hand (until automatic emails are connected) ---------- */
+function remindCard() {
+  if (S.mailReady !== false || !canWrite) return '';
+  const t = new Date(); t.setDate(t.getDate() + 1); const tomorrow = isoDay(t);
+  const l = S.appts.filter(a => apDay(a) === tomorrow && a.status === 'booked' && !(a.data || {}).personal && !a.reminder_sent_at && (digits(apPhone(a)) || apEmail(a)))
+    .sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+  if (!l.length) return '';
+  return `<div class="sec"><div class="sec-h"><h2>Send tomorrow’s reminders</h2><span class="num">${l.length}</span></div><div class="ro-list">${l.map(a => {
+    const sms = smsFor(a, 'reminder'), mail = apEmail(a) ? mailtoFor(a, 'reminder') : '';
+    return `<div class="ro-row" data-rem="${esc(a.id)}"><div class="ro-who"><span class="ro-name">${esc(apName(a))}</span><span class="fine">${esc(clock(new Date(a.starts_at)))}</span></div>
+      <div class="ro-btns">${sms ? `<a class="btn small gold" href="${esc(sms)}" data-remsent>💬 Text</a>` : ''}${mail ? `<a class="btn small" href="${esc(mail)}" data-remsent>✉️ Email</a>` : ''}<button class="btn small ghost" data-remsent>Already done</button></div></div>`; }).join('')}</div>
+    <p class="fine" style="margin-top:6px">Each tap opens your messages or email with the reminder written. Send it, then come back here.</p></div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-remsent]'); if (!b) return;
+  const row = b.closest('[data-rem]'), a = row && S.appts.find(x => x.id === row.dataset.rem); if (!a) return;
+  setTimeout(() => { window.__appts.save({ ...a, reminder_sent_at: new Date().toISOString() }).then(() => { if (S.tab === 'home') refresh(); }).catch(() => {}); }, b.tagName === 'A' ? 1200 : 0);
+});
+
 /* ---------- CHECK-IN: did they come? ---------- */
 const needsCheckin = a => !isPersonal(a) && (a.status === 'booked' || a.status === 'done') && apDay(a) === isoDay() && !(a.data || {}).arrival
   && new Date(a.starts_at).getTime() <= Date.now() + 5 * 6e4;
@@ -2395,7 +2508,7 @@ function reportCard(r) {
 view.addEventListener('click', e => { if (e.target.id === 'rep-more') { S.reportOpen = !S.reportOpen; render(); } });
 
 /* ---------- WEBSITE QR ---------- */
-const SITE = { site: ['Website', 'https://example.com/', 'Jordan’s work, services and prices.'], book: ['Book online', 'https://example.com/#book', 'Opens straight to the booking form.'] };
+const SITE = { site: ['Website', 'https://example.com/', 'Jordan’s work, services and prices.'], book: ['Book online', 'https://example.com/#book', 'Opens straight to the booking form.'], form: ['Client form', 'https://example.com/form/', 'New clients fill it in on their own phone while they wait. Answers land in your book.'], links: ['My links', 'https://example.com/links/', 'One page with Book, Call, Text, Email, Venmo and directions. Put it in your Instagram or Facebook bio.'] };
 let siteWhich = 'site';
 function drawQR(el, text, size) {
   el.innerHTML = '';
@@ -2409,6 +2522,7 @@ function openSiteQR(which) {
   drawQR($('#q-code'), url, 600);
   $('#q-url').textContent = url.replace('https://', ''); $('#q-hint').textContent = hint;
   $('#q-share').style.display = navigator.share ? '' : 'none';
+  $('#q-kiosk').style.display = siteWhich === 'form' ? '' : 'none';
   if (!$('#qsheet').classList.contains('open')) openSheet('qsheet');
 }
 $('#q-open').addEventListener('click', () => window.open(SITE[siteWhich][1], '_blank', 'noopener'));
@@ -2427,6 +2541,7 @@ $('#acts').addEventListener('click', e => {
   if (!b) return;
   const a = b.dataset.a, cid = S.client;
   if (a === 'siteqr') openSiteQR('site');
+  if (a === 'form') openFormChoice();
   if (a === 'site') window.open('https://example.com/', '_blank', 'noopener');
   if (a === 'appt') openAppt(cid ? { clientId: cid, date: S.tab === 'cal' ? S.calDay : isoDay() } : { date: S.tab === 'cal' ? S.calDay : isoDay() });
   if (a === 'sale') openRegister(cid ? { clientId: cid } : {});
@@ -2739,7 +2854,8 @@ render();
   setTimeout(squareReturn, 400);
   if (window.__appts) {
     window.__appts.on(list => { S.appts = list; refresh(); if (S.daySheet && $('#dsheet').classList.contains('open') && !$('#asheet').classList.contains('open')) openDaySheet(S.daySheet); });
-    window.__appts.ready().then(r => { S.mailReady = r; if (S.tab === 'cal') refresh(); });
+    window.__appts.ready().then(r => { S.mailReady = r; if (S.tab === 'cal' || S.tab === 'home') refresh(); });
+    if (window.__intake) window.__intake.on(l => { S.intake = l; if (S.tab === 'home' || S.tab === 'clients') refresh(); });
     const loadReport = () => window.__appts.report().then(r => { if (JSON.stringify(r) !== JSON.stringify(S.report)) { S.report = r; if (S.tab === 'home') refresh(); } }).catch(() => {});
     loadReport(); document.addEventListener('visibilitychange', () => { if (!document.hidden) loadReport(); });
   }
