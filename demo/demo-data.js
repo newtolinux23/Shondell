@@ -100,6 +100,10 @@
     title: 'Your week: ' + lastMon.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' – ' + addDays(lastMon, 6).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
     body: "## Last week\n- **14 clients** over 4 days\n- Busiest: **Thursday** with 5\n## This week\n- 12 booked so far, Saturday morning is open\n## Tips\n- A few regulars are past their usual time. Check **Time to reach out** on Today.\n- Highlights clients book 9 weeks out; offer the next one at checkout." });
 
+  T.book_intake = [{ id: 'ik1', book_id: BOOK, client_id: null, status: 'new', created_at: new Date(Date.now() - 12 * 6e4).toISOString(),
+    data: { firstName: 'Brooke', lastName: 'Adams', phone: '(555) 555-0190', email: 'brooke@example.com', birthday: '04-22', contact: 'Text', textOk: true, texture: 'Wavy',
+      history: ['Box dye', 'Bleach / lightener'], lastColor: 'Box dye in July, highlights last year', allergies: 'Sensitive scalp', products: 'Drugstore shampoo, flat iron',
+      goals: 'Soft lived-in balayage, less orange', dislikes: 'Nothing too ashy', often: 'Every 2–3 months', heard: 'Instagram', photos: 'Hair only, no face', agree: true, signed: 'Brooke Adams', inSalon: true } }];
   window.__T = T;
   function q(table) {
     let filters = [], ord = null, rng = null, single = false, maybe = false, op = 'select', payload = null;
