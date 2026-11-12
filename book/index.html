@@ -270,7 +270,8 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .paid .col{display:grid;gap:10px;margin-top:26px}
 .acts{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.4);display:none;align-items:flex-end;justify-content:center}
 .acts.open{display:flex}
-.acts .menu{background:var(--sheet);width:100%;max-width:520px;border-radius:22px 22px 0 0;padding:10px 12px calc(16px + env(safe-area-inset-bottom));display:grid;gap:6px}
+.acts .menu{background:var(--sheet);width:100%;max-width:520px;border-radius:22px 22px 0 0;padding:10px 12px calc(16px + env(safe-area-inset-bottom));display:grid;gap:6px;max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;align-content:start}
+.acts{overscroll-behavior:contain;touch-action:pan-y}
 .acts .menu > b{font-family:var(--display);font-size:1.3rem;font-weight:500;padding:8px 6px 4px}
 .acts .menu button{display:flex;gap:12px;align-items:center;text-align:left;padding:12px;border-radius:14px;border:1px solid var(--rule)}
 .acts .menu button:hover{border-color:var(--gold)}
@@ -1080,7 +1081,8 @@ const closeSheet = id => {
 addEventListener('popstate', e => {
   const st = e.state || {};
   if ($('#dlg').classList.contains('open')) { $('#dlg-no').click(); try { history.pushState(st.sheet ? st : { nav: NAV.key() }, ''); } catch (x) {} return; }
-  if ($('#acts').classList.contains('open')) { $('#acts').classList.remove('open'); return; }
+  if (NAV.afterActs !== undefined && NAV.afterActs !== false) { const f = NAV.afterActs; NAV.afterActs = false; if (f) setTimeout(f, 0); return; }
+  if ($('#acts').classList.contains('open')) { $('#acts').classList.remove('open'); if (!$$('.sheet.open').length) document.body.style.overflow = ''; return; }
   const openIds = NAV.stack.filter(id => $('#' + id).classList.contains('open'));
   const loose = $$('.sheet.open').map(x => x.id).filter(id => !openIds.includes(id));
   const topId = openIds.length ? openIds[openIds.length - 1] : loose[loose.length - 1];
@@ -2531,13 +2533,23 @@ $('#q-share').addEventListener('click', () => navigator.share({ title: 'Shondell
 function openActions() {
   if (!canWrite) { toast('You can view this book but not change it.'); return; }
   if (!$('#acts').classList.contains('open')) try { history.pushState({ nav: NAV.key(), sheet: 'acts' }, ''); } catch (e) {}
-  $('#acts').classList.add('open');
+  $('#acts').classList.add('open'); $('#acts .menu').scrollTop = 0; document.body.style.overflow = 'hidden';
+}
+// close the menu and take its Back step out of the history, then run what was picked
+function closeActions(then) {
+  $('#acts').classList.remove('open'); if (!$$('.sheet.open').length) document.body.style.overflow = '';
+  let st = null; try { st = history.state; } catch (x) {}
+  if (st && st.sheet === 'acts') { NAV.afterActs = then || null; history.back(); }
+  else if (then) then();
 }
 $('#acts').addEventListener('click', e => {
-  const b = e.target.closest('[data-a]'); $('#acts').classList.remove('open');
-  try { if (history.state && history.state.sheet === 'acts') history.replaceState({ nav: NAV.key() }, ''); } catch (x) {}
-  if (!b) return;
-  const a = b.dataset.a, cid = S.client;
+  const b = e.target.closest('[data-a]');
+  if (!b && e.target !== $('#acts') && !e.target.closest('[data-acts-cancel]')) return; // taps on the menu itself (e.g. while scrolling) keep it open
+  if (b && b.dataset.a === 'site') { window.open('https://shondellslaughter.com/', '_blank', 'noopener'); return closeActions(null); } // open right away so the phone doesn't block it
+  closeActions(b ? () => runAction(b.dataset.a) : null);
+});
+function runAction(a) {
+  const cid = S.client;
   if (a === 'siteqr') openSiteQR('site');
   if (a === 'form') openFormChoice();
   if (a === 'site') window.open('https://shondellslaughter.com/', '_blank', 'noopener');
@@ -2546,7 +2558,7 @@ $('#acts').addEventListener('click', e => {
   if (a === 'visit') openVisit(cid ? { clientId: cid } : {});
   if (a === 'expense') openExpense();
   if (a === 'miles') openExpense({ category: 'mileage' });
-});
+}
 
 /* ---------- REGISTER ---------- */
 const R = { clientId: null, name: '', lines: [], discount: 0, discMode: '$', tip: 0, tipPct: null, payment: '', cash: '', saving: false, done: null };
