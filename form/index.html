@@ -3,161 +3,408 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>New Client Form · Della · Curls & Colors</title>
+<meta name="theme-color" content="#1d1a16">
+<title>Welcome to my chair · Della · Curls & Colors</title>
 <meta name="description" content="A few quick questions before your appointment with Della at Curls & Colors.">
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" href="../assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f7f2e8;--card:#fffdf8;--ink:#1d1a16;--soft:#6d6457;--line:#e6dccb;--gold:#9a7536;--gold2:#b8935a;--err:#a33a2a}
-*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.5 Jost,system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-.wrap{max-width:560px;margin:0 auto;padding:28px 18px 60px}
-header{text-align:center;margin-bottom:22px}
-.kick{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
-h1{font:400 40px/1.1 'Cormorant Garamond',serif;margin:8px 0 8px}
-.lead{color:var(--soft);margin:0 auto;max-width:420px}
-fieldset{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:18px 16px 8px;margin:0 0 16px}
-legend{font:500 22px 'Cormorant Garamond',serif;padding:0 6px}
-label.q{display:block;font-weight:500;margin:0 0 6px}
-.f{margin:0 0 16px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.hint{display:block;font-weight:300;font-size:14px;color:var(--soft)}
-input[type=text],input[type=tel],input[type=email],textarea,select{width:100%;font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 14px;outline:none;-webkit-appearance:none;appearance:none}
-textarea{min-height:88px;resize:vertical}
-input:focus,textarea:focus,select:focus{border-color:var(--gold2);box-shadow:0 0 0 3px rgba(184,147,90,.18)}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chips label{position:relative}
-.chips input{position:absolute;opacity:0;inset:0;margin:0}
-.chips span{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 15px;font-size:16px;cursor:pointer;user-select:none;transition:.15s}
-.chips input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
-.chips input:focus-visible+span{box-shadow:0 0 0 3px rgba(184,147,90,.35)}
-.check{display:flex;gap:12px;align-items:flex-start;margin:0 0 14px;font-size:16px}
-.check input{width:24px;height:24px;flex:none;margin-top:1px;accent-color:var(--ink)}
-.bday{display:grid;grid-template-columns:1.4fr 1fr;gap:10px}
-button.go{width:100%;font:500 18px Jost,sans-serif;letter-spacing:.04em;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:17px;cursor:pointer;margin-top:4px}
-button.go[disabled]{opacity:.55}
-.msg{color:var(--err);font-weight:500;text-align:center;min-height:24px;margin:10px 0 0}
-.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.done{display:none;text-align:center;padding:40px 10px}
-.done .big{font-size:64px;line-height:1}
-.done h2{font:400 36px/1.15 'Cormorant Garamond',serif;margin:14px 0 10px}
-.done p{color:var(--soft);max-width:380px;margin:0 auto 18px}
-.done a,.done button{display:inline-block;font:500 16px Jost,sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;padding:12px 20px;text-decoration:none;margin:4px;cursor:pointer}
-body.sent form,body.sent header{display:none}body.sent .done{display:block}
-.fine{font-size:13px;color:var(--soft);text-align:center;margin-top:18px}
+:root{--ink:#1d1a16;--cream:#f7f2e8;--paper:#fffdf8;--soft:#7a7062;--line:#e6dccb;--gold:#b8935a;--gold2:#d9b97f;--deep:#9a7536;--err:#b2412f;--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;color:var(--ink);font:400 18px/1.5 Jost,system-ui,sans-serif;background:var(--cream);overflow-x:hidden}
+/* living background */
+.bg{position:fixed;inset:-20%;z-index:-1;background:
+  radial-gradient(40% 35% at 20% 15%,rgba(217,185,127,.45),transparent 70%),
+  radial-gradient(35% 30% at 85% 30%,rgba(232,196,170,.45),transparent 70%),
+  radial-gradient(45% 40% at 50% 95%,rgba(205,170,120,.35),transparent 70%),var(--cream);
+  animation:drift 22s ease-in-out infinite alternate;filter:saturate(1.05)}
+@keyframes drift{0%{transform:translate3d(0,0,0) rotate(0)}100%{transform:translate3d(-3%,2%,0) rotate(6deg)}}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.25;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E")}
+/* top bar */
+.top{position:fixed;left:0;right:0;top:0;z-index:5;padding:calc(10px + env(safe-area-inset-top)) 18px 10px;display:flex;align-items:center;gap:12px;transition:opacity .4s}
+.top button{border:0;background:rgba(255,253,248,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);width:42px;height:42px;border-radius:50%;font-size:20px;color:var(--ink);cursor:pointer;flex:none;box-shadow:0 2px 10px rgba(60,40,10,.08)}
+.bar{flex:1;height:6px;border-radius:9px;background:rgba(29,26,22,.08);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,var(--deep),var(--gold2),var(--deep));background-size:200% 100%;animation:shine 3s linear infinite;transition:width .6s var(--ease)}
+@keyframes shine{to{background-position:-200% 0}}
+.count{font-size:13px;color:var(--soft);min-width:38px;text-align:right}
+body.intro .top,body.finale .top{opacity:0;pointer-events:none}
+/* stage */
+.stage{min-height:100%;display:grid;place-items:center;padding:calc(76px + env(safe-area-inset-top)) 20px calc(110px + env(safe-area-inset-bottom))}
+.step{width:100%;max-width:520px;display:none}
+.step.on{display:block;animation:in .55s var(--ease) both}
+.step.back.on{animation-name:inback}
+@keyframes in{from{opacity:0;transform:translateX(36px) scale(.98);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+@keyframes inback{from{opacity:0;transform:translateX(-36px) scale(.98);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+.kick{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--deep)}
+h1,h2{font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacing:-.01em}
+h2{font-size:clamp(34px,9vw,46px);line-height:1.04;margin:10px 0 8px}
+h2 em{font-style:italic;color:var(--deep)}
+.sub{color:var(--soft);margin:0 0 22px;font-weight:300}
+/* intro */
+.intro-wrap{text-align:center}
+.crest{width:150px;height:150px;border-radius:50%;object-fit:cover;background:#fff;border:1px solid var(--line);box-shadow:0 20px 50px rgba(120,80,20,.18),0 0 0 10px rgba(255,253,248,.55);animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.intro-wrap h1{font-size:clamp(46px,13vw,64px);line-height:1;margin:22px 0 6px}
+.script{font-family:'Pinyon Script',cursive;color:var(--deep);font-size:30px;margin:0 0 14px}
+.intro-wrap .sub{max-width:360px;margin:0 auto 26px}
+.meta{display:flex;justify-content:center;gap:18px;color:var(--soft);font-size:14px;margin-top:20px}
+.letter span{display:inline-block;opacity:0;transform:translateY(18px);animation:up .7s var(--ease) forwards}
+@keyframes up{to{opacity:1;transform:none}}
+/* fields */
+.field{margin:0 0 14px}
+.field > label{display:block;font-size:14px;color:var(--soft);margin:0 0 6px;letter-spacing:.02em}
+input[type=text],input[type=tel],input[type=email],textarea,select{width:100%;font:inherit;font-size:20px;color:var(--ink);background:rgba(255,253,248,.85);border:1px solid var(--line);border-radius:16px;padding:16px 18px;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s,background .2s}
+textarea{min-height:110px;resize:none;font-size:18px;line-height:1.45}
+input:focus,textarea:focus,select:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 4px rgba(184,147,90,.18)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* choice cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cards.three{grid-template-columns:1fr 1fr 1fr}
+.cards.one{grid-template-columns:1fr}
+.card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;min-height:96px;padding:14px 10px;border-radius:18px;background:rgba(255,253,248,.85);border:1px solid var(--line);cursor:pointer;user-select:none;transition:transform .18s var(--ease),border-color .2s,background .2s,box-shadow .2s;font-size:16px}
+.cards.one .card{flex-direction:row;justify-content:flex-start;text-align:left;min-height:62px;padding:14px 18px;gap:14px}
+.card input{position:absolute;opacity:0;pointer-events:none}
+.card .e{font-size:28px;line-height:1}
+.card svg{width:64px;height:40px;stroke:var(--ink);fill:none;stroke-width:2.2;stroke-linecap:round}
+.card:active{transform:scale(.96)}
+.card.sel{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 10px 26px rgba(29,26,22,.25)}
+.card.sel svg{stroke:var(--gold2)}
+.card.sel::after{content:'✓';position:absolute;top:8px;right:10px;font-size:13px;color:var(--gold2)}
+.cards.one .card.sel::after{top:50%;transform:translateY(-50%);right:16px;font-size:16px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.pills button{font:inherit;font-size:15px;border:1px solid var(--line);background:rgba(255,253,248,.85);border-radius:999px;padding:9px 14px;cursor:pointer;color:var(--ink);transition:.2s}
+.pills button.sel{background:var(--ink);color:#fff;border-color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:rgba(255,253,248,.85);border:1px solid var(--line);cursor:pointer;font-size:16px;margin-top:12px}
+.toggle input{position:absolute;opacity:0}
+.sw{flex:none;width:52px;height:30px;border-radius:99px;background:#d9d1c3;position:relative;transition:.25s}
+.sw::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:.25s var(--ease)}
+.toggle input:checked+.sw{background:var(--deep)}
+.toggle input:checked+.sw::after{left:25px}
+/* signature */
+.sigpad{position:relative;margin:6px 0 16px;padding:26px 18px 14px;border-radius:18px;background:#fff;border:1px solid var(--line);min-height:120px}
+.sigpad .ink{font-family:'Pinyon Script',cursive;font-size:44px;line-height:1.1;color:#2a2219;min-height:50px;word-break:break-word}
+.sigpad .line{border-top:1px solid #cbbfa9;margin-top:6px;padding-top:6px;font-size:12px;color:var(--soft);display:flex;justify-content:space-between}
+.promise{font-size:16px;color:#4b443a;background:rgba(255,253,248,.85);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:0 0 12px;display:flex;gap:12px;cursor:pointer}
+.promise input{width:24px;height:24px;flex:none;accent-color:var(--ink);margin-top:2px}
+/* bottom nav */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:5;padding:14px 20px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(247,242,232,.96) 55%,rgba(247,242,232,0));display:flex;gap:10px;justify-content:center;transition:opacity .4s}
+.dock .in{width:100%;max-width:520px;display:flex;gap:10px;align-items:center}
+.go{flex:1;font:500 18px Jost,sans-serif;letter-spacing:.03em;border:0;border-radius:999px;padding:18px 22px;color:#fff;cursor:pointer;background:var(--ink);position:relative;overflow:hidden;box-shadow:0 12px 30px rgba(29,26,22,.28);transition:transform .15s}
+.go::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,235,200,.35) 50%,transparent 70%);transform:translateX(-100%);animation:sheen 3.2s ease-in-out infinite}
+@keyframes sheen{60%,100%{transform:translateX(100%)}}
+.go:active{transform:scale(.97)}
+.go[disabled]{opacity:.6}
+.skip{border:0;background:none;color:var(--soft);font:inherit;font-size:16px;padding:12px 10px;cursor:pointer}
+body.finale .dock{opacity:0;pointer-events:none}
+.msg{color:var(--err);font-size:15px;min-height:22px;margin:10px 2px 0;font-weight:500}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.hp{position:absolute;left:-9999px}
+/* finale */
+.finale-wrap{text-align:center}
+.seal{width:120px;height:120px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#f3dfb5,var(--gold) 55%,var(--deep));box-shadow:0 18px 40px rgba(154,117,54,.4),inset 0 2px 8px rgba(255,255,255,.5);animation:pop .8s var(--ease) both}
+.seal svg{width:56px;height:56px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;animation:draw .6s .45s ease forwards}
+@keyframes pop{0%{transform:scale(.2);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+.profile{margin:26px auto 0;max-width:420px;text-align:left;background:rgba(255,253,248,.92);border:1px solid var(--line);border-radius:22px;padding:20px 20px 8px;box-shadow:0 20px 50px rgba(60,40,10,.12);animation:in .7s .5s var(--ease) both}
+.profile .kick{margin-bottom:6px}
+.profile h3{font:400 28px/1.1 'Cormorant Garamond',serif;margin:0 0 12px}
+.profile dl{margin:0}
+.profile div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.profile dt{color:var(--soft)}.profile dd{margin:0;text-align:right;font-weight:500}
+.end-btns{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;animation:in .7s .8s var(--ease) both}
+.end-btns a,.end-btns button{font:500 16px Jost,sans-serif;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;padding:13px 20px;cursor:pointer}
+.end-btns .dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:9}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <div class="kick">Della · Curls &amp; Colors</div>
-    <h1>Welcome to my chair</h1>
-    <p class="lead">A few quick questions so I can take great care of your hair. It takes about 2 minutes, and only I see your answers.</p>
-  </header>
+<body class="intro">
+<div class="bg"></div><div class="grain"></div>
+<canvas id="fx"></canvas>
+<div class="top"><button id="back" aria-label="Back">←</button><div class="bar" aria-hidden="true"><i id="bar"></i></div><span class="count" id="count"></span></div>
 
-  <form id="f" novalidate>
-    <fieldset>
-      <legend>About you</legend>
-      <div class="row">
-        <div class="f"><label class="q" for="firstName">First name</label><input type="text" id="firstName" autocomplete="given-name" required></div>
-        <div class="f"><label class="q" for="lastName">Last name</label><input type="text" id="lastName" autocomplete="family-name" required></div>
-      </div>
-      <div class="f"><label class="q" for="phone">Mobile phone</label><input type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="(817) 555-1234" required></div>
-      <div class="f"><label class="q" for="email">Email <span class="hint">Optional, for appointment reminders</span></label><input type="email" id="email" autocomplete="email" inputmode="email"></div>
-      <div class="f"><label class="q">Birthday <span class="hint">Optional, so I can send you a little treat</span></label>
-        <div class="bday"><select id="bm" aria-label="Birthday month"><option value="">Month</option></select><select id="bd" aria-label="Birthday day"><option value="">Day</option></select></div></div>
-      <div class="f"><label class="q">Best way to reach you</label>
-        <div class="chips" data-name="contact" data-type="radio" data-opts="Text|Call|Email"></div></div>
-      <label class="check"><input type="checkbox" id="textOk" checked><span>It’s OK to text me reminders and when an opening comes up.</span></label>
-    </fieldset>
+<main class="stage">
+  <!-- 0 intro -->
+  <section class="step on" data-step="intro">
+    <div class="intro-wrap">
+      <img class="crest" src="../assets/img/crest-sm.webp" alt="Della, Curls &amp; Colors" width="150" height="150">
+      <h1 class="letter" id="hello">Welcome</h1>
+      <p class="script">to my chair</p>
+      <p class="sub" id="intro-sub">Before we start, tell me a little about you and your hair. I’ll use it to make today feel made just for you.</p>
+      <div class="meta"><span>⏱ About 2 minutes</span><span>🔒 Only Della sees it</span></div>
+    </div>
+  </section>
 
-    <fieldset>
-      <legend>Your hair</legend>
-      <div class="f"><label class="q">Your hair is…</label>
-        <div class="chips" data-name="texture" data-type="radio" data-opts="Straight|Wavy|Curly|Coily|Not sure"></div></div>
-      <div class="f"><label class="q">In the last 2 years, has your hair had… <span class="hint">Tap all that apply</span></label>
-        <div class="chips" data-name="history" data-type="checkbox" data-opts="Never colored|Salon color|Box dye|Henna|Bleach / lightener|Relaxer|Perm|Keratin / smoothing|Not sure"></div></div>
-      <div class="f"><label class="q" for="lastColor">When was your last color or chemical service?</label><input type="text" id="lastColor" placeholder="e.g. Box dye in August"></div>
-      <div class="f"><label class="q" for="allergies">Any allergies, sensitive scalp, or reactions to hair color?</label><textarea id="allergies" placeholder="Write “none” if nothing"></textarea></div>
-      <div class="f"><label class="q" for="products">What do you use at home? <span class="hint">Optional</span></label><input type="text" id="products" placeholder="Shampoo, styling products, heat tools…"></div>
-    </fieldset>
+  <!-- 1 name -->
+  <section class="step" data-step="name">
+    <div class="kick">Let’s meet</div>
+    <h2>First things first, <em>what’s your name?</em></h2>
+    <div class="two"><div class="field"><label for="firstName">First name</label><input type="text" id="firstName" autocomplete="given-name" autocapitalize="words"></div>
+      <div class="field"><label for="lastName">Last name</label><input type="text" id="lastName" autocomplete="family-name" autocapitalize="words"></div></div>
+  </section>
 
-    <fieldset>
-      <legend>What you’d love</legend>
-      <div class="f"><label class="q" for="goals">What are you hoping for today?</label><textarea id="goals" placeholder="Color, length, a feeling, a photo you love…"></textarea></div>
-      <div class="f"><label class="q" for="dislikes">Anything you don’t want? <span class="hint">Optional</span></label><textarea id="dislikes" placeholder="Too short, too brassy, bangs…"></textarea></div>
-      <div class="f"><label class="q">How often would you like to come in?</label>
-        <div class="chips" data-name="often" data-type="radio" data-opts="Every 4–6 weeks|Every 6–8 weeks|Every 2–3 months|A few times a year|Just today"></div></div>
-      <div class="f"><label class="q" for="heard">How did you hear about me? <span class="hint">If a friend sent you, tell me who so I can thank her</span></label><input type="text" id="heard"></div>
-      <div class="f"><label class="q">May I share photos of your hair on my website and social media?</label>
-        <div class="chips" data-name="photos" data-type="radio" data-opts="Yes|Hair only, no face|No"></div></div>
-    </fieldset>
+  <!-- 2 contact -->
+  <section class="step" data-step="contact">
+    <div class="kick">Stay in touch</div>
+    <h2>Lovely to meet you, <em class="first">friend</em>.</h2>
+    <p class="sub">Where can I reach you about your appointments?</p>
+    <div class="field"><label for="phone">Mobile number</label><input type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="(817) 555-1234"></div>
+    <div class="field"><label for="email">Email <span style="opacity:.7">(optional)</span></label><input type="email" id="email" autocomplete="email" inputmode="email" placeholder="you@email.com"></div>
+    <div class="field"><label>Best way to reach you</label><div class="cards three" data-name="contact" data-type="radio">
+      <label class="card"><input type="radio" name="contact" value="Text"><span class="e">💬</span>Text</label>
+      <label class="card"><input type="radio" name="contact" value="Call"><span class="e">📞</span>Call</label>
+      <label class="card"><input type="radio" name="contact" value="Email"><span class="e">✉️</span>Email</label></div></div>
+    <label class="toggle"><input type="checkbox" id="textOk" checked><span class="sw"></span><span>Text me reminders and when a last-minute opening comes up</span></label>
+  </section>
 
-    <fieldset>
-      <legend>Last step</legend>
-      <label class="check"><input type="checkbox" id="agree"><span>The information above is true to the best of my knowledge. I understand that color results depend on my hair’s history, and that I should tell Della about any allergies or changes.</span></label>
-      <div class="f"><label class="q" for="signed">Type your full name</label><input type="text" id="signed" autocomplete="name"></div>
-      <div class="hp" aria-hidden="true"><label>Website <input type="text" id="website" tabindex="-1" autocomplete="off"></label></div>
-      <button class="go" type="submit" id="go">Send to Della</button>
-      <p class="msg" id="msg" role="alert"></p>
-    </fieldset>
-    <p class="fine">Your answers go only to Della’s private client book. They are never shared or sold.</p>
-  </form>
+  <!-- 3 birthday -->
+  <section class="step" data-step="bday">
+    <div class="kick">A little celebration</div>
+    <h2>When’s your <em>birthday?</em></h2>
+    <p class="sub">So I can send you something special. Totally optional.</p>
+    <div class="two"><div class="field"><label for="bm">Month</label><select id="bm"><option value="">Month</option></select></div>
+      <div class="field"><label for="bd">Day</label><select id="bd"><option value="">Day</option></select></div></div>
+  </section>
 
-  <div class="done" id="done" aria-live="polite">
-    <div class="big">💛</div>
-    <h2 id="done-h">Thank you!</h2>
-    <p id="done-p">Della has your answers. See you in the chair!</p>
-    <div id="done-btns"></div>
-  </div>
-</div>
+  <!-- 4 texture -->
+  <section class="step" data-step="texture">
+    <div class="kick">Your hair</div>
+    <h2>Your natural hair is…</h2>
+    <p class="sub">The way it dries when you do nothing to it.</p>
+    <div class="cards" data-name="texture" data-type="radio">
+      <label class="card"><input type="radio" name="texture" value="Straight"><svg viewBox="0 0 64 40"><path d="M14 4v32M26 4v32M38 4v32M50 4v32"/></svg>Straight</label>
+      <label class="card"><input type="radio" name="texture" value="Wavy"><svg viewBox="0 0 64 40"><path d="M14 4c-6 6 6 10 0 16s6 10 0 16M28 4c-6 6 6 10 0 16s6 10 0 16M42 4c-6 6 6 10 0 16s6 10 0 16"/></svg>Wavy</label>
+      <label class="card"><input type="radio" name="texture" value="Curly"><svg viewBox="0 0 64 40"><path d="M16 4c-8 2-8 8 0 9s8 7 0 9-8 8 0 9 6 5 0 6M36 4c-8 2-8 8 0 9s8 7 0 9-8 8 0 9 6 5 0 6"/></svg>Curly</label>
+      <label class="card"><input type="radio" name="texture" value="Coily"><svg viewBox="0 0 64 40"><path d="M14 4c6 0 6 4 0 4s-6 4 0 4 6 4 0 4-6 4 0 4 6 4 0 4-6 4 0 4 6 4 0 4M34 4c6 0 6 4 0 4s-6 4 0 4 6 4 0 4-6 4 0 4 6 4 0 4-6 4 0 4 6 4 0 4M54 4c6 0 6 4 0 4s-6 4 0 4 6 4 0 4-6 4 0 4 6 4 0 4-6 4 0 4"/></svg>Coily</label>
+    </div>
+    <div class="cards one" style="margin-top:10px" data-name="texture" data-type="radio"><label class="card"><input type="radio" name="texture" value="Not sure"><span class="e">🤷‍♀️</span>Not sure, you tell me!</label></div>
+  </section>
+
+  <!-- 5 history -->
+  <section class="step" data-step="history">
+    <div class="kick">Your hair’s story</div>
+    <h2>In the last 2 years, your hair has had…</h2>
+    <p class="sub">Tap all that apply. Being honest here keeps your hair safe.</p>
+    <div class="cards" data-name="history" data-type="checkbox">
+      <label class="card"><input type="checkbox" name="history" value="Never colored"><span class="e">🌱</span>Never colored</label>
+      <label class="card"><input type="checkbox" name="history" value="Salon color"><span class="e">💇‍♀️</span>Salon color</label>
+      <label class="card"><input type="checkbox" name="history" value="Box dye"><span class="e">📦</span>Box dye</label>
+      <label class="card"><input type="checkbox" name="history" value="Bleach / lightener"><span class="e">✨</span>Bleach / lightener</label>
+      <label class="card"><input type="checkbox" name="history" value="Henna"><span class="e">🌿</span>Henna</label>
+      <label class="card"><input type="checkbox" name="history" value="Relaxer"><span class="e">🧴</span>Relaxer</label>
+      <label class="card"><input type="checkbox" name="history" value="Perm"><span class="e">🌀</span>Perm</label>
+      <label class="card"><input type="checkbox" name="history" value="Keratin / smoothing"><span class="e">🪮</span>Keratin / smoothing</label>
+    </div>
+    <div class="field" style="margin-top:14px"><label for="lastColor">When was your last color or chemical service?</label><input type="text" id="lastColor" placeholder="e.g. Box dye in August"></div>
+  </section>
+
+  <!-- 6 care -->
+  <section class="step" data-step="care">
+    <div class="kick">Your comfort</div>
+    <h2>Any allergies or a <em>sensitive scalp?</em></h2>
+    <p class="sub">Including reactions to hair color, latex or fragrance.</p>
+    <div class="cards" data-name="allergyYN" data-type="radio">
+      <label class="card"><input type="radio" name="allergyYN" value="no"><span class="e">🙌</span>Nope, all good</label>
+      <label class="card"><input type="radio" name="allergyYN" value="yes"><span class="e">⚠️</span>Yes, let me explain</label></div>
+    <div class="field" id="allergy-box" style="margin-top:12px;display:none"><label for="allergies">Tell me about it</label><textarea id="allergies" placeholder="What happened, and to what?"></textarea></div>
+    <div class="field" style="margin-top:12px"><label for="products">What do you use at home? <span style="opacity:.7">(optional)</span></label><input type="text" id="products" placeholder="Shampoo, styling products, heat tools…"></div>
+  </section>
+
+  <!-- 7 dream -->
+  <section class="step" data-step="dream">
+    <div class="kick">The fun part</div>
+    <h2>What would make you <em>love</em> your hair?</h2>
+    <p class="sub">Tap any that sound like you, then add your own words.</p>
+    <div class="pills" id="dreams"></div>
+    <div class="field"><textarea id="goals" placeholder="Describe it, or show me a photo when I come over 💛"></textarea></div>
+    <div class="field"><label for="dislikes">Anything you <b>don’t</b> want? <span style="opacity:.7">(optional)</span></label><input type="text" id="dislikes" placeholder="Too short, too brassy, bangs…"></div>
+  </section>
+
+  <!-- 8 rhythm -->
+  <section class="step" data-step="rhythm">
+    <div class="kick">Keeping it fresh</div>
+    <h2>How often do you like to <em>treat yourself?</em></h2>
+    <div class="cards one" data-name="often" data-type="radio">
+      <label class="card"><input type="radio" name="often" value="Every 4–6 weeks"><span class="e">🌟</span>Every 4–6 weeks</label>
+      <label class="card"><input type="radio" name="often" value="Every 6–8 weeks"><span class="e">🌙</span>Every 6–8 weeks</label>
+      <label class="card"><input type="radio" name="often" value="Every 2–3 months"><span class="e">🍂</span>Every 2–3 months</label>
+      <label class="card"><input type="radio" name="often" value="A few times a year"><span class="e">🎀</span>A few times a year</label>
+      <label class="card"><input type="radio" name="often" value="Just today"><span class="e">🎉</span>Just today, for now</label></div>
+  </section>
+
+  <!-- 9 share -->
+  <section class="step" data-step="share">
+    <div class="kick">Almost there</div>
+    <h2>How did you <em>find me?</em></h2>
+    <div class="field"><input type="text" id="heard" placeholder="A friend’s name, Instagram, Google…"></div>
+    <p class="sub" style="margin:18px 0 10px">May I share photos of your finished hair on my website and social media?</p>
+    <div class="cards three" data-name="photos" data-type="radio">
+      <label class="card"><input type="radio" name="photos" value="Yes"><span class="e">📸</span>Yes!</label>
+      <label class="card"><input type="radio" name="photos" value="Hair only, no face"><span class="e">💁‍♀️</span>Hair only</label>
+      <label class="card"><input type="radio" name="photos" value="No"><span class="e">🙅‍♀️</span>No thanks</label></div>
+  </section>
+
+  <!-- 10 sign -->
+  <section class="step" data-step="sign">
+    <div class="kick">Our little promise</div>
+    <h2>Sign here, <em class="first">friend</em>.</h2>
+    <label class="promise"><input type="checkbox" id="agree"><span>Everything I shared is true to the best of my knowledge. I understand color results depend on my hair’s history, and I’ll tell Della about any allergies or changes.</span></label>
+    <div class="field"><label for="signed">Type your full name to sign</label><input type="text" id="signed" autocomplete="name" autocapitalize="words"></div>
+    <div class="sigpad" aria-hidden="true"><div class="ink" id="ink"></div><div class="line"><span>Signature</span><span id="sigdate"></span></div></div>
+    <div class="hp" aria-hidden="true"><input type="text" id="website" tabindex="-1" autocomplete="off"></div>
+  </section>
+
+  <!-- finale -->
+  <section class="step" data-step="finale">
+    <div class="finale-wrap">
+      <div class="seal"><svg viewBox="0 0 56 56"><path d="M15 29l9 9 18-20"/></svg></div>
+      <h2 id="fin-h" style="margin-top:22px">You’re all set!</h2>
+      <p class="script" id="fin-script">see you in the chair</p>
+      <p class="sub" id="fin-sub"></p>
+      <div class="profile" id="profile"></div>
+      <div class="end-btns" id="end-btns"></div>
+    </div>
+  </section>
+</main>
+
+<div class="dock"><div class="in"><button class="skip" id="skip" style="display:none">Skip</button><button class="go" id="go">Let’s begin ✨</button></div></div>
+<p class="msg" id="msg" role="alert" style="position:fixed;left:0;right:0;bottom:calc(84px + env(safe-area-inset-bottom));text-align:center;z-index:6;padding:0 20px"></p>
+
 <script>
 (() => {
-  const URL = 'https://yxpjitdqqodfyqxvwglv.supabase.co/functions/v1/book-mail';
+  const API = 'https://yxpjitdqqodfyqxvwglv.supabase.co/functions/v1/book-mail';
   const inSalon = /[?&](salon|kiosk)=1/.test(location.search);
-  const $ = s => document.querySelector(s);
-  document.querySelectorAll('.chips').forEach(box => {
-    box.setAttribute('role', box.dataset.type === 'radio' ? 'radiogroup' : 'group');
-    box.innerHTML = box.dataset.opts.split('|').map(o => `<label><input type="${box.dataset.type}" name="${box.dataset.name}" value="${o}"><span>${o}</span></label>`).join('');
-  });
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const steps = $$('.step'), order = steps.map(s => s.dataset.step);
+  const QUESTIONS = order.filter(s => s !== 'intro' && s !== 'finale');
+  const OPTIONAL = ['bday', 'rhythm', 'share'];
+  let cur = 0;
+  const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+  const val = id => $('#' + id).value.trim();
+  const one = n => (document.querySelector(`input[name="${n}"]:checked`) || {}).value || '';
+  const all = n => $$(`input[name="${n}"]:checked`).map(x => x.value);
+  const msg = t => { $('#msg').textContent = t || ''; };
+  const first = () => val('firstName').split(/\s+/)[0] || 'friend';
+
+  // intro letters
+  const hello = $('#hello'); hello.innerHTML = [...hello.textContent].map((c, i) => `<span style="animation-delay:${0.15 + i * 0.06}s">${c}</span>`).join('');
+  if (inSalon) $('#intro-sub').textContent = 'While you get comfy, tell me a little about you and your hair. When you’re done, just hand the phone back to me.';
+
+  // birthday selects
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   $('#bm').innerHTML += months.map((m, i) => `<option value="${String(i + 1).padStart(2, '0')}">${m}</option>`).join('');
   $('#bd').innerHTML += Array.from({ length: 31 }, (_, i) => `<option value="${String(i + 1).padStart(2, '0')}">${i + 1}</option>`).join('');
+
+  // dream quick-picks
+  const DREAMS = ['Cover my greys', 'Brighter blonde', 'Rich brunette', 'Warm copper', 'Low maintenance', 'Fix my color', 'Healthy, shiny ends', 'Something bold', 'Fresh cut & shape', 'Define my curls'];
+  $('#dreams').innerHTML = DREAMS.map(d => `<button type="button" data-d="${d}">${d}</button>`).join('');
+  $('#dreams').addEventListener('click', e => { const b = e.target.closest('[data-d]'); if (!b) return; b.classList.toggle('sel'); buzz(8); });
+
+  // choice cards
+  $$('.card input').forEach(inp => inp.addEventListener('change', () => {
+    $$(`input[name="${inp.name}"]`).forEach(x => x.closest('.card').classList.toggle('sel', x.checked));
+    if (inp.name === 'history' && inp.value === 'Never colored' && inp.checked) $$('input[name=history]').forEach(x => { if (x !== inp) { x.checked = false; x.closest('.card').classList.remove('sel'); } });
+    if (inp.name === 'history' && inp.value !== 'Never colored' && inp.checked) { const n = $('input[name=history][value="Never colored"]'); n.checked = false; n.closest('.card').classList.remove('sel'); }
+    if (inp.name === 'allergyYN') { $('#allergy-box').style.display = inp.value === 'yes' ? '' : 'none'; if (inp.value === 'yes') setTimeout(() => $('#allergies').focus(), 50); }
+    buzz(10);
+    // single choice on a simple step: glide forward
+    const step = steps[cur].dataset.step;
+    if (inp.type === 'radio' && ['texture', 'rhythm'].includes(step)) setTimeout(() => next(), 380);
+  }));
+
   $('#phone').addEventListener('blur', e => { const d = e.target.value.replace(/\D/g, '').slice(-10); if (d.length === 10) e.target.value = `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`; });
-  const val = id => $('#' + id).value.trim();
-  const one = n => (document.querySelector(`input[name="${n}"]:checked`) || {}).value || '';
-  const all = n => [...document.querySelectorAll(`input[name="${n}"]:checked`)].map(x => x.value);
-  const msg = t => { $('#msg').textContent = t || ''; };
-  $('#f').addEventListener('submit', async e => {
-    e.preventDefault(); msg('');
+  $('#signed').addEventListener('input', () => { $('#ink').textContent = $('#signed').value; });
+  $('#sigdate').textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  function show(i, dir = 1) {
+    steps[cur].classList.remove('on', 'back');
+    cur = i; const s = steps[cur];
+    s.classList.toggle('back', dir < 0); void s.offsetWidth; s.classList.add('on');
+    const name = s.dataset.step;
+    document.body.classList.toggle('intro', name === 'intro'); document.body.classList.toggle('finale', name === 'finale');
+    $$('.first').forEach(el => el.textContent = first());
+    const q = QUESTIONS.indexOf(name);
+    $('#bar').style.width = q < 0 ? '0' : ((q + 1) / QUESTIONS.length * 100) + '%';
+    $('#count').textContent = q < 0 ? '' : `${q + 1} / ${QUESTIONS.length}`;
+    $('#go').textContent = name === 'intro' ? 'Let’s begin ✨' : name === 'sign' ? 'Send to Della 💛' : 'Next';
+    $('#skip').style.display = OPTIONAL.includes(name) ? '' : 'none';
+    msg(''); scrollTo({ top: 0, behavior: 'smooth' });
+    const f = s.querySelector('input[type=text],input[type=tel]');
+    if (f && matchMedia('(pointer:fine)').matches) setTimeout(() => f.focus(), 350);
+    try { if (name !== 'intro' && name !== 'finale' && history.state?.i !== cur) history.pushState({ i: cur }, ''); } catch (e) {}
+  }
+  function nope(text, el) { msg(text); buzz([30, 40, 30]); const s = steps[cur]; s.classList.remove('shake'); void s.offsetWidth; s.classList.add('shake'); if (el) el.focus(); }
+  function check(name) {
+    if (name === 'name') { if (!val('firstName')) return nope('What should I call you?', $('#firstName')); if (!val('lastName')) return nope('And your last name?', $('#lastName')); }
+    if (name === 'contact') { if (val('phone').replace(/\D/g, '').length < 10) return nope('Please add your mobile number.', $('#phone')); if (val('email') && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(val('email'))) return nope('That email doesn’t look quite right.', $('#email')); }
+    if (name === 'texture' && !one('texture')) return nope('Tap the one that looks most like yours.');
+    if (name === 'history' && !all('history').length) return nope('Tap at least one, or “Never colored”.');
+    if (name === 'care') { if (!one('allergyYN')) return nope('Just let me know either way.'); if (one('allergyYN') === 'yes' && !val('allergies')) return nope('Tell me a little about it, please.', $('#allergies')); }
+    if (name === 'sign') { if (!$('#agree').checked) return nope('Please check the box above your signature.'); if (val('signed').length < 3) return nope('Type your full name to sign.', $('#signed')); }
+    return true;
+  }
+  async function next() {
+    const name = steps[cur].dataset.step;
+    if (!check(name)) return;
+    if (name === 'sign') return send();
+    buzz(12); show(cur + 1, 1);
+  }
+  $('#go').addEventListener('click', next);
+  $('#skip').addEventListener('click', () => show(cur + 1, 1));
+  $('#back').addEventListener('click', () => history.back());
+  addEventListener('popstate', e => { const i = e.state && typeof e.state.i === 'number' ? e.state.i : 0; if (steps[cur].dataset.step === 'finale') return; if (i !== cur) show(i, i < cur ? -1 : 1); });
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && !document.body.classList.contains('finale')) { e.preventDefault(); next(); } });
+
+  async function send() {
+    const goals = [...$$('#dreams .sel').map(b => b.dataset.d), val('goals')].filter(Boolean).join(' · ');
     const body = { action: 'intake', firstName: val('firstName'), lastName: val('lastName'), phone: val('phone'), email: val('email'),
       birthday: $('#bm').value && $('#bd').value ? `${$('#bm').value}-${$('#bd').value}` : '', contact: one('contact'), textOk: $('#textOk').checked,
-      texture: one('texture'), history: all('history'), lastColor: val('lastColor'), allergies: val('allergies'), products: val('products'),
-      goals: val('goals'), dislikes: val('dislikes'), often: one('often'), heard: val('heard'), photos: one('photos'),
+      texture: one('texture'), history: all('history'), lastColor: val('lastColor'), allergies: one('allergyYN') === 'yes' ? val('allergies') : 'None',
+      products: val('products'), goals, dislikes: val('dislikes'), often: one('often'), heard: val('heard'), photos: one('photos'),
       agree: $('#agree').checked, signed: val('signed'), inSalon, website: val('website') };
-    const need = !body.firstName ? 'firstName' : !body.lastName ? 'lastName' : body.phone.replace(/\D/g, '').length < 10 ? 'phone' : null;
-    if (need) { msg(need === 'phone' ? 'Please add your mobile number.' : 'Please add your first and last name.'); $('#' + need).focus(); return; }
-    if (!body.agree || !body.signed) { msg('Please check the box and type your name at the bottom.'); return; }
     const go = $('#go'); go.disabled = true; go.textContent = 'Sending…';
     try {
-      const r = await fetch(URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const d = await r.json().catch(() => ({}));
       if (!d.ok) throw new Error(d.error || 'Something went wrong. Please try again.');
-      const first = body.firstName;
-      $('#done-h').textContent = `Thank you, ${first}!`;
-      if (inSalon) {
-        $('#done-p').textContent = 'All set. Please hand the phone back to Della.';
-        $('#done-btns').innerHTML = '<button type="button" id="again">Start a new form</button>';
-        $('#again').onclick = () => { $('#f').reset(); document.body.classList.remove('sent'); scrollTo(0, 0); };
-      } else {
-        $('#done-p').textContent = 'Della has your answers. See you in the chair!';
-        $('#done-btns').innerHTML = '<a href="https://shondellslaughter.com/">See my latest work</a>';
-      }
-      document.body.classList.add('sent'); scrollTo(0, 0);
-    } catch (err) { msg(err.message || 'Something went wrong. Please try again.'); }
-    finally { go.disabled = false; go.textContent = 'Send to Della'; }
-  });
+      finale(body, goals);
+    } catch (err) { nope(err.message || 'No connection. Please try again.'); go.disabled = false; go.textContent = 'Send to Della 💛'; }
+  }
+
+  function finale(b, goals) {
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    $('#fin-h').textContent = `Thank you, ${b.firstName}!`;
+    $('#fin-sub').textContent = inSalon ? 'All done. Please hand the phone back to Della 💛' : 'Della has everything she needs to make your visit wonderful.';
+    const rows = [['Hair', b.texture], ['Story', b.history.join(', ')], ['Dreaming of', goals], ['Comes in', b.often], ['Reach me by', b.contact]].filter(x => x[1]);
+    $('#profile').innerHTML = `<div class="kick">Your hair profile</div><h3>${esc(b.firstName)} ${esc(b.lastName)}</h3><dl>${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`;
+    $('#end-btns').innerHTML = inSalon ? '<button class="dark" id="again">Start for the next client</button>'
+      : '<a class="dark" href="https://shondellslaughter.com/">See my latest work</a><a href="../links/">Call, text or book</a>';
+    if (inSalon) { $('#again').onclick = () => location.replace(location.pathname + location.search); setTimeout(() => location.replace(location.pathname + location.search), 120000); }
+    show(order.indexOf('finale'), 1);
+    try { history.replaceState({ i: cur, done: true }, ''); } catch (e) {}
+    buzz([20, 60, 40]); confetti();
+  }
+
+  // gold confetti
+  function confetti() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const c = $('#fx'), x = c.getContext('2d'), dpr = devicePixelRatio || 1;
+    const W = c.width = innerWidth * dpr, H = c.height = innerHeight * dpr; c.style.width = innerWidth + 'px'; c.style.height = innerHeight + 'px';
+    const cols = ['#b8935a', '#d9b97f', '#f3dfb5', '#9a7536', '#e8c4aa', '#1d1a16'];
+    const P = Array.from({ length: 160 }, (_, i) => ({ x: W / 2, y: H * 0.32, vx: (Math.random() - .5) * 18 * dpr, vy: (-Math.random() * 16 - 6) * dpr, r: (Math.random() * 6 + 3) * dpr, a: Math.random() * 6, va: (Math.random() - .5) * .3, c: cols[i % cols.length], s: Math.random() < .3 }));
+    let t = 0; (function f() {
+      x.clearRect(0, 0, W, H); t++;
+      P.forEach(p => { p.vy += .45 * dpr; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.a += p.va;
+        x.save(); x.translate(p.x, p.y); x.rotate(p.a); x.fillStyle = p.c; x.globalAlpha = Math.max(0, 1 - t / 170);
+        if (p.s) { x.beginPath(); x.arc(0, 0, p.r * .6, 0, 7); x.fill(); } else x.fillRect(-p.r, -p.r / 3, p.r * 2, p.r / 1.5); x.restore(); });
+      if (t < 170) requestAnimationFrame(f); else x.clearRect(0, 0, W, H);
+    })();
+  }
+  try { history.replaceState({ i: 0 }, ''); } catch (e) {}
 })();
 </script>
 </body>
